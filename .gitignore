@@ -1,0 +1,44 @@
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+/bin/
+/dist/
+
+# Test binary
+*.test
+
+# Coverage
+*.out
+coverage.*
+
+# Go workspace
+go.work
+go.work.sum
+
+# Editors / OS
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+Thumbs.db
+
+# TLS material — generated locally, never commit
+*.pem
+*.key
+*.crt
+*.cer
+*.p12
+*.pfx
+
+# Captured traffic
+*.pcap
+*.pcapng
+captures/
+logs/
+
+# Personal Claude Code settings (share .claude/settings.json with the group if you want)
+.claude/settings.local.json
