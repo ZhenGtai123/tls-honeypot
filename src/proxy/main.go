@@ -53,11 +53,11 @@ var (
 
 func main() {
     // Command line flags
-    listenAddr := flag.String("listen", ":443", "Address to listen on (e.g., :443 or 192.168.100.20:443)")
-    targetAddr := flag.String("target", "192.168.100.10:80", "Target honeypot address (e.g., 192.168.100.10:80 or 192.168.100.10:443)")
-    certFile := flag.String("cert", "server.crt", "TLS certificate file")
-    keyFile := flag.String("key", "server.key", "TLS private key file")
-    logDir := flag.String("log-dir", "/var/log/honeypot-proxy", "Directory to store logs")
+    listenAddr := flag.String("listen", ":8443", "Address to listen on (use :443 in production, :8443 for unprivileged dev)")
+    targetAddr := flag.String("target", "localhost:8080", "Target honeypot address (the proxy forwards plaintext to this backend)")
+    certFile := flag.String("cert", "testdata/cert.pem", "TLS certificate file")
+    keyFile := flag.String("key", "testdata/key.pem", "TLS private key file")
+    logDir := flag.String("log-dir", "./logs", "Directory to store logs")
     forwardHTTPS := flag.Bool("forward-https", false, "Forward to honeypot using HTTPS (default HTTP)")
     verbose := flag.Bool("verbose", false, "Log every request/response to console")
     flag.Parse()
