@@ -8,6 +8,7 @@ import (
     "fmt"
     "io"
     "log"
+    "net"
     "net/http"
     "os"
     "path/filepath"
@@ -36,6 +37,14 @@ type RequestLog struct {
     Body        string            `json:"body,omitempty"`
     ClientIP    string            `json:"client_ip"`
     ForwardedTo string            `json:"forwarded_to"`
+    TLS         *TLSInfo          `json:"tls,omitempty"`
+}
+
+type TLSInfo struct {
+    Version            string `json:"version"`
+    CipherSuite        string `json:"cipher_suite"`
+    ServerName         string `json:"server_name,omitempty"`
+    NegotiatedProtocol string `json:"negotiated_protocol,omitempty"`
 }
 
 type ResponseLog struct {
@@ -148,8 +157,8 @@ func createTLSConfig() *tls.Config {
 func (p *HoneypotProxy) ServeHTTP(w http.ResponseWriter, r *http.Request) {
     startTime := time.Now()
 
-    // Get client IP
-    clientIP := r.RemoteAddr
+    // Get client IP (host only, no port)
+    clientIP := remoteHost(r.RemoteAddr)
     if forwarded := r.Header.Get("X-Forwarded-For"); forwarded != "" {
         clientIP = forwarded + "," + clientIP
     }
@@ -243,6 +252,7 @@ func (p *HoneypotProxy) logRequest(r *http.Request, clientIP string) (*RequestLo
         Body:        bodyStr,
         ClientIP:    clientIP,
         ForwardedTo: p.targetURL,
+        TLS:         tlsInfoFromRequest(r),
     }
 
     // Write to daily log file
@@ -297,10 +307,11 @@ func (p *HoneypotProxy) prepareForwardRequest(origReq *http.Request, bodyBytes [
         }
     }
 
-    // Add proxy headers
-    proxyReq.Header.Set("X-Forwarded-For", origReq.RemoteAddr)
+    // Add proxy headers (XFF/X-Real-IP carry the host only, no port)
+    clientHost := remoteHost(origReq.RemoteAddr)
+    proxyReq.Header.Set("X-Forwarded-For", clientHost)
     proxyReq.Header.Set("X-Forwarded-Proto", "https")
-    proxyReq.Header.Set("X-Real-IP", origReq.RemoteAddr)
+    proxyReq.Header.Set("X-Real-IP", clientHost)
 
     return proxyReq, nil
 }
@@ -339,4 +350,39 @@ func (p *HoneypotProxy) writeJSONLog(filename string, data interface{}) {
     if err := encoder.Encode(data); err != nil {
         log.Printf("⚠️ Failed to write JSON log: %v", err)
     }
+}
+
+func tlsInfoFromRequest(r *http.Request) *TLSInfo {
+    if r.TLS == nil {
+        return nil
+    }
+    return &TLSInfo{
+        Version:            tlsVersionName(r.TLS.Version),
+        CipherSuite:        tls.CipherSuiteName(r.TLS.CipherSuite),
+        ServerName:         r.TLS.ServerName,
+        NegotiatedProtocol: r.TLS.NegotiatedProtocol,
+    }
+}
+
+func tlsVersionName(v uint16) string {
+    switch v {
+    case tls.VersionTLS10:
+        return "TLS 1.0"
+    case tls.VersionTLS11:
+        return "TLS 1.1"
+    case tls.VersionTLS12:
+        return "TLS 1.2"
+    case tls.VersionTLS13:
+        return "TLS 1.3"
+    default:
+        return fmt.Sprintf("0x%04x", v)
+    }
+}
+
+func remoteHost(addr string) string {
+    host, _, err := net.SplitHostPort(addr)
+    if err != nil {
+        return addr
+    }
+    return host
 }

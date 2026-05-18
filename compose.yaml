@@ -1,0 +1,35 @@
+services:
+  honeypot:
+    build:
+      context: .
+      dockerfile: deployments/honeypot.Dockerfile
+    expose:
+      - "8080"
+    networks:
+      - honeynet
+    restart: unless-stopped
+
+  proxy:
+    build:
+      context: .
+      dockerfile: deployments/proxy.Dockerfile
+    ports:
+      - "8443:8443"
+    depends_on:
+      - honeypot
+    networks:
+      - honeynet
+    volumes:
+      - ./testdata:/certs:ro
+      - ./logs:/logs
+    command:
+      - --listen=:8443
+      - --target=honeypot:8080
+      - --cert=/certs/cert.pem
+      - --key=/certs/key.pem
+      - --log-dir=/logs
+    restart: unless-stopped
+
+networks:
+  honeynet:
+    driver: bridge

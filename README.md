@@ -81,14 +81,42 @@ Both binaries accept `--help` for the full list.
 | `--log-dir` | `./logs` | — | Where proxy writes JSON logs |
 | `--log-file` | — | (stdout) | Honeypot log destination |
 
+## Deploy locally with Docker
+
+Same setup we'll run on the professor's VM later — practice it locally first.
+
+```
+# One-time: generate the dev cert if you haven't already (see above)
+
+docker compose build         # build proxy + honeypot images
+docker compose up -d         # start both, detached
+curl -k https://localhost:8443/admin
+
+# View logs
+docker compose logs honeypot          # honeypot JSON logs (stdout)
+cat logs/traffic-$(date +%F).jsonl    # proxy traffic log on the host
+
+docker compose down          # tear down
+```
+
+What this gets you:
+
+- **Proxy** at host `:8443` (forwards to container `honeypot:8080` on the internal `honeynet` bridge network)
+- **Honeypot** at internal `:8080` only — not reachable from the host or the internet
+- **Cert files** mounted read-only from `./testdata/` into the proxy
+- **Proxy logs** persist on the host in `./logs/` (gitignored)
+- **Restart policy** `unless-stopped` so containers come back after reboot
+
+When deploying to a real VM later, the only change is in `compose.yaml`: switch `"8443:8443"` to `"443:8443"` so the proxy is exposed on the standard HTTPS port. Everything else stays the same.
+
 ## Project status
 
 - [x] Initial scaffold (`go.mod`, `.gitignore`, README)
 - [x] Proxy: TLS termination + reverse proxy + JSON request/response logs *(QS832 on `vibe-coded`)*
 - [x] Honeypot: fake admin login + JSON request logs
-- [ ] TLS handshake metadata in proxy logs (SNI, ALPN, cipher)
+- [x] TLS handshake metadata in proxy logs (SNI, ALPN, cipher, TLS version)
+- [x] Dockerfiles + `compose.yaml` for local deployment
 - [ ] More fake endpoints (`/wp-login.php`, `/.env`, `/phpmyadmin/`, etc.)
-- [ ] Dockerfiles + `deployments/docker-compose.yml`
 - [ ] GitHub Actions CI (`go build`, `go vet`, `go test`)
 - [ ] `docs/architecture.md` capturing design decisions
 - [ ] Deployment to a public VM

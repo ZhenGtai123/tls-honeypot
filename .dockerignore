@@ -1,0 +1,14 @@
+.git
+.gitignore
+bin/
+logs/
+*.pem
+*.key
+*.crt
+.claude/
+.vscode/
+.idea/
+README.md
+docs/
+testdata/cert.pem
+testdata/key.pem
