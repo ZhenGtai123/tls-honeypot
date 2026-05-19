@@ -4,12 +4,15 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"flag"
+	"fmt"
 	"io"
 	"log"
 	"net"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strings"
+	"sync"
 	"time"
 	"unicode/utf8"
 )
@@ -46,39 +49,86 @@ const fakeLoginHTML = `<!doctype html>
 </form>
 </body></html>`
 
+// sink fans each log entry out to stdout + (optionally) a file or
+// daily-rotated directory. The mutex serialises marshal + write so
+// concurrent handlers can't interleave bytes inside a JSON line.
+type sink struct {
+	mu      sync.Mutex
+	writers []io.Writer
+}
+
+func (s *sink) Log(v any) {
+	payload, err := json.Marshal(v)
+	if err != nil {
+		log.Printf("log marshal: %v", err)
+		return
+	}
+	payload = append(payload, '\n')
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	for _, w := range s.writers {
+		_, _ = w.Write(payload)
+	}
+}
+
+// dailyFileWriter appends to <dir>/<prefix>-YYYY-MM-DD.jsonl, reopening
+// the file each Write so date rollover is automatic. UTC dates to keep
+// filenames stable regardless of container/host timezone.
+type dailyFileWriter struct{ dir, prefix string }
+
+func (w *dailyFileWriter) Write(p []byte) (int, error) {
+	path := filepath.Join(w.dir, fmt.Sprintf("%s-%s.jsonl", w.prefix, time.Now().UTC().Format("2006-01-02")))
+	f, err := os.OpenFile(path, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
+	if err != nil {
+		return 0, err
+	}
+	defer f.Close()
+	return f.Write(p)
+}
+
 func main() {
 	listen := flag.String("listen", ":8080", "Address to listen on (HTTP only; the proxy handles TLS)")
-	logFile := flag.String("log-file", "", "File to append JSON-lines logs to; empty means stdout")
+	logDir := flag.String("log-dir", "./logs", "Directory for daily-rotated honeypot-YYYY-MM-DD.jsonl files (empty to disable)")
+	logFile := flag.String("log-file", "", "Append all logs to this single file (overrides --log-dir)")
+	quiet := flag.Bool("quiet", false, "Suppress stdout output of request logs")
 	flag.Parse()
 
-	var logOut io.Writer = os.Stdout
+	var writers []io.Writer
+	if !*quiet {
+		writers = append(writers, os.Stdout)
+	}
 	if *logFile != "" {
 		f, err := os.OpenFile(*logFile, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
 		if err != nil {
 			log.Fatalf("open log file: %v", err)
 		}
 		defer f.Close()
-		logOut = f
+		writers = append(writers, f)
+	} else if *logDir != "" {
+		if err := os.MkdirAll(*logDir, 0755); err != nil {
+			log.Fatalf("create log dir: %v", err)
+		}
+		writers = append(writers, &dailyFileWriter{dir: *logDir, prefix: "honeypot"})
 	}
-	enc := json.NewEncoder(logOut)
+	snk := &sink{writers: writers}
 
 	srv := &http.Server{
 		Addr:         *listen,
-		Handler:      handler(enc),
+		Handler:      handler(snk),
 		ReadTimeout:  20 * time.Second,
 		WriteTimeout: 20 * time.Second,
 		IdleTimeout:  60 * time.Second,
 	}
 
-	log.Printf("honeypot listening on %s", *listen)
+	log.Printf("honeypot listening on %s (log-dir=%q log-file=%q quiet=%v)", *listen, *logDir, *logFile, *quiet)
 	if err := srv.ListenAndServe(); err != nil {
 		log.Fatal(err)
 	}
 }
 
-func handler(enc *json.Encoder) http.Handler {
+func handler(s *sink) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		logRequest(enc, r)
+		logRequest(s, r)
 
 		w.Header().Set("Server", "Apache/2.4.41 (Ubuntu)")
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
@@ -99,7 +149,7 @@ func handler(enc *json.Encoder) http.Handler {
 	})
 }
 
-func logRequest(enc *json.Encoder, r *http.Request) {
+func logRequest(s *sink, r *http.Request) {
 	body, encoding, truncated := readBody(r)
 	entry := RequestLog{
 		Timestamp:    time.Now().UTC(),
@@ -115,9 +165,7 @@ func logRequest(enc *json.Encoder, r *http.Request) {
 		ClientIP:     clientIP(r),
 		UserAgent:    r.UserAgent(),
 	}
-	if err := enc.Encode(&entry); err != nil {
-		log.Printf("log encode error: %v", err)
-	}
+	s.Log(&entry)
 }
 
 // readBody returns a JSON-safe representation of the request body. Non-UTF-8

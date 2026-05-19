@@ -65,7 +65,12 @@ docker compose logs honeypot | tail -5            # honeypot JSON
 tail -5 logs/traffic-$(date +%F).jsonl            # proxy: full request + response
 ```
 
-The proxy writes two files per day: `requests-YYYY-MM-DD.jsonl` (request only) and `traffic-YYYY-MM-DD.jsonl` (request + response). Notable fields: `tls.{version,cipher_suite,server_name,negotiated_protocol}` for handshake metadata, `body_encoding="base64"` when the body isn't valid UTF-8, `body_truncated=true` when it exceeded 10 KB. The Go structs in `src/proxy/main.go` and `src/honeypot/main.go` are the authoritative schema.
+Each day `./logs/` gets three files:
+- `requests-YYYY-MM-DD.jsonl` — proxy, request only
+- `traffic-YYYY-MM-DD.jsonl` — proxy, request + response (including 502s and other proxy errors)
+- `honeypot-YYYY-MM-DD.jsonl` — honeypot view of the same requests (also echoed to stdout)
+
+Notable fields: `tls.{version,cipher_suite,server_name,negotiated_protocol}` for handshake metadata, `body_encoding="base64"` when the body isn't valid UTF-8, `body_truncated=true` when it exceeded the size cap. The Go structs in `src/proxy/main.go` and `src/honeypot/main.go` are the authoritative schema.
 
 ## Deploy to a VM
 
@@ -112,7 +117,9 @@ To update after merges: `git pull && docker compose up -d`.
 | `--listen` | `:8443` (use `:443` in prod) | `:8080` |
 | `--target` | `localhost:8080` | — |
 | `--cert` / `--key` | `testdata/cert.pem` / `testdata/key.pem` | — |
-| `--log-dir` / `--log-file` | `./logs` | stdout |
+| `--log-dir` | `./logs` | `./logs` |
+| `--log-file` | — | (overrides `--log-dir` with a single file) |
+| `--quiet` | — | suppress stdout request logs |
 
 ## Troubleshooting
 
