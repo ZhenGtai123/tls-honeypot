@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"flag"
 	"io"
@@ -10,22 +11,24 @@ import (
 	"os"
 	"strings"
 	"time"
+	"unicode/utf8"
 )
 
 const maxBodyLog = 64 * 1024
 
 type RequestLog struct {
-	Timestamp time.Time         `json:"timestamp"`
-	Method    string            `json:"method"`
-	Path      string            `json:"path"`
-	Query     string            `json:"query,omitempty"`
-	Proto     string            `json:"proto"`
-	Host      string            `json:"host"`
-	Headers   map[string]string `json:"headers"`
-	Body      string            `json:"body,omitempty"`
-	Truncated bool              `json:"body_truncated,omitempty"`
-	ClientIP  string            `json:"client_ip"`
-	UserAgent string            `json:"user_agent,omitempty"`
+	Timestamp    time.Time         `json:"timestamp"`
+	Method       string            `json:"method"`
+	Path         string            `json:"path"`
+	Query        string            `json:"query,omitempty"`
+	Proto        string            `json:"proto"`
+	Host         string            `json:"host"`
+	Headers      map[string]string `json:"headers"`
+	Body         string            `json:"body,omitempty"`
+	BodyEncoding string            `json:"body_encoding,omitempty"` // "" = utf8, "base64" for non-UTF8 bytes
+	Truncated    bool              `json:"body_truncated,omitempty"`
+	ClientIP     string            `json:"client_ip"`
+	UserAgent    string            `json:"user_agent,omitempty"`
 }
 
 const fakeLoginHTML = `<!doctype html>
@@ -97,39 +100,46 @@ func handler(enc *json.Encoder) http.Handler {
 }
 
 func logRequest(enc *json.Encoder, r *http.Request) {
-	body, truncated := readBody(r)
+	body, encoding, truncated := readBody(r)
 	entry := RequestLog{
-		Timestamp: time.Now().UTC(),
-		Method:    r.Method,
-		Path:      r.URL.Path,
-		Query:     r.URL.RawQuery,
-		Proto:     r.Proto,
-		Host:      r.Host,
-		Headers:   flattenHeaders(r.Header),
-		Body:      body,
-		Truncated: truncated,
-		ClientIP:  clientIP(r),
-		UserAgent: r.UserAgent(),
+		Timestamp:    time.Now().UTC(),
+		Method:       r.Method,
+		Path:         r.URL.Path,
+		Query:        r.URL.RawQuery,
+		Proto:        r.Proto,
+		Host:         r.Host,
+		Headers:      flattenHeaders(r.Header),
+		Body:         body,
+		BodyEncoding: encoding,
+		Truncated:    truncated,
+		ClientIP:     clientIP(r),
+		UserAgent:    r.UserAgent(),
 	}
 	if err := enc.Encode(&entry); err != nil {
 		log.Printf("log encode error: %v", err)
 	}
 }
 
-func readBody(r *http.Request) (string, bool) {
+// readBody returns a JSON-safe representation of the request body. Non-UTF-8
+// payloads are base64-encoded so the raw bytes survive into the log.
+func readBody(r *http.Request) (body string, encoding string, truncated bool) {
 	if r.Body == nil {
-		return "", false
+		return "", "", false
 	}
 	defer r.Body.Close()
 	limited := io.LimitReader(r.Body, maxBodyLog+1)
 	b, err := io.ReadAll(limited)
 	if err != nil {
-		return "", false
+		return "", "", false
 	}
 	if len(b) > maxBodyLog {
-		return string(b[:maxBodyLog]), true
+		b = b[:maxBodyLog]
+		truncated = true
 	}
-	return string(b), false
+	if utf8.Valid(b) {
+		return string(b), "", truncated
+	}
+	return base64.StdEncoding.EncodeToString(b), "base64", truncated
 }
 
 func flattenHeaders(h http.Header) map[string]string {

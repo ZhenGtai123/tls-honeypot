@@ -3,6 +3,7 @@ package main
 import (
     "bytes"
     "crypto/tls"
+    "encoding/base64"
     "encoding/json"
     "flag"
     "fmt"
@@ -15,6 +16,7 @@ import (
     "strings"
     "sync"
     "time"
+    "unicode/utf8"
 )
 
 type Config struct {
@@ -28,16 +30,18 @@ type Config struct {
 }
 
 type RequestLog struct {
-    Timestamp   time.Time         `json:"timestamp"`
-    Method      string            `json:"method"`
-    URL         string            `json:"url"`
-    Proto       string            `json:"proto"`
-    Host        string            `json:"host"`
-    Headers     map[string]string `json:"headers"`
-    Body        string            `json:"body,omitempty"`
-    ClientIP    string            `json:"client_ip"`
-    ForwardedTo string            `json:"forwarded_to"`
-    TLS         *TLSInfo          `json:"tls,omitempty"`
+    Timestamp     time.Time         `json:"timestamp"`
+    Method        string            `json:"method"`
+    URL           string            `json:"url"`
+    Proto         string            `json:"proto"`
+    Host          string            `json:"host"`
+    Headers       map[string]string `json:"headers"`
+    Body          string            `json:"body,omitempty"`
+    BodyEncoding  string            `json:"body_encoding,omitempty"` // "" = utf8, "base64" for non-UTF8 bytes
+    BodyTruncated bool              `json:"body_truncated,omitempty"`
+    ClientIP      string            `json:"client_ip"`
+    ForwardedTo   string            `json:"forwarded_to"`
+    TLS           *TLSInfo          `json:"tls,omitempty"`
 }
 
 type TLSInfo struct {
@@ -48,12 +52,14 @@ type TLSInfo struct {
 }
 
 type ResponseLog struct {
-    Timestamp  time.Time         `json:"timestamp"`
-    StatusCode int               `json:"status_code"`
-    Status     string            `json:"status"`
-    Headers    map[string]string `json:"headers"`
-    Body       string            `json:"body,omitempty"`
-    DurationMs int64             `json:"duration_ms"`
+    Timestamp     time.Time         `json:"timestamp"`
+    StatusCode    int               `json:"status_code"`
+    Status        string            `json:"status"`
+    Headers       map[string]string `json:"headers"`
+    Body          string            `json:"body,omitempty"`
+    BodyEncoding  string            `json:"body_encoding,omitempty"`
+    BodyTruncated bool              `json:"body_truncated,omitempty"`
+    DurationMs    int64             `json:"duration_ms"`
 }
 
 var (
@@ -174,6 +180,7 @@ func (p *HoneypotProxy) ServeHTTP(w http.ResponseWriter, r *http.Request) {
     proxyReq, err := p.prepareForwardRequest(r, bodyBytes)
     if err != nil {
         log.Printf("❌ Failed to prepare forward request: %v", err)
+        p.logErrorResponse(reqLog, http.StatusBadGateway, err, time.Since(startTime))
         http.Error(w, "Proxy Error", http.StatusBadGateway)
         return
     }
@@ -182,6 +189,7 @@ func (p *HoneypotProxy) ServeHTTP(w http.ResponseWriter, r *http.Request) {
     resp, err := p.transport.RoundTrip(proxyReq)
     if err != nil {
         log.Printf("❌ Failed to forward request to honeypot: %v", err)
+        p.logErrorResponse(reqLog, http.StatusBadGateway, err, time.Since(startTime))
         http.Error(w, "Bad Gateway", http.StatusBadGateway)
         return
     }
@@ -191,6 +199,7 @@ func (p *HoneypotProxy) ServeHTTP(w http.ResponseWriter, r *http.Request) {
     respBody, err := io.ReadAll(resp.Body)
     if err != nil {
         log.Printf("❌ Failed to read response body: %v", err)
+        p.logErrorResponse(reqLog, http.StatusInternalServerError, err, time.Since(startTime))
         http.Error(w, "Proxy Error", http.StatusInternalServerError)
         return
     }
@@ -236,23 +245,21 @@ func (p *HoneypotProxy) logRequest(r *http.Request, clientIP string) (*RequestLo
         headers[key] = strings.Join(values, ", ")
     }
 
-    // Truncate body if too large (e.g., 10KB limit for logging)
-    bodyStr := string(bodyBytes)
-    if len(bodyStr) > 10240 {
-        bodyStr = bodyStr[:10240] + "... (truncated)"
-    }
+    bodyStr, bodyEnc, bodyTrunc := formatBody(bodyBytes)
 
     reqLog := &RequestLog{
-        Timestamp:   time.Now(),
-        Method:      r.Method,
-        URL:         r.URL.String(),
-        Proto:       r.Proto,
-        Host:        r.Host,
-        Headers:     headers,
-        Body:        bodyStr,
-        ClientIP:    clientIP,
-        ForwardedTo: p.targetURL,
-        TLS:         tlsInfoFromRequest(r),
+        Timestamp:     time.Now(),
+        Method:        r.Method,
+        URL:           r.URL.String(),
+        Proto:         r.Proto,
+        Host:          r.Host,
+        Headers:       headers,
+        Body:          bodyStr,
+        BodyEncoding:  bodyEnc,
+        BodyTruncated: bodyTrunc,
+        ClientIP:      clientIP,
+        ForwardedTo:   p.targetURL,
+        TLS:           tlsInfoFromRequest(r),
     }
 
     // Write to daily log file
@@ -268,19 +275,17 @@ func (p *HoneypotProxy) logResponse(resp *http.Response, bodyBytes []byte, reqLo
         headers[key] = strings.Join(values, ", ")
     }
 
-    // Truncate body if too large
-    bodyStr := string(bodyBytes)
-    if len(bodyStr) > 10240 {
-        bodyStr = bodyStr[:10240] + "... (truncated)"
-    }
+    bodyStr, bodyEnc, bodyTrunc := formatBody(bodyBytes)
 
     respLog := &ResponseLog{
-        Timestamp:  time.Now(),
-        StatusCode: resp.StatusCode,
-        Status:     resp.Status,
-        Headers:    headers,
-        Body:       bodyStr,
-        DurationMs: duration.Milliseconds(),
+        Timestamp:     time.Now(),
+        StatusCode:    resp.StatusCode,
+        Status:        resp.Status,
+        Headers:       headers,
+        Body:          bodyStr,
+        BodyEncoding:  bodyEnc,
+        BodyTruncated: bodyTrunc,
+        DurationMs:    duration.Milliseconds(),
     }
 
     // Write to daily log file
@@ -385,4 +390,35 @@ func remoteHost(addr string) string {
         return addr
     }
     return host
+}
+
+// formatBody returns a JSON-safe representation of body bytes. When the bytes
+// are valid UTF-8 the body is returned as-is with no encoding marker. When
+// they are not (binary payloads, mis-encoded shell args, etc.) the body is
+// base64-encoded so the raw bytes survive the round-trip into JSON.
+func formatBody(b []byte) (body string, encoding string, truncated bool) {
+    const maxBody = 10240
+    if len(b) > maxBody {
+        b = b[:maxBody]
+        truncated = true
+    }
+    if utf8.Valid(b) {
+        return string(b), "", truncated
+    }
+    return base64.StdEncoding.EncodeToString(b), "base64", truncated
+}
+
+// logErrorResponse records a synthetic response entry in the traffic log when
+// the proxy could not reach the backend (502) or otherwise short-circuited
+// the request. Keeps request/response pairing complete for analysis.
+func (p *HoneypotProxy) logErrorResponse(reqLog *RequestLog, statusCode int, err error, duration time.Duration) {
+    respLog := &ResponseLog{
+        Timestamp:  time.Now(),
+        StatusCode: statusCode,
+        Status:     fmt.Sprintf("%d %s", statusCode, http.StatusText(statusCode)),
+        Headers:    map[string]string{},
+        Body:       fmt.Sprintf("proxy error: %v", err),
+        DurationMs: duration.Milliseconds(),
+    }
+    go p.writeResponseLog(reqLog, respLog)
 }
