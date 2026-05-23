@@ -1,0 +1,216 @@
+package main
+
+import (
+	"encoding/base64"
+	"encoding/json"
+	"flag"
+	"fmt"
+	"io"
+	"log"
+	"net"
+	"net/http"
+	"os"
+	"path/filepath"
+	"strings"
+	"sync"
+	"time"
+	"unicode/utf8"
+)
+
+const maxBodyLog = 64 * 1024
+
+type RequestLog struct {
+	Timestamp    time.Time         `json:"timestamp"`
+	Method       string            `json:"method"`
+	Path         string            `json:"path"`
+	Query        string            `json:"query,omitempty"`
+	Proto        string            `json:"proto"`
+	Host         string            `json:"host"`
+	Headers      map[string]string `json:"headers"`
+	Body         string            `json:"body,omitempty"`
+	BodyEncoding string            `json:"body_encoding,omitempty"` // "" = utf8, "base64" for non-UTF8 bytes
+	Truncated    bool              `json:"body_truncated,omitempty"`
+	ClientIP     string            `json:"client_ip"`
+	UserAgent    string            `json:"user_agent,omitempty"`
+}
+
+const fakeLoginHTML = `<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Admin Sign in</title>
+<style>body{font-family:system-ui,sans-serif;background:#f5f6fa;display:flex;align-items:center;justify-content:center;height:100vh;margin:0}form{background:#fff;padding:2rem;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.08);min-width:280px}h1{margin:0 0 1rem;font-size:1.1rem}label{display:block;font-size:.85rem;margin-top:.6rem;color:#444}input{width:100%;padding:.5rem;margin-top:.2rem;box-sizing:border-box;border:1px solid #ccc;border-radius:3px}button{margin-top:1rem;width:100%;padding:.55rem;background:#2d6cdf;color:#fff;border:0;border-radius:3px;cursor:pointer}.note{font-size:.75rem;color:#888;margin-top:.8rem;text-align:center}</style>
+</head>
+<body>
+<form method="POST" action="">
+<h1>Administrator sign in</h1>
+<label>Username<input type="text" name="username" autocomplete="username" required></label>
+<label>Password<input type="password" name="password" autocomplete="current-password" required></label>
+<button type="submit">Sign in</button>
+<div class="note">Authorized personnel only.</div>
+</form>
+</body></html>`
+
+// sink fans each log entry out to stdout + (optionally) a file or
+// daily-rotated directory. The mutex serialises marshal + write so
+// concurrent handlers can't interleave bytes inside a JSON line.
+type sink struct {
+	mu      sync.Mutex
+	writers []io.Writer
+}
+
+func (s *sink) Log(v any) {
+	payload, err := json.Marshal(v)
+	if err != nil {
+		log.Printf("log marshal: %v", err)
+		return
+	}
+	payload = append(payload, '\n')
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	for _, w := range s.writers {
+		_, _ = w.Write(payload)
+	}
+}
+
+// dailyFileWriter appends to <dir>/<prefix>-YYYY-MM-DD.jsonl, reopening
+// the file each Write so date rollover is automatic. UTC dates to keep
+// filenames stable regardless of container/host timezone.
+type dailyFileWriter struct{ dir, prefix string }
+
+func (w *dailyFileWriter) Write(p []byte) (int, error) {
+	path := filepath.Join(w.dir, fmt.Sprintf("%s-%s.jsonl", w.prefix, time.Now().UTC().Format("2006-01-02")))
+	f, err := os.OpenFile(path, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
+	if err != nil {
+		return 0, err
+	}
+	defer f.Close()
+	return f.Write(p)
+}
+
+func main() {
+	listen := flag.String("listen", ":8080", "Address to listen on (HTTP only; the proxy handles TLS)")
+	logDir := flag.String("log-dir", "./logs", "Directory for daily-rotated honeypot-YYYY-MM-DD.jsonl files (empty to disable)")
+	logFile := flag.String("log-file", "", "Append all logs to this single file (overrides --log-dir)")
+	quiet := flag.Bool("quiet", false, "Suppress stdout output of request logs")
+	flag.Parse()
+
+	var writers []io.Writer
+	if !*quiet {
+		writers = append(writers, os.Stdout)
+	}
+	if *logFile != "" {
+		f, err := os.OpenFile(*logFile, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
+		if err != nil {
+			log.Fatalf("open log file: %v", err)
+		}
+		defer f.Close()
+		writers = append(writers, f)
+	} else if *logDir != "" {
+		if err := os.MkdirAll(*logDir, 0755); err != nil {
+			log.Fatalf("create log dir: %v", err)
+		}
+		writers = append(writers, &dailyFileWriter{dir: *logDir, prefix: "honeypot"})
+	}
+	snk := &sink{writers: writers}
+
+	srv := &http.Server{
+		Addr:         *listen,
+		Handler:      handler(snk),
+		ReadTimeout:  20 * time.Second,
+		WriteTimeout: 20 * time.Second,
+		IdleTimeout:  60 * time.Second,
+	}
+
+	log.Printf("honeypot listening on %s (log-dir=%q log-file=%q quiet=%v)", *listen, *logDir, *logFile, *quiet)
+	if err := srv.ListenAndServe(); err != nil {
+		log.Fatal(err)
+	}
+}
+
+func handler(s *sink) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		logRequest(s, r)
+
+		w.Header().Set("Server", "Apache/2.4.41 (Ubuntu)")
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+
+		switch r.Method {
+		case http.MethodGet, http.MethodHead:
+			w.WriteHeader(http.StatusOK)
+			if r.Method == http.MethodGet {
+				_, _ = io.WriteString(w, fakeLoginHTML)
+			}
+		case http.MethodPost:
+			w.WriteHeader(http.StatusUnauthorized)
+			_, _ = io.WriteString(w, "<h1>Invalid credentials</h1>")
+		default:
+			w.Header().Set("Allow", "GET, HEAD, POST")
+			w.WriteHeader(http.StatusMethodNotAllowed)
+		}
+	})
+}
+
+func logRequest(s *sink, r *http.Request) {
+	body, encoding, truncated := readBody(r)
+	entry := RequestLog{
+		Timestamp:    time.Now().UTC(),
+		Method:       r.Method,
+		Path:         r.URL.Path,
+		Query:        r.URL.RawQuery,
+		Proto:        r.Proto,
+		Host:         r.Host,
+		Headers:      flattenHeaders(r.Header),
+		Body:         body,
+		BodyEncoding: encoding,
+		Truncated:    truncated,
+		ClientIP:     clientIP(r),
+		UserAgent:    r.UserAgent(),
+	}
+	s.Log(&entry)
+}
+
+// readBody returns a JSON-safe representation of the request body. Non-UTF-8
+// payloads are base64-encoded so the raw bytes survive into the log.
+func readBody(r *http.Request) (body string, encoding string, truncated bool) {
+	if r.Body == nil {
+		return "", "", false
+	}
+	defer r.Body.Close()
+	limited := io.LimitReader(r.Body, maxBodyLog+1)
+	b, err := io.ReadAll(limited)
+	if err != nil {
+		return "", "", false
+	}
+	if len(b) > maxBodyLog {
+		b = b[:maxBodyLog]
+		truncated = true
+	}
+	if utf8.Valid(b) {
+		return string(b), "", truncated
+	}
+	return base64.StdEncoding.EncodeToString(b), "base64", truncated
+}
+
+func flattenHeaders(h http.Header) map[string]string {
+	out := make(map[string]string, len(h))
+	for k, v := range h {
+		out[k] = strings.Join(v, ", ")
+	}
+	return out
+}
+
+func clientIP(r *http.Request) string {
+	if xff := r.Header.Get("X-Forwarded-For"); xff != "" {
+		if i := strings.IndexByte(xff, ','); i > 0 {
+			return strings.TrimSpace(xff[:i])
+		}
+		return strings.TrimSpace(xff)
+	}
+	if xri := r.Header.Get("X-Real-IP"); xri != "" {
+		return xri
+	}
+	host, _, err := net.SplitHostPort(r.RemoteAddr)
+	if err != nil {
+		return r.RemoteAddr
+	}
+	return host
+}
