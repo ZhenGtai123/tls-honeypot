@@ -181,7 +181,7 @@ var commonNames = []string{
 	"sys-admin.internal",
 	"rapid.management.internal",
 	"portin-production-c.internal.mathspeech.com",
-	"fge-integration-test.internal.coralset.com"
+	"fge-integration-test.internal.coralset.com",
 }
 
 func randomCN() string {
