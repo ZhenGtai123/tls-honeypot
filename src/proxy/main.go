@@ -2,13 +2,18 @@ package main
 
 import (
 	"bytes"
+	cryptorand "crypto/rand"
+	"crypto/rsa"
 	"crypto/tls"
+	"crypto/x509"
+	"crypto/x509/pkix"
 	"encoding/base64"
 	"encoding/json"
 	"flag"
 	"fmt"
 	"io"
 	"log"
+	"math/big"
 	"net"
 	"net/http"
 	"os"
@@ -74,15 +79,125 @@ var (
 	logMutex sync.Mutex
 )
 
+// certRotator holds the active TLS certificate and swaps it on a timer.
+// Every rotation generates a brand-new RSA key pair with a randomised serial number and validity window
+type certRotator struct {
+	mu   sync.RWMutex
+	cert *tls.Certificate
+}
+
+// newCertRotator generates an initial certificate and, if interval > 0,
+// starts a background goroutine that rotates it on that time
+func newCertRotator(interval time.Duration) (*certRotator, error) {
+	cr := &certRotator{}
+	if err := cr.rotate(); err != nil {
+		return nil, fmt.Errorf("initial cert generation: %w", err)
+	}
+	if interval > 0 {
+		go func() {
+			ticker := time.NewTicker(interval)
+			defer ticker.Stop()
+			for range ticker.C {
+				if err := cr.rotate(); err != nil {
+					log.Printf("⚠️ cert rotation failed: %v", err)
+				} else {
+					log.Printf("🔄 TLS certificate rotated")
+				}
+			}
+		}()
+	}
+	return cr, nil
+}
+
+func (cr *certRotator) rotate() error {
+	cert, err := generateSelfSignedCert()
+	if err != nil {
+		return err
+	}
+	// Lock to prevent mid update readings
+	cr.mu.Lock()
+	cr.cert = cert
+	cr.mu.Unlock()
+	return nil
+}
+
+// TLS handshake, so the active cert is always served without a restart.
+func (cr *certRotator) getCertificate(_ *tls.ClientHelloInfo) (*tls.Certificate, error) {
+	cr.mu.RLock()
+	defer cr.mu.RUnlock()
+	return cr.cert, nil
+}
+
+// generateSelfSignedCert creates an RSA-2048 self-signed certificate with a
+// random serial, random validity window, and a randomly chosen common name.
+func generateSelfSignedCert() (*tls.Certificate, error) {
+	key, err := rsa.GenerateKey(cryptorand.Reader, 2048)
+	if err != nil {
+		return nil, fmt.Errorf("generate key: %w", err)
+	}
+
+	serial, err := cryptorand.Int(cryptorand.Reader, new(big.Int).Lsh(big.NewInt(1), 128))
+	if err != nil {
+		return nil, fmt.Errorf("generate serial: %w", err)
+	}
+
+	// Pretend the cert was issued 1–7 days ago and expires 14–45 days from
+	// issuance so every rotation produces a distinct fingerprint.
+	notBefore := time.Now().Add(-time.Duration(randN(7)+1) * 24 * time.Hour)
+	notAfter := notBefore.Add(time.Duration(randN(32)+14) * 24 * time.Hour)
+
+	tmpl := &x509.Certificate{
+		SerialNumber:          serial,
+		Subject:               pkix.Name{CommonName: randomCN()},
+		NotBefore:             notBefore,
+		NotAfter:              notAfter,
+		KeyUsage:              x509.KeyUsageKeyEncipherment | x509.KeyUsageDigitalSignature,
+		ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth},
+		BasicConstraintsValid: true,
+	}
+
+	der, err := x509.CreateCertificate(cryptorand.Reader, tmpl, tmpl, &key.PublicKey, key)
+	if err != nil {
+		return nil, fmt.Errorf("create certificate: %w", err)
+	}
+
+	return &tls.Certificate{
+		Certificate: [][]byte{der},
+		PrivateKey:  key,
+	}, nil
+}
+
+// randN returns a cryptographically random integer in [0, n).
+func randN(n int) int {
+	b, _ := cryptorand.Int(cryptorand.Reader, big.NewInt(int64(n)))
+	return int(b.Int64())
+}
+
+// randomCN picks a plausible-looking common name so the certificate subject does not look like a honeypot.
+// name pattern taken from real certs through shodan.io and modified.
+var commonNames = []string{
+	"psgfmap01.internal.bones.net",
+	"svc-portal.internal",
+	"sys-admin.internal",
+	"rapid.management.internal",
+	"portin-production-c.internal.mathspeech.com",
+	"fge-integration-test.internal.coralset.com"
+}
+
+func randomCN() string {
+	return commonNames[randN(len(commonNames))]
+}
+
 func main() {
 	// Command line flags
 	listenAddr := flag.String("listen", ":8443", "Address to listen on (use :443 in production, :8443 for unprivileged dev)")
 	targetAddr := flag.String("target", "localhost:8080", "Target honeypot address (the proxy forwards plaintext to this backend)")
-	certFile := flag.String("cert", "testdata/cert.pem", "TLS certificate file")
-	keyFile := flag.String("key", "testdata/key.pem", "TLS private key file")
+	certFile := flag.String("cert", "testdata/cert.pem", "TLS certificate file (ignored when --rotate-cert-interval > 0)")
+	keyFile := flag.String("key", "testdata/key.pem", "TLS private key file (ignored when --rotate-cert-interval > 0)")
 	logDir := flag.String("log-dir", "./logs", "Directory to store logs")
 	forwardHTTPS := flag.Bool("forward-https", false, "Forward to honeypot using HTTPS (default HTTP)")
 	verbose := flag.Bool("verbose", false, "Log every request/response to console")
+	rotateCertInterval := flag.Duration("rotate-cert-interval", 0, "How often to rotate the TLS certificate (e.g. 24h). 0 disables rotation and uses --cert/--key files instead.")
 	flag.Parse()
 
 	// Create log directory
@@ -105,11 +220,22 @@ func main() {
 		transport: createTransport(*forwardHTTPS),
 	}
 
+	// Build TLS config — either rotating certs or static files.
+	tlsCfg := createTLSConfig()
+	if *rotateCertInterval > 0 {
+		cr, err := newCertRotator(*rotateCertInterval)
+		if err != nil {
+			log.Fatalf("cert rotator: %v", err)
+		}
+		tlsCfg.GetCertificate = cr.getCertificate
+		log.Printf("🔄 Certificate rotation enabled (interval: %s)", *rotateCertInterval)
+	}
+
 	// Setup HTTP server
 	server := &http.Server{
 		Addr:         *listenAddr,
 		Handler:      proxy,
-		TLSConfig:    createTLSConfig(),
+		TLSConfig:    tlsCfg,
 		ReadTimeout:  30 * time.Second,
 		WriteTimeout: 30 * time.Second,
 		IdleTimeout:  60 * time.Second,
@@ -119,9 +245,20 @@ func main() {
 	log.Printf("🎯 Forwarding to %s", targetURL)
 	log.Printf("📝 Logging to %s", *logDir)
 
-	// Start server with TLS
-	if err := server.ListenAndServeTLS(*certFile, *keyFile); err != nil {
-		log.Fatalf("Failed to start server: %v", err)
+	// Start server — use a manual TLS listener when rotating (no cert files
+	// needed), or the standard ListenAndServeTLS with static files otherwise.
+	if *rotateCertInterval > 0 {
+		ln, err := net.Listen("tcp", *listenAddr)
+		if err != nil {
+			log.Fatalf("listen: %v", err)
+		}
+		if err := server.Serve(tls.NewListener(ln, tlsCfg)); err != nil {
+			log.Fatalf("Failed to start server: %v", err)
+		}
+	} else {
+		if err := server.ListenAndServeTLS(*certFile, *keyFile); err != nil {
+			log.Fatalf("Failed to start server: %v", err)
+		}
 	}
 }
 

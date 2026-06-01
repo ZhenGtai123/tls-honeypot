@@ -17,15 +17,7 @@ attacker ──TLS──▶  proxy  ──plaintext──▶  honeypot
 
 ## Run it locally
 
-One-time, generate a dev cert:
-
-```bash
-openssl req -x509 -newkey rsa:2048 -nodes \
-  -keyout testdata/key.pem -out testdata/cert.pem \
-  -days 365 -subj "/CN=localhost"
-```
-
-Then with Docker:
+With Docker (cert rotation generates the cert automatically — no openssl needed):
 
 ```bash
 docker compose up -d
@@ -33,15 +25,25 @@ curl -k https://localhost:8443/admin
 docker compose down
 ```
 
-Or natively (no Docker, faster iteration):
+Or natively (no Docker, faster iteration). You can use cert rotation here too:
 
 ```bash
 # terminal 1
 go run ./src/honeypot
 # terminal 2
-go run ./src/proxy
+go run ./src/proxy --rotate-cert-interval=24h
 # terminal 3
 curl -k https://localhost:8443/admin
+```
+
+If you prefer a static cert for local testing, generate one first:
+
+```bash
+openssl req -x509 -newkey rsa:2048 -nodes \
+  -keyout testdata/key.pem -out testdata/cert.pem \
+  -days 365 -subj "/CN=localhost"
+# then run without --rotate-cert-interval
+go run ./src/proxy
 ```
 
 > Windows gotcha: if `:8443` fails to bind, it's reserved by Hyper-V. Run `go run ./src/proxy --listen :18443` and `curl ... :18443/...`.
@@ -116,7 +118,8 @@ To update after merges: `git pull && docker compose up -d`.
 |---|---|---|
 | `--listen` | `:8443` (use `:443` in prod) | `:8080` |
 | `--target` | `localhost:8080` | — |
-| `--cert` / `--key` | `testdata/cert.pem` / `testdata/key.pem` | — |
+| `--cert` / `--key` | `testdata/cert.pem` / `testdata/key.pem` (ignored when rotating) | — |
+| `--rotate-cert-interval` | `0` (disabled; use `24h` in prod) | — |
 | `--log-dir` | `./logs` | `./logs` |
 | `--log-file` | — | (overrides `--log-dir` with a single file) |
 | `--quiet` | — | suppress stdout request logs |

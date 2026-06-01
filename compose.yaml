@@ -22,13 +22,11 @@ services:
     networks:
       - honeynet
     volumes:
-      - ./testdata:/certs:ro
       - ./logs:/logs
     command:
       - --listen=:8443
       - --target=honeypot:8080
-      - --cert=/certs/cert.pem
-      - --key=/certs/key.pem
+      - --rotate-cert-interval=24h
       - --log-dir=/logs
     restart: unless-stopped
 
