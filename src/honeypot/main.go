@@ -49,6 +49,114 @@ const fakeLoginHTML = `<!doctype html>
 </form>
 </body></html>`
 
+const wordpressHomeHTML = `<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Demo Blog - Just another WordPress site</title>
+	<meta name="generator" content="WordPress 6.4.3">
+	<style>
+		body{font-family:Georgia,serif;max-width:900px;margin:40px auto;color:#222;line-height:1.6}
+		header{border-bottom:1px solid #ddd;margin-bottom:24px}
+		h1{font-size:36px;margin-bottom:4px}
+		.tagline{color:#666}
+		.post{margin-bottom:28px}
+		a{color:#2271b1;text-decoration:none}
+		footer{border-top:1px solid #ddd;margin-top:40px;padding-top:16px;color:#777;font-size:14px}
+	</style>
+</head>
+<body>
+	<header>
+		<h1><a href="/">Demo Blog</a></h1>
+		<div class="tagline">Just another WordPress site</div>
+	</header>
+
+	<main>
+		<article class="post">
+			<h2>Hello world!</h2>
+			<p>Welcome to WordPress. This is your first post. Edit or delete it, then start writing!</p>
+		</article>
+
+		<article class="post">
+			<h2>Sample Page</h2>
+			<p>This is an example page. It is different from a blog post because it will stay in one place.</p>
+		</article>
+	</main>
+
+	<footer>
+		Powered by WordPress
+	</footer>
+</body>
+</html>`
+
+const wordpressLoginHTML = `<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Log In ‹ Demo Blog — WordPress</title>
+	<meta name="robots" content="noindex, nofollow">
+	<style>
+		body{background:#f0f0f1;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+		#login{width:320px;margin:80px auto}
+		h1{text-align:center;color:#2271b1}
+		form{background:#fff;border:1px solid #c3c4c7;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+		label{display:block;margin-bottom:6px;color:#3c434a}
+		input{width:100%;padding:8px;margin-bottom:14px;border:1px solid #8c8f94;box-sizing:border-box}
+		button{background:#2271b1;color:white;border:0;border-radius:3px;padding:8px 14px;cursor:pointer}
+		.message{border-left:4px solid #72aee6;background:#fff;padding:12px;margin-bottom:16px}
+	</style>
+</head>
+<body>
+	<div id="login">
+		<h1>WordPress</h1>
+		<div class="message">You must log in to access the admin area.</div>
+		<form method="POST" action="/wp-login.php">
+			<label for="user_login">Username or Email Address</label>
+			<input id="user_login" name="log" type="text" autocomplete="username">
+
+			<label for="user_pass">Password</label>
+			<input id="user_pass" name="pwd" type="password" autocomplete="current-password">
+
+			<input type="hidden" name="wp-submit" value="Log In">
+			<button type="submit">Log In</button>
+		</form>
+	</div>
+</body>
+</html>`
+
+const wordpressLoginFailedHTML = `<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Log In ‹ Demo Blog — WordPress</title>
+	<style>
+		body{background:#f0f0f1;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+		#login{width:320px;margin:80px auto}
+		h1{text-align:center;color:#2271b1}
+		form{background:#fff;border:1px solid #c3c4c7;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+		.error{border-left:4px solid #d63638;background:#fff;padding:12px;margin-bottom:16px}
+		label{display:block;margin-bottom:6px;color:#3c434a}
+		input{width:100%;padding:8px;margin-bottom:14px;border:1px solid #8c8f94;box-sizing:border-box}
+		button{background:#2271b1;color:white;border:0;border-radius:3px;padding:8px 14px;cursor:pointer}
+	</style>
+</head>
+<body>
+	<div id="login">
+		<h1>WordPress</h1>
+		<div class="error"><strong>Error:</strong> The username or password you entered is incorrect.</div>
+		<form method="POST" action="/wp-login.php">
+			<label for="user_login">Username or Email Address</label>
+			<input id="user_login" name="log" type="text" autocomplete="username">
+
+			<label for="user_pass">Password</label>
+			<input id="user_pass" name="pwd" type="password" autocomplete="current-password">
+
+			<button type="submit">Log In</button>
+		</form>
+	</div>
+</body>
+</html>`
+
 // sink fans each log entry out to stdout + (optionally) a file or
 // daily-rotated directory. The mutex serialises marshal + write so
 // concurrent handlers can't interleave bytes inside a JSON line.
@@ -87,7 +195,10 @@ func (w *dailyFileWriter) Write(p []byte) (int, error) {
 }
 
 func main() {
-	listen := flag.String("listen", ":8080", "Address to listen on (HTTP only; the proxy handles TLS)")
+	listen := flag.String("listen", ":8080", "Address to listen on")
+	enableTLS := flag.Bool("tls", false, "Enable HTTPS/TLS for the honeypot backend")
+	certFile := flag.String("cert", "testdata/backend-cert.pem", "TLS certificate file for honeypot HTTPS")
+	keyFile := flag.String("key", "testdata/backend-key.pem", "TLS private key file for honeypot HTTPS")
 	logDir := flag.String("log-dir", "./logs", "Directory for daily-rotated honeypot-YYYY-MM-DD.jsonl files (empty to disable)")
 	logFile := flag.String("log-file", "", "Append all logs to this single file (overrides --log-dir)")
 	quiet := flag.Bool("quiet", false, "Suppress stdout output of request logs")
@@ -120,9 +231,16 @@ func main() {
 		IdleTimeout:  60 * time.Second,
 	}
 
-	log.Printf("honeypot listening on %s (log-dir=%q log-file=%q quiet=%v)", *listen, *logDir, *logFile, *quiet)
-	if err := srv.ListenAndServe(); err != nil {
-		log.Fatal(err)
+	if *enableTLS {
+		log.Printf("honeypot listening with TLS on %s (log-dir=%q log-file=%q quiet=%v)", *listen, *logDir, *logFile, *quiet)
+		if err := srv.ListenAndServeTLS(*certFile, *keyFile); err != nil {
+			log.Fatal(err)
+		}
+	} else {
+		log.Printf("honeypot listening on %s (log-dir=%q log-file=%q quiet=%v)", *listen, *logDir, *logFile, *quiet)
+		if err := srv.ListenAndServe(); err != nil {
+			log.Fatal(err)
+		}
 	}
 }
 
@@ -131,22 +249,160 @@ func handler(s *sink) http.Handler {
 		logRequest(s, r)
 
 		w.Header().Set("Server", "Apache/2.4.41 (Ubuntu)")
-		w.Header().Set("Content-Type", "text/html; charset=utf-8")
 
-		switch r.Method {
-		case http.MethodGet, http.MethodHead:
-			w.WriteHeader(http.StatusOK)
-			if r.Method == http.MethodGet {
-				_, _ = io.WriteString(w, fakeLoginHTML)
-			}
-		case http.MethodPost:
-			w.WriteHeader(http.StatusUnauthorized)
-			_, _ = io.WriteString(w, "<h1>Invalid credentials</h1>")
+		switch {
+		case r.URL.Path == "/":
+			handleWordPressHome(w, r)
+
+		case r.URL.Path == "/wp-login.php":
+			handleWordPressLogin(w, r)
+
+		case r.URL.Path == "/wp-admin" || r.URL.Path == "/wp-admin/":
+			http.Redirect(w, r, "/wp-login.php", http.StatusFound)
+
+		case r.URL.Path == "/xmlrpc.php":
+			handleXMLRPC(w, r)
+
+		case r.URL.Path == "/wp-json/" || r.URL.Path == "/wp-json":
+			handleWPJSON(w, r)
+
+		case r.URL.Path == "/.env" || r.URL.Path == "/wp-config.php":
+			handleForbidden(w, r)
+
+		case strings.HasPrefix(r.URL.Path, "/wp-content/"):
+			handleWPContent(w, r)
+
 		default:
-			w.Header().Set("Allow", "GET, HEAD, POST")
-			w.WriteHeader(http.StatusMethodNotAllowed)
+			handleNotFound(w, r)
 		}
 	})
+}
+
+func handleWordPressHome(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet && r.Method != http.MethodHead {
+		methodNotAllowed(w, "GET, HEAD")
+		return
+	}
+
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	w.WriteHeader(http.StatusOK)
+
+	if r.Method == http.MethodGet {
+		_, _ = io.WriteString(w, wordpressHomeHTML)
+	}
+}
+
+func handleWordPressLogin(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+
+	switch r.Method {
+	case http.MethodGet, http.MethodHead:
+		w.WriteHeader(http.StatusOK)
+		if r.Method == http.MethodGet {
+			_, _ = io.WriteString(w, wordpressLoginHTML)
+		}
+
+	case http.MethodPost:
+		w.WriteHeader(http.StatusUnauthorized)
+		_, _ = io.WriteString(w, wordpressLoginFailedHTML)
+
+	default:
+		methodNotAllowed(w, "GET, HEAD, POST")
+	}
+}
+
+func handleXMLRPC(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/xml; charset=utf-8")
+
+	switch r.Method {
+	case http.MethodPost:
+		w.WriteHeader(http.StatusOK)
+		_, _ = io.WriteString(w, `<?xml version="1.0"?>
+<methodResponse>
+	<fault>
+		<value>
+			<struct>
+				<member>
+					<name>faultCode</name>
+					<value><int>403</int></value>
+				</member>
+				<member>
+					<name>faultString</name>
+					<value><string>Incorrect username or password.</string></value>
+				</member>
+			</struct>
+		</value>
+	</fault>
+</methodResponse>`)
+
+	case http.MethodGet, http.MethodHead:
+		w.WriteHeader(http.StatusOK)
+		if r.Method == http.MethodGet {
+			_, _ = io.WriteString(w, "XML-RPC server accepts POST requests only.")
+		}
+
+	default:
+		methodNotAllowed(w, "GET, HEAD, POST")
+	}
+}
+
+func handleWPJSON(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet && r.Method != http.MethodHead {
+		methodNotAllowed(w, "GET, HEAD")
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.WriteHeader(http.StatusOK)
+
+	if r.Method == http.MethodGet {
+		_, _ = io.WriteString(w, `{
+  "name": "Demo Blog",
+  "description": "Just another WordPress site",
+  "url": "https://example.invalid",
+  "home": "https://example.invalid",
+  "gmt_offset": "0",
+  "timezone_string": "",
+  "namespaces": ["oembed/1.0", "wp/v2"]
+}`)
+	}
+}
+
+func handleForbidden(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	w.WriteHeader(http.StatusForbidden)
+	_, _ = io.WriteString(w, "<h1>403 Forbidden</h1>")
+}
+
+func handleWPContent(w http.ResponseWriter, r *http.Request) {
+	if strings.HasSuffix(r.URL.Path, ".css") {
+		w.Header().Set("Content-Type", "text/css")
+		w.WriteHeader(http.StatusOK)
+		_, _ = io.WriteString(w, "body{font-family:sans-serif}")
+		return
+	}
+
+	if strings.HasSuffix(r.URL.Path, ".js") {
+		w.Header().Set("Content-Type", "application/javascript")
+		w.WriteHeader(http.StatusOK)
+		_, _ = io.WriteString(w, "console.log('wordpress');")
+		return
+	}
+
+	handleNotFound(w, r)
+}
+
+func handleNotFound(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	w.WriteHeader(http.StatusNotFound)
+	_, _ = io.WriteString(w, "<h1>404 Not Found</h1>")
+}
+
+func methodNotAllowed(w http.ResponseWriter, allowed string) {
+	w.Header().Set("Allow", allowed)
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	w.WriteHeader(http.StatusMethodNotAllowed)
+	_, _ = io.WriteString(w, "<h1>405 Method Not Allowed</h1>")
 }
 
 func logRequest(s *sink, r *http.Request) {
