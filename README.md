@@ -72,43 +72,33 @@ Each day `./logs/` gets three files:
 - `traffic-YYYY-MM-DD.jsonl` — proxy, request + response (including 502s and other proxy errors)
 - `honeypot-YYYY-MM-DD.jsonl` — honeypot view of the same requests (also echoed to stdout)
 
-Notable fields: `tls.{version,cipher_suite,server_name,negotiated_protocol}` for handshake metadata, `body_encoding="base64"` when the body isn't valid UTF-8, `body_truncated=true` when it exceeded the size cap. The Go structs in `src/proxy/main.go` and `src/honeypot/main.go` are the authoritative schema.
+Notable fields: `tls.{version,cipher_suite,server_name,negotiated_protocol}` for the negotiated handshake, `tls.client_*` (cipher suites, curves, sig schemes, ALPN, versions) for the client's ClientHello offer — a JA3-style fingerprint for identifying scanning tools; `client_ip` is the authoritative peer while the spoofable `forwarded_for` holds any attacker `X-Forwarded-For`; `experiment_group` tags vuln vs hardened; `body_encoding="base64"` when the body isn't valid UTF-8, `body_truncated=true` when it exceeded the cap. The Go structs in `src/proxy/main.go` and `src/honeypot/main.go` are the authoritative schema.
 
-## Deploy to a VM
+## Deploy the experiment to the VM
 
-When the professor gives you one:
+Two WordPress variants — vulnerable vs hardened — each behind its own TLS-logging proxy bound to 8 of the VM's 16 public IPs. Each proxy tags its traffic `experiment_group=vuln|hardened`. Inbound is locked to `:443` upstream; the WordPress/DB containers run on `internal` networks with no outbound route, so a compromised vulnerable WordPress can't attack third parties.
 
-```bash
-# On the VM:
-ssh user@<vm-ip>
-sudo apt install -y docker.io docker-compose-plugin ufw git
-git clone https://github.com/ZhenGtai123/tls-honeypot.git
-cd tls-honeypot && git checkout main
-
-# Generate a cert (or set up Let's Encrypt for a real domain)
-mkdir -p testdata && openssl req -x509 -newkey rsa:2048 -nodes \
-  -keyout testdata/key.pem -out testdata/cert.pem \
-  -days 365 -subj "/CN=$(hostname -f)"
-
-# Publish on :443 instead of :8443
-sed -i 's/"8443:8443"/"443:8443"/' compose.yaml
-
-# Lock down the host — edit SSH_ALLOW_FROM in the script first, then:
-sudo bash deployments/firewall.sh
-
-# Bring it up
-docker compose up -d
+```
+attacker ──TLS──▶ proxy(:443) ──TLS──▶ nginx ──HTTP──▶ wordpress ──▶ db
+                  .96–.103 → vuln stack   /   .104–.111 → hardened stack
 ```
 
-Verify from outside (your phone hotspot, *not* the VM):
-
 ```bash
-curl -k https://<vm-public-ip>/admin
+ssh hackinglab-...@<vpn-ip>          # SSH only over the VPN
+cd tls-honeypot && git pull
+mkdir -p logs/vuln logs/hardened
+docker compose -f compose.split.yaml up -d --build
 ```
 
-You should get the fake login HTML, and the request lands in `logs/traffic-*.jsonl` on the VM within seconds.
+Verify from off-VPN (phone hotspot, *not* the VM):
 
-To update after merges: `git pull && docker compose up -d`.
+```bash
+curl -k https://145.220.231.96/                       # a vuln IP
+curl -k https://145.220.231.104/                      # a hardened IP
+tail -1 logs/vuln/traffic-$(date -u +%F).jsonl        # check experiment_group + client_cipher_suites
+```
+
+`compose.split.yaml` only runs on the VM (the per-IP bindings need those addresses on the host). For local single-stack dev, use `docker compose up -d` (`compose.yaml`) instead.
 
 ## Flags
 
@@ -120,6 +110,7 @@ To update after merges: `git pull && docker compose up -d`.
 | `--target` | `localhost:8080` | — |
 | `--cert` / `--key` | `testdata/cert.pem` / `testdata/key.pem` (ignored when rotating) | — |
 | `--rotate-cert-interval` | `0` (disabled; use `24h` in prod) | — |
+| `--experiment-group` | `default` (set `vuln`/`hardened`, one proxy per group) | — |
 | `--log-dir` | `./logs` | `./logs` |
 | `--log-file` | — | (overrides `--log-dir` with a single file) |
 | `--quiet` | — | suppress stdout request logs |
