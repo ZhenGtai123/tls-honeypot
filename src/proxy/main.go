@@ -20,6 +20,7 @@ import (
 	"path/filepath"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"time"
 	"unicode/utf8"
 )
@@ -48,6 +49,7 @@ type RequestLog struct {
 	BodyEncoding    string            `json:"body_encoding,omitempty"`
 	BodyTruncated   bool              `json:"body_truncated,omitempty"`
 	ClientIP        string            `json:"client_ip"`
+	ForwardedFor    string            `json:"forwarded_for,omitempty"`
 	DestinationIP   string            `json:"destination_ip,omitempty"`
 	DestinationPort string            `json:"destination_port,omitempty"`
 	UserAgent       string            `json:"user_agent,omitempty"`
@@ -58,10 +60,35 @@ type RequestLog struct {
 }
 
 type TLSInfo struct {
+	// Negotiated (outcome of the handshake).
 	Version            string `json:"version"`
 	CipherSuite        string `json:"cipher_suite"`
 	ServerName         string `json:"server_name,omitempty"`
 	NegotiatedProtocol string `json:"negotiated_protocol,omitempty"`
+
+	// Client offer, from the ClientHello — the raw lists a JA3/JA4-style
+	// fingerprint is built from. IDs are the on-the-wire numeric values.
+	// NOTE: Go's stdlib does not expose the raw extension list/order or GREASE,
+	// so this is a JA3-approximation: enough to tell tool families apart, not
+	// byte-identical to standard JA3.
+	ClientCipherSuites []uint16 `json:"client_cipher_suites,omitempty"`
+	ClientCurves       []uint16 `json:"client_curves,omitempty"`
+	ClientPointFormats []uint8  `json:"client_point_formats,omitempty"`
+	ClientSigSchemes   []uint16 `json:"client_sig_schemes,omitempty"`
+	ClientALPN         []string `json:"client_alpn,omitempty"`
+	ClientVersions     []uint16 `json:"client_versions,omitempty"`
+}
+
+// clientHello holds the fields captured from the ClientHello during the
+// handshake, keyed by the connection's remote address until the request that
+// rides that connection is logged.
+type clientHello struct {
+	CipherSuites     []uint16
+	Curves           []tls.CurveID
+	Points           []uint8
+	SignatureSchemes []tls.SignatureScheme
+	ALPN             []string
+	Versions         []uint16
 }
 
 type ResponseLog struct {
@@ -77,6 +104,14 @@ type ResponseLog struct {
 
 var (
 	logMutex sync.Mutex
+
+	// clientHellos maps a connection's remote address (ip:port) to the
+	// ClientHello captured during its handshake. Populated in
+	// GetConfigForClient, read in ServeHTTP, evicted on connection close.
+	clientHellos sync.Map // map[string]*clientHello
+
+	// reqSeq disambiguates request IDs generated within the same nanosecond.
+	reqSeq atomic.Uint64
 )
 
 // certRotator holds the active TLS certificate and swaps it on a timer.
@@ -239,6 +274,13 @@ func main() {
 		ReadTimeout:  30 * time.Second,
 		WriteTimeout: 30 * time.Second,
 		IdleTimeout:  60 * time.Second,
+		// Evict the captured ClientHello once the connection closes so the
+		// map does not grow without bound over a long collection run.
+		ConnState: func(c net.Conn, state http.ConnState) {
+			if state == http.StateClosed || state == http.StateHijacked {
+				clientHellos.Delete(c.RemoteAddr().String())
+			}
+		},
 	}
 
 	log.Printf("🚀 Starting honeypot proxy on %s", *listenAddr)
@@ -288,7 +330,7 @@ func createTransport(forwardHTTPS bool) http.RoundTripper {
 }
 
 func createTLSConfig() *tls.Config {
-	return &tls.Config{
+	cfg := &tls.Config{
 		MinVersion:   tls.VersionTLS12,
 		MaxVersion:   tls.VersionTLS13,
 		Certificates: nil, // Will be loaded from files
@@ -303,19 +345,41 @@ func createTLSConfig() *tls.Config {
 			tls.TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,
 		},
 	}
+	// Observe the ClientHello for fingerprinting. Returning (nil, nil) keeps
+	// the same config for the handshake (cert rotation's GetCertificate still
+	// applies); we only use the callback to capture the client's offer.
+	cfg.GetConfigForClient = func(chi *tls.ClientHelloInfo) (*tls.Config, error) {
+		if chi != nil && chi.Conn != nil {
+			clientHellos.Store(chi.Conn.RemoteAddr().String(), &clientHello{
+				CipherSuites:     chi.CipherSuites,
+				Curves:           chi.SupportedCurves,
+				Points:           chi.SupportedPoints,
+				SignatureSchemes: chi.SignatureSchemes,
+				ALPN:             chi.SupportedProtos,
+				Versions:         chi.SupportedVersions,
+			})
+		}
+		return nil, nil
+	}
+	return cfg
 }
 
 func (p *HoneypotProxy) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	startTime := time.Now()
 
-	// Get client IP (host only, no port)
+	// Client IP: RemoteAddr is authoritative (the peer we actually accepted).
+	// Any X-Forwarded-For here is attacker-controlled, so it is captured in a
+	// separate field (see logRequest) rather than trusted as the source IP.
 	clientIP := remoteHost(r.RemoteAddr)
-	if forwarded := r.Header.Get("X-Forwarded-For"); forwarded != "" {
-		clientIP = forwarded + "," + clientIP
+
+	// ClientHello captured during the handshake for this connection.
+	var hello *clientHello
+	if v, ok := clientHellos.Load(r.RemoteAddr); ok {
+		hello, _ = v.(*clientHello)
 	}
 
 	// Log request
-	reqLog, bodyBytes := p.logRequest(r, clientIP)
+	reqLog, bodyBytes := p.logRequest(r, clientIP, hello)
 
 	if p.verbose {
 		log.Printf("📥 %s %s from %s", r.Method, r.URL.Path, clientIP)
@@ -374,9 +438,9 @@ func (p *HoneypotProxy) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (p *HoneypotProxy) logRequest(r *http.Request, clientIP string) (*RequestLog, []byte) {
-	// Read body
-	bodyBytes, err := io.ReadAll(r.Body)
+func (p *HoneypotProxy) logRequest(r *http.Request, clientIP string, hello *clientHello) (*RequestLog, []byte) {
+	// Read body, capped to avoid an unbounded read OOM from a hostile client.
+	bodyBytes, err := io.ReadAll(io.LimitReader(r.Body, maxRequestBody))
 	if err != nil {
 		log.Printf("⚠️ Failed to read request body: %v", err)
 		bodyBytes = []byte{}
@@ -409,13 +473,14 @@ func (p *HoneypotProxy) logRequest(r *http.Request, clientIP string) (*RequestLo
 		BodyEncoding:    bodyEnc,
 		BodyTruncated:   bodyTrunc,
 		ClientIP:        clientIP,
+		ForwardedFor:    r.Header.Get("X-Forwarded-For"),
 		DestinationIP:   dstIP,
 		DestinationPort: dstPort,
 		UserAgent:       r.UserAgent(),
 		ForwardedTo:     p.targetURL,
 		Classification:  classification,
 		ExperimentGroup: group,
-		TLS:             tlsInfoFromRequest(r),
+		TLS:             tlsInfoFromRequest(r, hello),
 	}
 
 	// Write to daily log file
@@ -434,7 +499,7 @@ func (p *HoneypotProxy) logResponse(resp *http.Response, bodyBytes []byte, reqLo
 	bodyStr, bodyEnc, bodyTrunc := formatBody(bodyBytes)
 
 	respLog := &ResponseLog{
-		Timestamp:     time.Now(),
+		Timestamp:     time.Now().UTC(),
 		StatusCode:    resp.StatusCode,
 		Status:        resp.Status,
 		Headers:       headers,
@@ -513,16 +578,52 @@ func (p *HoneypotProxy) writeJSONLog(filename string, data interface{}) {
 	}
 }
 
-func tlsInfoFromRequest(r *http.Request) *TLSInfo {
+// maxRequestBody caps how many body bytes the proxy reads per request, so a
+// hostile client cannot OOM it with a huge upload. Generous enough that real
+// scanner/exploit payloads are captured in full.
+const maxRequestBody = 1 << 20 // 1 MiB
+
+func tlsInfoFromRequest(r *http.Request, hello *clientHello) *TLSInfo {
 	if r.TLS == nil {
 		return nil
 	}
-	return &TLSInfo{
+	info := &TLSInfo{
 		Version:            tlsVersionName(r.TLS.Version),
 		CipherSuite:        tls.CipherSuiteName(r.TLS.CipherSuite),
 		ServerName:         r.TLS.ServerName,
 		NegotiatedProtocol: r.TLS.NegotiatedProtocol,
 	}
+	if hello != nil {
+		info.ClientCipherSuites = hello.CipherSuites
+		info.ClientCurves = curveIDsToUint16(hello.Curves)
+		info.ClientPointFormats = hello.Points
+		info.ClientSigSchemes = sigSchemesToUint16(hello.SignatureSchemes)
+		info.ClientALPN = hello.ALPN
+		info.ClientVersions = hello.Versions
+	}
+	return info
+}
+
+func curveIDsToUint16(in []tls.CurveID) []uint16 {
+	if len(in) == 0 {
+		return nil
+	}
+	out := make([]uint16, len(in))
+	for i, v := range in {
+		out[i] = uint16(v)
+	}
+	return out
+}
+
+func sigSchemesToUint16(in []tls.SignatureScheme) []uint16 {
+	if len(in) == 0 {
+		return nil
+	}
+	out := make([]uint16, len(in))
+	for i, v := range in {
+		out[i] = uint16(v)
+	}
+	return out
 }
 
 func tlsVersionName(v uint16) string {
@@ -569,7 +670,7 @@ func formatBody(b []byte) (body string, encoding string, truncated bool) {
 // the request. Keeps request/response pairing complete for analysis.
 func (p *HoneypotProxy) logErrorResponse(reqLog *RequestLog, statusCode int, err error, duration time.Duration) {
 	respLog := &ResponseLog{
-		Timestamp:  time.Now(),
+		Timestamp:  time.Now().UTC(),
 		StatusCode: statusCode,
 		Status:     fmt.Sprintf("%d %s", statusCode, http.StatusText(statusCode)),
 		Headers:    map[string]string{},
@@ -580,7 +681,9 @@ func (p *HoneypotProxy) logErrorResponse(reqLog *RequestLog, statusCode int, err
 }
 
 func newRequestID() string {
-	return fmt.Sprintf("%d", time.Now().UnixNano())
+	// Nanosecond clock alone collides under concurrency; a per-process counter
+	// guarantees uniqueness.
+	return fmt.Sprintf("%d-%d", time.Now().UnixNano(), reqSeq.Add(1))
 }
 
 func localAddr(r *http.Request) (string, string) {
