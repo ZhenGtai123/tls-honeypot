@@ -1,0 +1,178 @@
+# Two-stack VM deployment: vulnerable vs hardened WordPress, each behind its
+# own TLS-logging proxy bound to 8 of the VM's 16 public IPs.
+#
+#   attacker --TLS--> proxy(:443) --TLS--> nginx --HTTP--> wordpress --> db
+#
+# Each proxy tags its traffic with --experiment-group, so vuln/hardened is
+# known from the log line (not from the destination IP, which Docker DNAT
+# rewrites). Run on the VM:  docker compose -f compose.split.yaml up -d --build
+#
+# Containment: wp-* and db-* sit on an `internal: true` network with NO route
+# to the internet, so a compromised (vulnerable) WordPress cannot reach out or
+# attack third parties. nginx straddles the edge and back networks. The two
+# stacks are fully isolated from each other.
+#
+# Local dev note: the per-IP "145.220.231.x:443" bindings require those
+# addresses to exist on the host, so this file only runs on the VM. For local
+# testing use compose.yaml (single stack on :8443).
+#
+# Before deploying: create the log dirs ->  mkdir -p logs/vuln logs/hardened
+
+x-proxy-build: &proxy-build
+  build:
+    context: .
+    dockerfile: deployments/proxy.Dockerfile
+
+services:
+  # ============ VULNERABLE stack ( .96 – .103 ) ============
+  proxy-vuln:
+    <<: *proxy-build
+    ports:
+      - "145.220.231.96:443:8443"
+      - "145.220.231.97:443:8443"
+      - "145.220.231.98:443:8443"
+      - "145.220.231.99:443:8443"
+      - "145.220.231.100:443:8443"
+      - "145.220.231.101:443:8443"
+      - "145.220.231.102:443:8443"
+      - "145.220.231.103:443:8443"
+    depends_on: [nginx-vuln]
+    networks: [edge-vuln]
+    volumes:
+      - ./logs/vuln:/logs
+    command:
+      - --listen=:8443
+      - --target=nginx-vuln:443
+      - --forward-https
+      - --rotate-cert-interval=24h
+      - --experiment-group=vuln
+      - --log-dir=/logs
+    restart: unless-stopped
+
+  nginx-vuln:
+    image: nginx:latest
+    depends_on: [wp-vuln]
+    networks: [edge-vuln, back-vuln]
+    volumes:
+      - ./honeypot/wordpress-https-vurn/nginx/vuln.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./testdata:/etc/nginx/certs:ro
+    restart: unless-stopped
+
+  wp-vuln:
+    image: wordpress:6.3-php8.2-apache
+    depends_on: [db-vuln]
+    networks: [back-vuln]
+    environment:
+      WORDPRESS_DB_HOST: db-vuln:3306
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress_password
+      # Derive the site URL from the incoming Host so all 8 IPs work without a
+      # domain, and trust the proxy's forwarded HTTPS so WordPress does not
+      # redirect-loop. (WP teammate: refine as needed.)
+      WORDPRESS_CONFIG_EXTRA: |
+        if (isset($$_SERVER['HTTP_X_FORWARDED_PROTO']) && $$_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') { $$_SERVER['HTTPS'] = 'on'; }
+        if (!empty($$_SERVER['HTTP_HOST'])) {
+            define('WP_HOME', 'https://' . $$_SERVER['HTTP_HOST']);
+            define('WP_SITEURL', 'https://' . $$_SERVER['HTTP_HOST']);
+        }
+    volumes:
+      - wp_vuln_data:/var/www/html
+      - ./honeypot/wordpress-https-vurn/php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini:ro
+    restart: unless-stopped
+
+  db-vuln:
+    image: mysql:8.4
+    networks: [back-vuln]
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress_password
+      MYSQL_ROOT_PASSWORD: root_password
+    volumes:
+      - db_vuln_data:/var/lib/mysql
+    restart: unless-stopped
+
+  # ============ HARDENED stack ( .104 – .111 ) ============
+  proxy-hardened:
+    <<: *proxy-build
+    ports:
+      - "145.220.231.104:443:8443"
+      - "145.220.231.105:443:8443"
+      - "145.220.231.106:443:8443"
+      - "145.220.231.107:443:8443"
+      - "145.220.231.108:443:8443"
+      - "145.220.231.109:443:8443"
+      - "145.220.231.110:443:8443"
+      - "145.220.231.111:443:8443"
+    depends_on: [nginx-hardened]
+    networks: [edge-hardened]
+    volumes:
+      - ./logs/hardened:/logs
+    command:
+      - --listen=:8443
+      - --target=nginx-hardened:443
+      - --forward-https
+      - --rotate-cert-interval=24h
+      - --experiment-group=hardened
+      - --log-dir=/logs
+    restart: unless-stopped
+
+  nginx-hardened:
+    image: nginx:latest
+    depends_on: [wp-hardened]
+    networks: [edge-hardened, back-hardened]
+    volumes:
+      - ./honeypot/wordpress-https-vurn/nginx/hardened.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./testdata:/etc/nginx/certs:ro
+    restart: unless-stopped
+
+  wp-hardened:
+    image: wordpress:6.3-php8.2-apache
+    depends_on: [db-hardened]
+    networks: [back-hardened]
+    environment:
+      WORDPRESS_DB_HOST: db-hardened:3306
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress_password
+      WORDPRESS_CONFIG_EXTRA: |
+        if (isset($$_SERVER['HTTP_X_FORWARDED_PROTO']) && $$_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') { $$_SERVER['HTTPS'] = 'on'; }
+        if (!empty($$_SERVER['HTTP_HOST'])) {
+            define('WP_HOME', 'https://' . $$_SERVER['HTTP_HOST']);
+            define('WP_SITEURL', 'https://' . $$_SERVER['HTTP_HOST']);
+        }
+    volumes:
+      - wp_hardened_data:/var/www/html
+      - ./honeypot/wordpress-https-vurn/php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini:ro
+    restart: unless-stopped
+
+  db-hardened:
+    image: mysql:8.4
+    networks: [back-hardened]
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress_password
+      MYSQL_ROOT_PASSWORD: root_password
+    volumes:
+      - db_hardened_data:/var/lib/mysql
+    restart: unless-stopped
+
+networks:
+  edge-vuln:
+    driver: bridge
+  back-vuln:
+    driver: bridge
+    internal: true        # no internet egress: contains a compromised WP
+  edge-hardened:
+    driver: bridge
+  back-hardened:
+    driver: bridge
+    internal: true
+
+volumes:
+  wp_vuln_data:
+  db_vuln_data:
+  wp_hardened_data:
+  db_hardened_data:
