@@ -233,6 +233,7 @@ func main() {
 	forwardHTTPS := flag.Bool("forward-https", false, "Forward to honeypot using HTTPS (default HTTP)")
 	verbose := flag.Bool("verbose", false, "Log every request/response to console")
 	rotateCertInterval := flag.Duration("rotate-cert-interval", 0, "How often to rotate the TLS certificate (e.g. 24h). 0 disables rotation and uses --cert/--key files instead.")
+	expGroup := flag.String("experiment-group", "default", "Experiment group tag written to every log line (e.g. vuln or hardened). Run one proxy instance per group.")
 	flag.Parse()
 
 	// Create log directory
@@ -253,6 +254,7 @@ func main() {
 		logDir:    *logDir,
 		verbose:   *verbose,
 		transport: createTransport(*forwardHTTPS),
+		group:     *expGroup,
 	}
 
 	// Build TLS config — either rotating certs or static files.
@@ -309,6 +311,7 @@ type HoneypotProxy struct {
 	logDir    string
 	verbose   bool
 	transport http.RoundTripper
+	group     string // experiment group tag (e.g. vuln, hardened)
 }
 
 func createTransport(forwardHTTPS bool) http.RoundTripper {
@@ -457,7 +460,10 @@ func (p *HoneypotProxy) logRequest(r *http.Request, clientIP string, hello *clie
 	bodyStr, bodyEnc, bodyTrunc := formatBody(bodyBytes)
 	dstIP, dstPort := localAddr(r)
 	classification := classifyRequest(r, bodyBytes)
-	group := experimentGroup(dstIP)
+	group := p.group
+	if group == "" {
+		group = "default"
+	}
 
 	reqLog := &RequestLog{
 		RequestID:       newRequestID(),
@@ -698,10 +704,6 @@ func localAddr(r *http.Request) (string, string) {
 	}
 
 	return tcpAddr.IP.String(), fmt.Sprintf("%d", tcpAddr.Port)
-}
-
-func experimentGroup(destinationIP string) string {
-	return "default"
 }
 
 func classifyRequest(r *http.Request, body []byte) string {
