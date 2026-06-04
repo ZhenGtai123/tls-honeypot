@@ -119,12 +119,16 @@ var (
 type certRotator struct {
 	mu   sync.RWMutex
 	cert *tls.Certificate
+	cn   string // fixed CN; empty → random per rotation
 }
 
 // newCertRotator generates an initial certificate and, if interval > 0,
-// starts a background goroutine that rotates it on that time
-func newCertRotator(interval time.Duration) (*certRotator, error) {
-	cr := &certRotator{}
+// starts a background goroutine that rotates it on that interval.
+// cn pins the Common Name across rotations so a given proxy instance always
+// looks like the same server to a scanner (different key/serial each time,
+// same identity). Pass "" to pick a random CN on every rotation.
+func newCertRotator(interval time.Duration, cn string) (*certRotator, error) {
+	cr := &certRotator{cn: cn}
 	if err := cr.rotate(); err != nil {
 		return nil, fmt.Errorf("initial cert generation: %w", err)
 	}
@@ -145,7 +149,7 @@ func newCertRotator(interval time.Duration) (*certRotator, error) {
 }
 
 func (cr *certRotator) rotate() error {
-	cert, err := generateSelfSignedCert()
+	cert, err := generateSelfSignedCert(cr.cn)
 	if err != nil {
 		return err
 	}
@@ -164,8 +168,13 @@ func (cr *certRotator) getCertificate(_ *tls.ClientHelloInfo) (*tls.Certificate,
 }
 
 // generateSelfSignedCert creates an RSA-2048 self-signed certificate with a
-// random serial, random validity window, and a randomly chosen common name.
-func generateSelfSignedCert() (*tls.Certificate, error) {
+// random serial, random validity window, and the given common name.
+// Pass cn="" to pick a random common name from the built-in pool.
+func generateSelfSignedCert(cn string) (*tls.Certificate, error) {
+	if cn == "" {
+		cn = randomCN()
+	}
+
 	key, err := rsa.GenerateKey(cryptorand.Reader, 2048)
 	if err != nil {
 		return nil, fmt.Errorf("generate key: %w", err)
@@ -183,7 +192,7 @@ func generateSelfSignedCert() (*tls.Certificate, error) {
 
 	tmpl := &x509.Certificate{
 		SerialNumber:          serial,
-		Subject:               pkix.Name{CommonName: randomCN()},
+		Subject:               pkix.Name{CommonName: cn},
 		NotBefore:             notBefore,
 		NotAfter:              notAfter,
 		KeyUsage:              x509.KeyUsageKeyEncipherment | x509.KeyUsageDigitalSignature,
@@ -233,6 +242,7 @@ func main() {
 	forwardHTTPS := flag.Bool("forward-https", false, "Forward to honeypot using HTTPS (default HTTP)")
 	verbose := flag.Bool("verbose", false, "Log every request/response to console")
 	rotateCertInterval := flag.Duration("rotate-cert-interval", 0, "How often to rotate the TLS certificate (e.g. 24h). 0 disables rotation and uses --cert/--key files instead.")
+	certCN := flag.String("cert-cn", "", "Fixed Common Name for every generated cert (empty = random per rotation). Set a distinct value per proxy instance so each stack looks like a different server.")
 	expGroup := flag.String("experiment-group", "default", "Experiment group tag written to every log line (e.g. vuln or hardened). Run one proxy instance per group.")
 	flag.Parse()
 
@@ -260,12 +270,16 @@ func main() {
 	// Build TLS config — either rotating certs or static files.
 	tlsCfg := createTLSConfig()
 	if *rotateCertInterval > 0 {
-		cr, err := newCertRotator(*rotateCertInterval)
+		cr, err := newCertRotator(*rotateCertInterval, *certCN)
 		if err != nil {
 			log.Fatalf("cert rotator: %v", err)
 		}
 		tlsCfg.GetCertificate = cr.getCertificate
-		log.Printf("🔄 Certificate rotation enabled (interval: %s)", *rotateCertInterval)
+		if *certCN != "" {
+			log.Printf("🔄 Certificate rotation enabled (interval: %s, CN: %s)", *rotateCertInterval, *certCN)
+		} else {
+			log.Printf("🔄 Certificate rotation enabled (interval: %s, CN: random)", *rotateCertInterval)
+		}
 	}
 
 	// Setup HTTP server
@@ -538,6 +552,11 @@ func (p *HoneypotProxy) prepareForwardRequest(origReq *http.Request, bodyBytes [
 			proxyReq.Header.Add(key, value)
 		}
 	}
+
+	// Preserve the original Host header. Go's HTTP client would otherwise
+	// replace it with the target URL's host (e.g. "nginx-vuln:443"), which
+	// leaks the internal service name to WordPress and breaks URL generation.
+	proxyReq.Host = origReq.Host
 
 	// Add proxy headers (XFF/X-Real-IP carry the host only, no port)
 	clientHost := remoteHost(origReq.RemoteAddr)

@@ -1,133 +1,331 @@
 # TLS MitM Honeypot
 
-TU Delft Hacking Lab — Project #12. A TLS proxy that decrypts attacker traffic and forwards it to a fake HTTP service we control.
-
+TU Delft Hacking Lab — Project #12.  
 **Responsible professor:** Harm Griffioen
-**References:** [Nirusu/how-to-setup-a-honeypot](https://github.com/Nirusu/how-to-setup-a-honeypot), [mitmproxy.org](https://www.mitmproxy.org/)
+
+---
 
 ## How it works
 
 ```
-attacker ──TLS──▶  proxy  ──plaintext──▶  honeypot
-                  :8443                    :8080
+attacker ──[TLS A]──▶ proxy (MitM) ──[TLS B]──▶ nginx ──[HTTP]──▶ wordpress ──▶ db
 ```
 
-- **`src/proxy/`** — terminates TLS, logs each request + response (including TLS handshake metadata) to `./logs/`, forwards plaintext.
-- **`src/honeypot/`** — fake admin login page; logs every request as JSON to stdout.
+The proxy sits invisibly in the middle of two independent TLS sessions:
 
-## Run it locally
+- **TLS A** — the attacker's session. The proxy presents a rotating self-signed certificate. The attacker sees a normal HTTPS server.
+- **TLS B** — the proxy's connection to nginx. Uses a static self-signed cert from `testdata/`. The proxy skips cert verification (it trusts its own backend).
 
-With Docker (cert rotation generates the cert automatically — no openssl needed):
+The attacker never knows a proxy exists. All traffic — including the full TLS ClientHello fingerprint — is logged to JSON before being forwarded unchanged.
+
+Two stacks run in parallel. Each has its own proxy with a different certificate identity:
+
+| Stack | Cert CN | WordPress | PHP | Character |
+|---|---|---|---|---|
+| **Vulnerable** | `sys-admin.internal` | 5.9 | 7.4 EOL | Debug on, 512 MB uploads, no security headers |
+| **Hardened** | `fge-integration-test.internal.coralset.com` | 6.7 | 8.3 | Debug off, 8 MB uploads, security headers |
+
+---
+
+## A — Prerequisites
+
+### Local machine (dev/testing)
+
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) running
+- [Go 1.21+](https://go.dev/dl/) installed (only needed if running proxies natively)
+
+### VM (production deployment)
+
+- Ubuntu 22.04 LTS
+- Docker + Docker Compose v2: `apt install -y docker.io docker-compose-plugin`
+- Go 1.21+: see https://go.dev/dl/ or run the installer script
+- iptables-persistent: `apt install -y iptables-persistent`
+- openssl: `apt install -y openssl`
+
+---
+
+## B — Generate the nginx backend certificate
+
+nginx needs a TLS certificate for **TLS B** (the proxy→nginx leg). This cert is never seen by attackers; it just encrypts the internal connection. Generate it once and commit the public cert (not the key).
 
 ```bash
-docker compose up -d
-curl -k https://localhost:8443/admin
-docker compose down
-```
+# Run from the project root
+mkdir -p testdata
 
-Or natively (no Docker, faster iteration). You can use cert rotation here too:
-
-```bash
-# terminal 1
-go run ./src/honeypot
-# terminal 2
-go run ./src/proxy --rotate-cert-interval=24h
-# terminal 3
-curl -k https://localhost:8443/admin
-```
-
-If you prefer a static cert for local testing, generate one first:
-
-```bash
 openssl req -x509 -newkey rsa:2048 -nodes \
-  -keyout testdata/key.pem -out testdata/cert.pem \
-  -days 365 -subj "/CN=localhost"
-# then run without --rotate-cert-interval
-go run ./src/proxy
+  -keyout testdata/key.pem \
+  -out  testdata/cert.pem \
+  -days 3650 \
+  -subj "/CN=honeypot-backend"
 ```
 
-> Windows gotcha: if `:8443` fails to bind, it's reserved by Hyper-V. Run `go run ./src/proxy --listen :18443` and `curl ... :18443/...`.
+> Do **not** commit `testdata/key.pem`. It is already in `.gitignore`.  
+> `testdata/cert.pem` (public cert only) can be committed.
 
-## Test it
+The proxy connects to nginx with `--forward-https` and skips cert verification, so any self-signed cert works.
 
-A few representative probes:
+---
+
+## Local testing — everything in Docker (`compose.yaml`)
+
+Use this for development. Both proxies and both WordPress stacks run as containers.
+
+### C — Create log directories
 
 ```bash
-URL=https://localhost:8443
-curl -ksS -A "CensysInspect/1.1" $URL/                                # scanner UA
-curl -ksS $URL/.env                                                   # config-leak probe
-curl -ksS -X POST -d "log=admin&pwd=hunter2" $URL/wp-login.php        # credential stuffing
-printf 'binary\xff\xfe\x80data' | curl -ksS $URL/upload -X POST --data-binary @-   # binary body
-```
-
-Then inspect:
-
-```bash
-docker compose logs honeypot | tail -5            # honeypot JSON
-tail -5 logs/traffic-$(date +%F).jsonl            # proxy: full request + response
-```
-
-Each day `./logs/` gets three files:
-- `requests-YYYY-MM-DD.jsonl` — proxy, request only
-- `traffic-YYYY-MM-DD.jsonl` — proxy, request + response (including 502s and other proxy errors)
-- `honeypot-YYYY-MM-DD.jsonl` — honeypot view of the same requests (also echoed to stdout)
-
-Notable fields: `tls.{version,cipher_suite,server_name,negotiated_protocol}` for the negotiated handshake, `tls.client_*` (cipher suites, curves, sig schemes, ALPN, versions) for the client's ClientHello offer — a JA3-style fingerprint for identifying scanning tools; `client_ip` is the authoritative peer while the spoofable `forwarded_for` holds any attacker `X-Forwarded-For`; `experiment_group` tags vuln vs hardened; `body_encoding="base64"` when the body isn't valid UTF-8, `body_truncated=true` when it exceeded the cap. The Go structs in `src/proxy/main.go` and `src/honeypot/main.go` are the authoritative schema.
-
-## Deploy the experiment to the VM
-
-Two WordPress variants — vulnerable vs hardened — each behind its own TLS-logging proxy bound to 8 of the VM's 16 public IPs. Each proxy tags its traffic `experiment_group=vuln|hardened`. Inbound is locked to `:443` upstream; the WordPress/DB containers run on `internal` networks with no outbound route, so a compromised vulnerable WordPress can't attack third parties.
-
-```
-attacker ──TLS──▶ proxy(:443) ──TLS──▶ nginx ──HTTP──▶ wordpress ──▶ db
-                  .96–.103 → vuln stack   /   .104–.111 → hardened stack
-```
-
-```bash
-ssh hackinglab-...@<vpn-ip>          # SSH only over the VPN
-cd tls-honeypot && git pull
 mkdir -p logs/vuln logs/hardened
-docker compose -f compose.split.yaml up -d --build
 ```
 
-Verify from off-VPN (phone hotspot, *not* the VM):
+### D — Start the full stack
 
 ```bash
-curl -k https://145.220.231.96/                       # a vuln IP
-curl -k https://145.220.231.104/                      # a hardened IP
-tail -1 logs/vuln/traffic-$(date -u +%F).jsonl        # check experiment_group + client_cipher_suites
+docker compose up -d --build
 ```
 
-`compose.split.yaml` only runs on the VM (the per-IP bindings need those addresses on the host). For local single-stack dev, use `docker compose up -d` (`compose.yaml`) instead.
+This starts 8 containers:
 
-## Flags
+```
+proxy-vuln      → nginx-vuln      → wp-vuln      → db-vuln
+proxy-hardened  → nginx-hardened  → wp-hardened  → db-hardened
+```
 
-`go run ./src/proxy --help` and `go run ./src/honeypot --help`. Most useful:
+Wait ~15 seconds for WordPress to finish initialising. Check all containers are healthy:
 
-| | Proxy | Honeypot |
-|---|---|---|
-| `--listen` | `:8443` (use `:443` in prod) | `:8080` |
-| `--target` | `localhost:8080` | — |
-| `--cert` / `--key` | `testdata/cert.pem` / `testdata/key.pem` (ignored when rotating) | — |
-| `--rotate-cert-interval` | `0` (disabled; use `24h` in prod) | — |
-| `--experiment-group` | `default` (set `vuln`/`hardened`, one proxy per group) | — |
-| `--log-dir` | `./logs` | `./logs` |
-| `--log-file` | — | (overrides `--log-dir` with a single file) |
-| `--quiet` | — | suppress stdout request logs |
+```bash
+docker compose ps
+```
+
+Expected output — all containers `Up`, no `Restarting`:
+
+```
+tls-honeypot-proxy-vuln-1       Up   0.0.0.0:8443->8443/tcp
+tls-honeypot-proxy-hardened-1   Up   0.0.0.0:8444->8443/tcp
+tls-honeypot-nginx-vuln-1       Up
+tls-honeypot-nginx-hardened-1   Up
+tls-honeypot-wp-vuln-1          Up
+tls-honeypot-wp-hardened-1      Up
+tls-honeypot-db-vuln-1          Up
+tls-honeypot-db-hardened-1      Up
+```
+
+### E — Verify the MitM is transparent
+
+Check that each proxy presents a different certificate (the attacker sees two unrelated servers):
+
+```bash
+# Vulnerable proxy — should show CN=sys-admin.internal
+echo | openssl s_client -connect localhost:8443 2>/dev/null | openssl x509 -noout -subject
+
+# Hardened proxy — should show CN=fge-integration-test.internal.coralset.com
+echo | openssl s_client -connect localhost:8444 2>/dev/null | openssl x509 -noout -subject
+```
+
+Hit both stacks:
+
+```bash
+curl -k https://localhost:8443/          # vulnerable WordPress home
+curl -k https://localhost:8444/          # hardened WordPress home
+```
+
+### F — Test attacker behaviour
+
+```bash
+# Credential stuffing — captured by both stacks
+curl -k -X POST \
+  -d "log=admin&pwd=hunter2&wp-submit=Log+In&redirect_to=%2Fwp-admin%2F&testcookie=1" \
+  https://localhost:8443/wp-login.php
+
+# Config-leak probe — vuln serves it, hardened WordPress handles it differently
+curl -k https://localhost:8443/.env
+curl -k https://localhost:8444/.env
+
+# XML-RPC probe
+curl -k https://localhost:8443/xmlrpc.php
+curl -k https://localhost:8444/xmlrpc.php
+
+# Path traversal attempt
+curl -k "https://localhost:8443/wp-content/../../../../etc/passwd"
+
+# Scanner user-agent
+curl -k -A "Expanse, a Palo Alto Networks company" https://localhost:8443/
+```
+
+### G — Inspect the logs
+
+```bash
+# Latest traffic entry from the vulnerable proxy
+tail -1 logs/vuln/traffic-$(date +%F).jsonl | jq '{
+  group:    .request.experiment_group,
+  class:    .request.classification,
+  client:   .request.client_ip,
+  tls_ver:  .request.tls.version,
+  ja3:      .request.tls.client_cipher_suites,
+  status:   .response.status_code
+}'
+
+# Compare with hardened
+tail -1 logs/hardened/traffic-$(date +%F).jsonl | jq '.request.classification'
+```
+
+Key log fields:
+
+| Field | Description |
+|---|---|
+| `experiment_group` | `vuln` or `hardened` |
+| `classification` | `login_attempt`, `sensitive_file_probe`, `xmlrpc_probe`, … |
+| `client_ip` | Attacker's real IP (from `RemoteAddr`, not spoofable) |
+| `tls.version` | Negotiated TLS version |
+| `tls.client_cipher_suites` | Attacker's offered cipher list (JA3 input) |
+| `tls.client_curves` | Attacker's supported curves |
+| `tls.server_name` | SNI the attacker sent |
+| `body_encoding` | `base64` when body is binary |
+| `body_truncated` | `true` when body exceeded 1 MiB cap |
+
+### H — Stop
+
+```bash
+docker compose down          # keep WordPress data volumes
+docker compose down -v       # also wipe DB + WP volumes (full reset)
+```
+
+---
+
+## VM deployment — proxies on host, WordPress in Docker (`compose.split.yaml`)
+
+Use this on the VM. WordPress stays sandboxed in Docker. The proxy binaries run directly on the host so they can bind to real network interfaces before Docker's NAT layer.
+
+```
+internet
+  ├─ 145.220.231.96–103  :443 ──iptables──▶ host :8443 (proxy-vuln)     ──TLS──▶ 127.0.0.1:8081 (nginx-vuln  in Docker)
+  └─ 145.220.231.104–111 :443 ──iptables──▶ host :8444 (proxy-hardened) ──TLS──▶ 127.0.0.1:8082 (nginx-hardened in Docker)
+```
+
+### I — First-time setup on the VM
+
+```bash
+ssh <user>@<vpn-ip>
+git clone https://github.com/<org>/tls-honeypot
+cd tls-honeypot
+```
+
+### J — Generate backend cert (same as step B)
+
+```bash
+mkdir -p testdata logs/vuln logs/hardened
+
+openssl req -x509 -newkey rsa:2048 -nodes \
+  -keyout testdata/key.pem \
+  -out  testdata/cert.pem \
+  -days 3650 \
+  -subj "/CN=honeypot-backend"
+```
+
+### K — Start the WordPress Docker stack
+
+```bash
+docker compose -f compose.split.yaml up -d
+```
+
+Verify nginx containers are up and listening on localhost:
+
+```bash
+docker compose -f compose.split.yaml ps
+curl -k https://localhost:8081/   # nginx-vuln  (no proxy in front yet)
+curl -k https://localhost:8082/   # nginx-hardened
+```
+
+### L — Configure the firewall and IP routing
+
+Edit `SSH_ALLOW_FROM` in `deployments/firewall.sh` to your own IP first — otherwise you will lock yourself out.
+
+```bash
+nano deployments/firewall.sh   # set SSH_ALLOW_FROM="your.ip.here"
+sudo bash deployments/firewall.sh
+```
+
+This applies two things:
+1. **ufw** — deny-by-default, allow SSH (your IP only) + public port 443
+2. **iptables PREROUTING REDIRECT** — steers traffic from each public IP's `:443` into the correct host proxy port
+
+```
+145.220.231.96–103  :443  →  :8443   (vuln proxy)
+145.220.231.104–111 :443  →  :8444   (hardened proxy)
+```
+
+### M — Build and start the host proxies
+
+```bash
+bash deployments/proxy-start.sh
+```
+
+This compiles the proxy binary and starts both instances as background processes:
+
+- `proxy-vuln` on `:8443` → `localhost:8081` (nginx-vuln), CN=`sys-admin.internal`
+- `proxy-hardened` on `:8444` → `localhost:8082` (nginx-hardened), CN=`fge-integration-test.internal.coralset.com`
+
+Tail the proxy logs:
+
+```bash
+tail -f logs/vuln/proxy.log
+tail -f logs/hardened/proxy.log
+```
+
+### N — Verify from off-VPN
+
+Use a phone hotspot or any machine that is **not** the VM itself.
+
+```bash
+# Each proxy presents a different certificate — attacker sees two unrelated servers
+echo | openssl s_client -connect 145.220.231.96:443  2>/dev/null | openssl x509 -noout -subject
+echo | openssl s_client -connect 145.220.231.104:443 2>/dev/null | openssl x509 -noout -subject
+
+# WordPress should load through the proxy
+curl -k https://145.220.231.96/
+curl -k https://145.220.231.104/
+
+# Check experiment_group tag in logs
+tail -1 logs/vuln/traffic-$(date -u +%F).jsonl     | jq .request.experiment_group
+tail -1 logs/hardened/traffic-$(date -u +%F).jsonl | jq .request.experiment_group
+```
+
+### O — Update the running deployment
+
+```bash
+ssh <user>@<vpn-ip>
+cd tls-honeypot && git pull
+
+# Restart WordPress containers
+docker compose -f compose.split.yaml up -d
+
+# Rebuild and restart host proxies
+kill $(cat /tmp/proxy-vuln.pid /tmp/proxy-hardened.pid) 2>/dev/null || true
+bash deployments/proxy-start.sh
+```
+
+---
 
 ## Troubleshooting
 
-- **`bind: socket access permission`** on Windows → use `--listen :18443` (Hyper-V holds `:8443`).
-- **Docker errors about `dockerDesktopLinuxEngine` pipe** → Docker Desktop is stopped; restart it.
-- **`openssl: Can't open openssl.cnf`** (Miniconda Windows) → `$env:OPENSSL_CONF = "C:\Program Files\Git\usr\ssl\openssl.cnf"` first.
-- **Log filenames dated wrong** → containers run in UTC; expected.
+| Symptom | Fix |
+|---|---|
+| `bind: address already in use` on port 8443/8444 | Another process or Docker container holds the port — `docker compose down` first |
+| `bind: socket access permission` on Windows | Hyper-V owns the port — change `--listen` to `:18443` and update `WP_HOME` in compose.yaml |
+| nginx container keeps restarting | Config syntax error or missing cert — `docker logs <container>` |
+| `502 Bad Gateway` from proxy | nginx or WP not ready — wait 15 s and retry |
+| iptables rules lost after reboot | `apt install -y iptables-persistent` then re-run `firewall.sh` |
+| Logs dated one day off | Containers run UTC — expected |
+| Both proxies show the same cert CN | Check `--cert-cn` flag is set differently per proxy instance |
+
+---
 
 ## Project status
 
-- [x] Proxy + honeypot end-to-end (TLS termination, JSON logs, TLS handshake metadata, base64 fallback for non-UTF-8 bodies, error responses logged)
-- [x] Docker compose stack with firewall script
-- [ ] More fake endpoints (per-app responses, not one generic login)
+- [x] Transparent MitM proxy — TLS termination + re-encryption, attacker sees nothing
+- [x] TLS ClientHello fingerprinting (JA3-style: cipher suites, curves, sig schemes, ALPN)
+- [x] Certificate rotation — random key/serial per interval, pinned CN per proxy identity
+- [x] Two-stack setup: vulnerable (WP 5.9 / PHP 7.4 EOL) vs hardened (WP 6.7 / PHP 8.3)
+- [x] Network isolation — WordPress/DB on `internal: true` Docker networks
+- [x] Firewall + iptables routing for 16-IP VM deployment
+- [ ] Vulnerable plugin installation
 - [ ] GitHub Actions CI
-- [ ] `docs/architecture.md`
-- [ ] Real-VM deployment + log shipping
-- [ ] Data analysis + project report
+- [ ] Data analysis + report
