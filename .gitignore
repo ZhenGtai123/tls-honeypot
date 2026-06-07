@@ -42,3 +42,7 @@ logs/
 
 # Personal Claude Code settings (share .claude/settings.json with the group if you want)
 .claude/settings.local.json
+db_hardened_data
+wp_hardened_data
+db_vuln_data
+wp_vuln_data

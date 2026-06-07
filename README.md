@@ -20,10 +20,10 @@ The attacker never knows a proxy exists. All traffic — including the full TLS 
 
 Two stacks run in parallel. Each has its own proxy with a different certificate identity:
 
-| Stack | Cert CN | WordPress | PHP | Character |
-|---|---|---|---|---|
-| **Vulnerable** | `sys-admin.internal` | 5.9 | 7.4 EOL | Debug on, 512 MB uploads, no security headers |
-| **Hardened** | `fge-integration-test.internal.coralset.com` | 6.7 | 8.3 | Debug off, 8 MB uploads, security headers |
+| Stack | Cert CN | WordPress | PHP | Character | Port |
+|---|---|---|---|---|---|
+| **Vulnerable** | `sys-admin.internal` | 5.9 | 7.4 EOL | Debug on, 512 MB uploads, no security headers | 8443 | 
+| **Hardened** | `fge-integration-test.internal.coralset.com` | 6.7 | 8.3 | Debug off, 8 MB uploads, security headers | 8444 |
 
 ---
 
