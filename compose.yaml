@@ -67,7 +67,7 @@ services:
         define('WP_DEBUG_LOG',     true);
     volumes:
       - ./honeypot/wordpress-https-vurn/wp_vuln_data:/var/www/html
-      - ./honeypot/wordpress-https-vurn/php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+      - honeypot/wordpress-https-vurn/php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
 
   db-vuln:
     image: mysql:8.0
@@ -80,7 +80,7 @@ services:
       MYSQL_PASSWORD: wordpress_password
       MYSQL_ROOT_PASSWORD: root_password
     volumes:
-      - ./honeypot/wordpress-https-vurn/db_vuln_data:/var/lib/mysql
+      - db_vuln_data:/var/lib/mysql
 
   # ============ HARDENED stack ============
   proxy-hardened:
