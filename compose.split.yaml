@@ -36,19 +36,22 @@ services:
     cap_drop:
       - ALL
     cap_add:
+      - CHOWN
       - NET_BIND_SERVICE
+      - SETGID
+      - SETUID
     read_only: true
     tmpfs:
       - /tmp
       - /var/cache/nginx
       - /var/run
       - /etc/nginx/conf.d
-    pids_limit: 100
     deploy:
       resources:
         limits:
           memory: 128M
           cpus: "0.25"
+          pids: 100
 
   # Vulnerable WordPress: PHP 7.4 (EOL), WP 5.9, debug on, permissive uploads.
   wp-vuln:
@@ -83,12 +86,12 @@ services:
       - FOWNER
       - SETGID
       - SETUID
-    pids_limit: 200
     deploy:
       resources:
         limits:
           memory: 512M
           cpus: "0.5"
+          pids: 200
 
   db-vuln:
     image: mysql:8.0
@@ -113,12 +116,12 @@ services:
       - SETGID
       - SETUID
       - SYS_NICE
-    pids_limit: 200
     deploy:
       resources:
         limits:
           memory: 512M
           cpus: "0.5"
+          pids: 200
 
   # ============ HARDENED stack ============
   nginx-hardened:
@@ -140,19 +143,22 @@ services:
     cap_drop:
       - ALL
     cap_add:
+      - CHOWN
       - NET_BIND_SERVICE
+      - SETGID
+      - SETUID
     read_only: true
     tmpfs:
       - /tmp
       - /var/cache/nginx
       - /var/run
       - /etc/nginx/conf.d
-    pids_limit: 100
     deploy:
       resources:
         limits:
           memory: 128M
           cpus: "0.25"
+          pids: 100
 
   # Hardened WordPress: PHP 8.3, WP 6.7, debug off, tight uploads, file editing disabled.
   wp-hardened:
@@ -187,12 +193,12 @@ services:
       - FOWNER
       - SETGID
       - SETUID
-    pids_limit: 200
     deploy:
       resources:
         limits:
           memory: 512M
           cpus: "0.5"
+          pids: 200
 
   db-hardened:
     image: mysql:8.4
@@ -216,12 +222,12 @@ services:
       - SETGID
       - SETUID
       - SYS_NICE
-    pids_limit: 200
     deploy:
       resources:
         limits:
           memory: 512M
           cpus: "0.5"
+          pids: 200
 
 networks:
   back-vuln:
