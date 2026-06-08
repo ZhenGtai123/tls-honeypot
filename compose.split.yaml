@@ -11,6 +11,9 @@
 #
 # Containment: wp-* and db-* sit on internal: true networks with no outbound
 # internet route. nginx is exposed only on 127.0.0.1 — unreachable from outside.
+#
+# Rate limits: change NGINX_RATE_LIMIT / NGINX_RATE_BURST per service and
+# run `docker compose -f compose.split.yaml up -d --no-deps <service>` to apply.
 
 services:
   # ============ VULNERABLE stack ============
@@ -21,9 +24,31 @@ services:
     ports:
       - "127.0.0.1:8081:443"
     networks: [back-vuln]
+    environment:
+      NGINX_RATE_LIMIT: "30r/s"   # CONFIGURE: requests/sec per client IP
+      NGINX_RATE_BURST: "60"      # CONFIGURE: burst queue depth before HTTP 429
     volumes:
-      - ./honeypot/wordpress-https-vurn/nginx/vuln.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./honeypot/wordpress-https-vurn/nginx/vuln.split.conf:/etc/nginx/templates/vuln.conf.template:ro
+      - ./honeypot/wordpress-https-vurn/nginx/rate-limit.conf.template:/etc/nginx/templates/rate-limit.conf.template:ro
       - ./testdata:/etc/nginx/certs:ro
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /var/cache/nginx
+      - /var/run
+      - /etc/nginx/conf.d
+    pids_limit: 100
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+          cpus: "0.25"
 
   # Vulnerable WordPress: PHP 7.4 (EOL), WP 5.9, debug on, permissive uploads.
   wp-vuln:
@@ -48,6 +73,22 @@ services:
     volumes:
       - wp_vuln_data:/var/www/html
       - ./honeypot/wordpress-https-vurn/php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini:ro
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - DAC_OVERRIDE
+      - FOWNER
+      - SETGID
+      - SETUID
+    pids_limit: 200
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "0.5"
 
   db-vuln:
     image: mysql:8.0
@@ -61,6 +102,23 @@ services:
       MYSQL_ROOT_PASSWORD: root_password
     volumes:
       - db_vuln_data:/var/lib/mysql
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - DAC_OVERRIDE
+      - FOWNER
+      - SETGID
+      - SETUID
+      - SYS_NICE
+    pids_limit: 200
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "0.5"
 
   # ============ HARDENED stack ============
   nginx-hardened:
@@ -70,9 +128,31 @@ services:
     ports:
       - "127.0.0.1:8082:443"
     networks: [back-hardened]
+    environment:
+      NGINX_RATE_LIMIT: "10r/s"   # CONFIGURE: requests/sec per client IP
+      NGINX_RATE_BURST: "20"      # CONFIGURE: burst queue depth before HTTP 429
     volumes:
-      - ./honeypot/wordpress-https-hardened/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./honeypot/wordpress-https-hardened/nginx/default.split.conf:/etc/nginx/templates/default.conf.template:ro
+      - ./honeypot/wordpress-https-hardened/nginx/rate-limit.conf.template:/etc/nginx/templates/rate-limit.conf.template:ro
       - ./testdata:/etc/nginx/certs:ro
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /var/cache/nginx
+      - /var/run
+      - /etc/nginx/conf.d
+    pids_limit: 100
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+          cpus: "0.25"
 
   # Hardened WordPress: PHP 8.3, WP 6.7, debug off, tight uploads, file editing disabled.
   wp-hardened:
@@ -97,6 +177,22 @@ services:
     volumes:
       - wp_hardened_data:/var/www/html
       - ./honeypot/wordpress-https-hardened/php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini:ro
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - DAC_OVERRIDE
+      - FOWNER
+      - SETGID
+      - SETUID
+    pids_limit: 200
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "0.5"
 
   db-hardened:
     image: mysql:8.4
@@ -109,6 +205,23 @@ services:
       MYSQL_ROOT_PASSWORD: root_password
     volumes:
       - db_hardened_data:/var/lib/mysql
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - DAC_OVERRIDE
+      - FOWNER
+      - SETGID
+      - SETUID
+      - SYS_NICE
+    pids_limit: 200
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "0.5"
 
 networks:
   back-vuln:

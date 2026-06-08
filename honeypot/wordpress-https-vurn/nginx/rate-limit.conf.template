@@ -1,0 +1,4 @@
+# Rate-limiting zone — tune NGINX_RATE_LIMIT and NGINX_RATE_BURST in compose.split.yaml.
+# envsubst substitutes only defined env vars; nginx variables like $binary_remote_addr are left intact.
+limit_req_zone $binary_remote_addr zone=per_ip:10m rate=${NGINX_RATE_LIMIT};
+limit_req_status 429;

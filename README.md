@@ -194,6 +194,46 @@ docker compose down -v       # also wipe DB + WP volumes (full reset)
 
 Use this on the VM. WordPress stays sandboxed in Docker. The proxy binaries run directly on the host so they can bind to real network interfaces before Docker's NAT layer.
 
+### Container hardening
+
+Every container in `compose.split.yaml` is hardened against an attacker who gains code execution inside a container:
+
+| Measure | Applied to | Effect |
+|---|---|---|
+| `cap_drop: ALL` + minimum `cap_add` | all | Removes all Linux capabilities; only adds back what each service actually needs (e.g. `NET_BIND_SERVICE` for nginx, `SETUID`/`CHOWN`/`DAC_OVERRIDE` for Apache and MySQL startup) |
+| `no-new-privileges: true` | all | Blocks privilege escalation via setuid executables inside the container |
+| `pids_limit: 100/200` | all | Caps total processes; prevents fork-bomb DoS from inside a compromised container |
+| `deploy.resources.limits` (memory + CPU) | all | Prevents one container from starving the VM |
+| `read_only: true` + tmpfs | nginx only | Root filesystem is read-only; `/tmp`, `/var/cache/nginx`, `/var/run`, `/etc/nginx/conf.d` are tmpfs in-memory mounts |
+
+The primary isolation is still the `internal: true` Docker networks — no outbound route exists even with a full shell. The measures above add depth.
+
+### Tuning rate limits
+
+Rate limits are set per nginx service in `compose.split.yaml` and applied without rebuilding images:
+
+```yaml
+nginx-vuln:
+  environment:
+    NGINX_RATE_LIMIT: "30r/s"   # sustained requests/sec per client IP
+    NGINX_RATE_BURST: "60"      # burst queue depth before HTTP 429
+```
+
+| Variable | Vuln default | Hardened default | Effect |
+|---|---|---|---|
+| `NGINX_RATE_LIMIT` | `30r/s` | `10r/s` | Token refill rate — sustained throughput per IP |
+| `NGINX_RATE_BURST` | `60` | `20` | Queue depth for bursty legitimate traffic (browser asset loads) |
+
+Apply a change to a running stack:
+
+```bash
+# Edit compose.split.yaml, then:
+docker compose -f compose.split.yaml up -d --no-deps nginx-vuln
+docker compose -f compose.split.yaml up -d --no-deps nginx-hardened
+```
+
+The nginx image processes `*.conf.template` files via `envsubst` on startup, substituting only variables that are defined as container env vars — nginx variables like `$binary_remote_addr` and `$host` are left intact.
+
 ```
 internet
   ├─ 145.220.231.96–103  :443 ──iptables──▶ host :8443 (proxy-vuln)     ──TLS──▶ 127.0.0.1:8081 (nginx-vuln  in Docker)
@@ -325,6 +365,8 @@ bash deployments/proxy-start.sh
 - [x] Certificate rotation — random key/serial per interval, pinned CN per proxy identity
 - [x] Two-stack setup: vulnerable (WP 5.9 / PHP 7.4 EOL) vs hardened (WP 6.7 / PHP 8.3)
 - [x] Network isolation — WordPress/DB on `internal: true` Docker networks
+- [x] Container hardening — `cap_drop`, `no-new-privileges`, `pids_limit`, resource limits, read-only nginx filesystem
+- [x] Rate limiting — per-IP `limit_req` in nginx, configurable via env vars in `compose.split.yaml`
 - [x] Firewall + iptables routing for 16-IP VM deployment
 - [ ] Vulnerable plugin installation
 - [ ] GitHub Actions CI
