@@ -1,0 +1,871 @@
+:root {
+  --extcf7-bg-primary: #125890;
+  --extcf7-bg-border : #ddd;
+  --extcf7-bg-body: #fff;
+  --extcf7-box-bg: whitesmoke;
+  --extcf7-input-bg: whitesmoke;
+}
+
+table.ht-cf7-formlist-table{
+    border-collapse: collapse;
+    width: 50%;
+}
+
+table.ht-cf7-formlist-table th, table.ht-cf7-formlist-table td{
+    border: 1px solid #999;
+    padding: 10px;
+    text-align: left;
+    width: 50%;   
+}
+.ht-cf7-formlist-info{
+    margin-top: 30px;
+}
+.extcf7-form-data-details{
+	text-align: left;
+  border-collapse: collapse;
+  width: 100%;
+}
+.extcf7-form-data-details tr th{
+	width: 100px;
+}
+.extcf7-form-data-details tr td,.extcf7-form-data-details tr th{
+	padding: 10px;
+}
+
+/*Conditional Field*/
+#extcf7-conditional-panel{
+    position: relative;
+}
+#extcf7-conditional-panel #extcf7-new-entry{
+    display: none;
+}
+#extcf7-conditional-panel .extcf7-entry{
+    display: flex;
+    border: 1px solid #d9cccc;
+    padding: 15px 30px;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+#extcf7-conditional-panel .extcf7-and-rules-container{
+    flex: 1;
+}
+#extcf7-conditional-panel .extcf7-entry .extcf7-and-rule{
+    display: flex;
+    margin-bottom: 3px;
+}
+#extcf7-conditional-panel input.extcf7-if-field-value{
+    flex: 1;
+}
+#extcf7-conditional-panel .extcf7-if{
+    margin: 0px 15px;
+}
+.extcf7-if-field-select,.extcf7-condition-operator_input,.extcf7-if-field-value{
+    margin-left: 10px;
+}
+.extcf7-if-txt-label,.extcf7-delete-button,.extcf7-show-label{
+    line-height: 2;
+    position: relative;
+    box-sizing: content-box;
+}
+
+#extcf7-conditional-panel .extcf7-delete-button{
+  border: 1px solid #bababa;
+  color: #7a7782;
+  background-color: #f0f3f5;
+  font-weight: bold;
+  border-radius: 3px;
+  padding: 0px 10px;
+  margin-left: 2px;
+  cursor: pointer;
+  font-size: 14px;
+}
+#extcf7-conditional-panel .extcf7-delete-button:hover{
+  color: #da2020;
+  background-color: #f5dada;
+}
+#extcf7-conditional-panel .extcf7-and-button, #extcf7-conditional-panel #extcf7-add-button{
+    border: 1px solid #007cba;
+    padding: 5px;
+    border-radius: 3px;
+    background: rgb(0 160 210 / 0.2);
+    color: #0e4d6c;
+    line-height: 3;
+    cursor: pointer;
+}
+#extcf7-conditional-panel .extcf7-and-button{
+    margin-left: 10px;   
+}
+#extcf7-conditional-panel .extcf7-entry .extcf7-and-rule:first-child .extcf7-if-txt-label:before{
+  content: 'If';
+  position: absolute;
+  width: 30px;
+  text-align: right;
+  left: -30px;
+}
+#extcf7-conditional-panel .extcf7-entry .extcf7-and-rule:not(:first-child) .extcf7-condition-type_input{
+  position: absolute;
+  width: 65px;
+  text-align: left;
+  left: 158px;
+}
+.extcf7-remove-condition-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: #c80606;
+  color: #fff;
+  height: 18px;
+  width: 20px;
+  text-align: center;
+  line-height: 14px;
+  font-size: 15px;
+  cursor: pointer;
+}
+.extcf7-switch{
+    position: absolute;
+    display: block;
+    top: 20px;
+    right: 20px;
+}
+.extcf7-switch .extcf7-toggle-label{
+    margin-right: 4px;
+    display: inline-block;
+    vertical-align: top;
+}
+.extcf7-switch .extcf7-toggle-mode{
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 13px;
+  margin-top: 4px;
+}
+
+#extcf7-text-only-checkbox{
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.extcf7-switch .extcf7-toggle-mode .mode-slider.round{
+    border-radius: 17px;
+}
+
+.extcf7-switch .extcf7-toggle-mode .mode-slider{
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+.extcf7-switch .extcf7-toggle-mode .mode-slider.round:before{
+   border-radius: 50%;
+}
+.extcf7-switch .extcf7-toggle-mode .mode-slider:before{
+    position: absolute;
+    content: "";
+    height: 9px;
+    width: 11px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .3s;
+}
+.extcf7-switch .extcf7-toggle-mode input:checked + .mode-slider {
+    background-color: #2196F3;
+}
+.extcf7-switch .extcf7-toggle-mode input:checked + .mode-slider:before {
+    -webkit-transform: translateX(14px);
+    -ms-transform: translateX(14px);
+    transform: translateX(14px);
+}
+
+#extcf7-settings-text{
+    width: 100%;
+    height: 280px;
+}
+
+.extcf7-checkbox label {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 21px;
+}
+.extcf7-checkbox input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+.extcf7-checkbox label::before {
+  content: "";
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: unset !important;
+  height: unset !important;
+  background-color: #ccc;
+  -webkit-transition: .3s;
+  transition: .3s;
+  border-radius: 50px;
+}
+.extcf7-checkbox label::after {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 20px;
+  left: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: white;
+  -webkit-transition: .3s;
+  transition: .3s;
+  border-radius: 50%;
+}
+.extcf7-checkbox input:checked + label::before {
+  background-color: #2196F3;
+}
+.extcf7-checkbox input:checked + label::after {
+  top: 50%;
+  -webkit-transform: translateX(24px);
+  -ms-transform: translateX(24px);
+  transform: translateX(22px)translateY(-50%);
+}
+
+.extcf7-user-notice p{
+  background: #d2e9d2;
+  padding: 20px;
+}
+
+table.extcf7-form-data-details tr th, table.extcf7-form-data-details tr td{
+  border: 1px solid #ccc8c8;
+  width: 160px;
+}
+
+#extcf7-other-settings-wraper table tbody tr{
+  border: 2px solid #92c8f3;
+  float: left;
+  background:#f9f8f8;
+  margin-bottom: 15px;
+  margin-right: 15px;
+  padding: 0 20px;
+  border-radius: 6px;
+  -webkit-box-shadow: 1px 4px 19px -11px #000000;
+  box-shadow: 1px 4px 19px -11px #000000;
+  position: relative;
+  overflow: hidden;
+}
+#extcf7-other-settings-wraper table tbody tr th{
+  padding-left: 15px;
+}
+#extcf7-other-settings-wraper table tbody tr:after{
+  content: "pro";
+  font-size: 12px;
+  text-transform: uppercase;
+  text-align: center;
+  transform: rotate(-43deg);
+  position: absolute;
+  top: 6px;
+  left: -32px;
+  width: 90px;
+  background-image: linear-gradient(-122deg,#9271ff 0,#5725ff 100%);
+  box-shadow: 0 3px 7px 0 rgba(0,5,41,.1);
+  color: #fff;
+}
+
+.ext-cf7-options-area .extcf7-checkbox{
+  position: relative;
+}
+
+.ext-cf7-options-area .extcf7-checkbox::before{
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,0.6);
+  z-index: 9999;
+}
+
+.ext-cf7-options-sidebar-adds-area{
+  display: flex;
+}
+
+.ext-cf7-option-banner-area {
+  background: #fff;
+  font-size: 14px;
+  line-height: 24px;
+  color: #444444;
+  padding: 30px;
+  box-shadow: 0 0 28px rgba(0,0,0,0.1);
+}
+
+.ext-cf7-option-banner-area .ext-cf7-option-logo {
+  margin-bottom: 20px;
+}
+.ext-cf7-option-logo img {
+  width: 90px;
+}
+.ext-cf7-option-banner-area .ext-cf7-option-intro {
+  margin-bottom: 20px;
+}
+.ext-cf7-option-banner-area .ext-cf7-option-intro p {
+  line-height: 20px;
+}
+
+ul.ext-cf7-option-feature{
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+ul.ext-cf7-option-feature li {
+  position: relative;
+  margin: 0;
+  padding: 0 0 0 30px;
+}
+ul.ext-cf7-option-feature li::before {
+  position: absolute;
+  content: url(../images/icon/check.png);
+  width: 15px;
+  height: 20px;
+  top: 4px;
+  left: 0;
+  margin: 0;
+}
+ul.ext-cf7-option-feature li + li {
+  margin-top: 5px;
+}
+.ext-cf7-option-action-btn {
+  margin-top: 30px;
+}
+.ext-cf7-option-action-btn a.ext-cf7-option-btn {
+  background: #2bc48a;
+  font-size: 14px;
+  line-height: 24px;
+  color: #fff;
+  border: 1px solid #2bc48a;
+  padding: 5px 5px 5px 20px;
+  border-radius: 25px;
+  outline: 0;
+  transition: 0.4s;
+  display: inline-block;
+  text-decoration: none;
+  transition: 0.4s;
+}
+.extcf7-custom-fields .form-table th {
+    width: 180px !important;
+}
+.ext-cf7-option-action-btn a.ext-cf7-option-btn:hover{
+  background: #3aab80;
+  box-shadow: 0 0 28px rgba(0,0,0,0.1);
+}
+.ext-cf7-option-action-btn a.ext-cf7-option-btn .ext-cf7-option-btn-icon {
+  width: 40px;
+  height: 40px;
+  background-color: #fff;
+  border-radius: 100%;
+  display: inline-block;
+  text-align: center;
+  line-height: 40px;
+  margin-left: 15px;
+}
+
+.ext-cf7-option-rating-area {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-size: 14px;
+  line-height: 24px;
+  color: #444444;
+  padding: 30px;
+  background: #fff;
+  box-shadow: 0 0 28px rgba(0,0,0,0.1);
+  margin-left: 20px;
+}
+.ext-cf7-option-rating-area .ext-cf7-option-rating-icon {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  width: auto;
+  max-width: none;
+  padding-right: 20px;
+}
+.ext-cf7-option-rating-area .ext-cf7-option-rating-intro {
+  -ms-flex-preferred-size: 0;
+  flex-basis: 0;
+  -webkit-box-flex: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  width: 100%;
+  max-width: 100%;
+}
+.extcf7-mailchimp-pannel-wraper{
+  background: var(--extcf7-box-bg);
+  padding: 20px 0;
+}
+.extcf7_pro-from-wraper p.submit{
+  margin-top: 0px;
+}
+
+.extcf7_pro-from-wraper p.submit input{
+  -webkit-box-shadow: 1px 4px 19px -11px #000000;
+  box-shadow: 1px 4px 19px -11px #000000;
+}
+.extcf7-mt {
+  margin-top: 10px;
+}
+#extcf7-mailchimp-api-key {
+  width: 100%;
+  border-radius: 0;
+}
+.extcf7-activated-wraper {
+    margin-top: 15px;
+}
+.extcf7-custom-fields {
+  background-color: var(--extcf7-bg-body);
+  border-radius: 3px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+.extcf7-mailchimp-pannel-wraper select,
+.extcf7-mailchimp-pannel-wraper input:not(input[type="button"]){
+  border-color: var(--extcf7-bg-border) !important;
+  border-radius: 0;
+  background-color: var( --extcf7-input-bg);
+}
+
+
+.extcf7-mailchimp-pannel-wraper select:focus {
+    border-color: none;
+    box-shadow: none;
+}
+
+label.extcf7-mailchimp-label{
+  margin-bottom: 8px;
+  display: block;
+  font-weight: 600;
+}
+span.extcf7-mailchimp-status{
+  font-size: 14px;
+  padding: 6px 20px;
+  visibility: hidden;
+  display: inline-block;
+}
+
+input#extcf7-mailchimp-activate:focus{
+  outline: none !important;
+  box-shadow: 0 0 0 0px #3582c4 !important;
+}
+
+span.key-invalid .extcf7-md-btn{
+  background: #dd3d36 !important;
+  color:#fff;
+  border-color: #dd3d36 !important;
+  padding: 0px 40px;
+}
+span.key-valid .extcf7-md-btn,span.key-valid .extcf7-md-btn[disabled]{
+  background: #5cb85c !important;
+  color:#fff !important;
+  border-color: #5cb85c !important;
+  padding: 0px 40px;
+}
+
+span.extcf7-mailchimp-status .dashicons-no,span.extcf7-mailchimp-status .dashicons-yes{
+  line-height: 22px;
+}
+
+.extcf7-mailchimp-pannel-wraper span.spinner{
+  float: none;
+  margin-top: 0px;
+}
+.extcf7_p_lr_tb {
+    padding: 15px;
+}
+span.invalid-api-message {
+  display: none;
+  color: #dc2424;
+  padding: 5px 0px;
+  font-size: 16px;
+}
+.extcf7-mailchimp-inactive{
+  display: none;
+}
+.extcf7-mailchimp-active{
+  display: block;
+}
+
+#extcf7-mailchimp-api-key{
+  margin-bottom: 10px;
+}
+.extcf7-mailchimp-activate-btn{
+  margin-bottom: 20px;
+  position: relative;
+}
+.extcf7-required{
+  color: red;
+  font-weight: 700;
+}
+.extcf7__row {
+  display: -ms-flexbox;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  margin-left: -15px;
+}
+.extcf7-feild-half {
+      max-width: 100%;
+      flex: 0 0 100%;
+}
+.extcf7-for-mobile {
+    margin-top: 15px;
+  }
+.extcf7__box {
+  background: var(--extcf7-bg-body);
+  margin: 0 15px;
+  padding: 15px;
+}
+.extcf7-mailchimp-desc{
+  display: block;
+}
+
+.extcf7-mailchimp-custom-fields .col-3 {
+  display: inline-block;
+  width: 33.3%;
+  margin-bottom: 0.6rem;
+}
+
+.extcf7-md-btn {
+    background-color: var( --extcf7-bg-primary) !important;
+    color: #fff !important;
+    border: 1px solid var( --extcf7-bg-primary)  !important;
+    border-radius: 0 !important;
+
+}
+.extcf7-md-btn:focus {
+    outline: none;
+    border: none;
+    
+}
+.extcf7-custom-button-align{
+  width: 63.5%;
+  text-align: right;
+}
+#extcf7-custom-field-delete {
+  vertical-align: middle !important;
+  background: #ED5856;
+  color: #fff;
+  border-color: #ED5856;
+  text-transform: capitalize;
+}
+.extcf7-description.need-api{
+  display: block;
+}
+
+.extcf7-description.need-api a{
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.extcf7-tooptip-wraper{
+  display: flex;
+}
+.extcf7-tooltip-item {
+  margin-top: 5px;
+  margin-left: 10px;
+  position: relative;
+}
+
+.extcf7-tooltip-item a{
+  text-decoration: none;
+  font-weight: bold;
+  background: #2271b1;
+  color: #fff;
+  border-radius: 50%;
+  height: 18px;
+  width: 18px;
+  line-height: 18px;
+  display: block;
+  text-align: center;
+}
+
+.extcf7-tooltip-item .tooltip {
+   display: none; 
+  position: absolute;
+  bottom: 127%;
+  right: -856%;
+  left: auto;
+  box-shadow: -3px 9px 31px -4px rgba(0,0,0,0.38);
+-webkit-box-shadow: -3px 9px 31px -4px rgba(0,0,0,0.38);
+-moz-box-shadow: -3px 9px 31px -4px rgba(0,0,0,0.38);
+}
+
+a.extcf7-mailchiml-api-link{
+  margin-top: 0px;
+}
+
+.extcf7-mailchimp-activate-btn .dashicons{
+  position: absolute;
+  left:10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #fff;
+}
+.extcf7-description.need-api p{
+  margin: 0px;
+  font-weight: 600;
+}
+
+
+@media (min-width: 768px) and (max-width: 1296px) {
+  .ext-cf7-options-sidebar-adds-area{
+    flex-direction: column;
+  }
+
+  .ext-cf7-option-rating-area{
+    margin-left: 0px;
+    margin-top: 30px;
+  }
+
+  #extcf7-other-settings-wraper table tbody tr{
+    margin-right: 10px;
+  }
+
+}
+
+
+@media (max-width: 767px) {
+  .ext-cf7-options-sidebar-adds-area{
+    flex-direction: column;
+  }
+
+  .ext-cf7-option-rating-area{
+    margin-left: 0px;
+    margin-top: 30px;
+  }
+  #extcf7-other-settings-wraper table tbody tr{
+    width: 33%;
+  }
+  .extcf7-checkbox label{
+    margin-left: 14px;
+  }
+}
+
+
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+  #extcf7-other-settings-wraper table tbody tr{
+    width: 90%;
+  }
+}
+
+@media only screen and (min-width: 1400px){
+  #extcf7-mailchimp-api-key {
+    width: 50%;
+  }
+}
+
+@media (min-width: 1200px) {
+  .extcf7-feild-half{
+    -ms-flex: 0 0 50%;
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 50%;
+    flex: 0 0 50%;
+    max-width: 50%;
+    position: relative;
+    width: 100%;
+  }
+  .extcf7-for-mobile {
+    margin-top: 0px;
+  }
+
+}
+
+.toplevel_page_contat-form-list #screen-meta-links{
+  display: none;
+}
+
+/* List Table */
+.htcf7ext-admin-field-html.htcf7ext_forms{
+  display: block;
+}
+
+.htcf7ext-admin-field-html.htcf7ext_forms a{
+  text-decoration: none;
+}
+.htcf7ext-admin-field-html.htcf7ext_form_entries h2{
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.htcf7ext-list-area {
+  width: 100%;
+}
+.htcf7ext-list-area table {
+  font-size: 1rem;
+
+  overflow: hidden;
+
+  width: 100%;
+  margin: 0;
+
+  border-collapse: collapse;
+
+  text-align: left;
+
+  border-radius: 5px 5px 0 0;
+}
+.htcf7ext-list-area thead tr {
+  color: #FFFFFF;
+  background-color: #1D39D7;
+}
+.htcf7ext-list-area thead tr th {
+  font-weight: 600;
+}
+.htcf7ext-list-area thead tr th,
+.htcf7ext-list-area tbody tr td {
+  padding: 15px 20px;
+}
+.htcf7ext-list-area tbody tr:nth-of-type(even) {
+  background-color: #F3F3F3;
+}
+.htcf7ext-list-area tbody tr td {
+  border-bottom: 1px solid #DDDDDD;
+}
+.htcf7ext-list-area tbody tr td.event_trigger p {
+  text-transform: capitalize;
+}
+.htcf7ext-list-area tbody tr td p {
+  font-size: 14px;
+  font-weight: 500;
+
+  margin: 10px 0;
+}
+.htcf7ext-list-area tbody tr td p.text-center {
+  font-size: 18px;
+
+  text-align: center;
+}
+
+/* Misc */
+.htcf7ext_form_entries .table-view-list.contact_forms{
+  margin-top: 15px;
+}
+.htcf7ext-admin-option .notice {
+  margin-top: 15px;
+}
+
+/* Sidebar - Get Pro */
+.htoptions-sidebar-adds-area {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+.htcf7ext-opt-get-pro {
+  display: block;
+
+  max-width: 375px;
+  padding: 30px;
+
+  text-align: center;
+
+  border-radius: 10px;
+  background-color: #FFFFFF;
+}
+.htcf7ext-opt-get-pro-title {
+  font-size: 24px;
+  line-height: 1.2;
+}
+.htcf7ext-opt-get-pro ul {
+  margin-bottom: 30px;
+
+  list-style: none;
+
+  text-align: left;
+}
+.htcf7ext-opt-get-pro ul li:not(:last-child) {
+  margin-bottom: 14px;
+}
+.htcf7ext-opt-get-pro ul li {
+  padding-left: 24px;
+
+  background-image: url(../images/icon/check.png);
+  background-repeat: no-repeat;
+  background-position: top 3px left;
+  background-size: 14px 13px;
+}
+.htcf7ext-opt-get-pro .htcf7ext-opt-get-pro-btn {
+  font-size: 14px;
+  font-weight: 500;
+
+  padding: 8px 25px;
+
+  color: #FFFFFF;
+  border-color: #1D39D7;
+  background-color: #1D39D7;
+}
+.htcf7ext-opt-get-pro .htcf7ext-opt-get-pro-btn:hover {
+  color: #FFFFFF;
+  border-color: #1D39D7;
+  background-color: #1D39D7;
+}
+
+/* Support */
+.htcf7ext-opt-support {
+  display: block;
+
+  max-width: 375px;
+  padding: 30px;
+
+  text-align: center;
+
+  border-radius: 10px;
+  background-color: #FFFFFF;
+}
+.htcf7ext-opt-support img {
+  max-width: 80px;
+  height: auto;
+}
+.htcf7ext-opt-support-title {
+  font-size: 24px;
+  line-height: 1.2;
+}
+.htcf7ext-opt-support p {
+  font-size: 16px;
+
+  margin-bottom: 30px;
+}
+.htcf7ext-opt-support p:last-child {
+  margin-bottom: 0;
+}
+.htcf7ext-opt-support .htcf7ext-opt-support-btn {
+  font-size: 14px;
+  font-weight: 500;
+
+  padding: 8px 25px;
+
+  color: #FFFFFF;
+  border-color: #1D39D7;
+  background-color: #1D39D7;
+}
+.htcf7ext-opt-support .htcf7ext-opt-support-btn:hover {
+  color: #FFFFFF;
+  border-color: #1D39D7;
+  background-color: #1D39D7;
+}
