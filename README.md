@@ -286,15 +286,12 @@ docker logs <container-name>
 
 ### M — Configure the firewall and IP routing
 
-> **Do this before step N.** Edit `SSH_ALLOW_FROM` first or you will lock yourself out.
-
 ```bash
-nano deployments/firewall.sh   # set SSH_ALLOW_FROM="your.vpn.ip.here"
 sudo bash deployments/firewall.sh
 ```
 
 What it does:
-1. **ufw** — default deny, allow SSH from your IP only, allow public port 443
+1. **ufw** — default deny, allow SSH from any IP (key-based auth), allow public port 443
 2. **iptables PREROUTING REDIRECT** — steers each IP range's port 443 to the correct proxy port on the host:
 
 ```
@@ -439,6 +436,7 @@ docker compose -f compose.split.yaml down -v
 |---|---|
 | `bind: address already in use` on port 8443/8444 | Another process or Docker container holds the port — `docker compose down` first |
 | `bind: socket access permission` on Windows | Hyper-V owns the port — change `--listen` to `:18443` and update `WP_HOME` in compose.yaml |
+| SSH locked out after running `firewall.sh` | Should not happen — SSH is open to all IPs. If ufw was pre-configured differently, use the cloud console to run `sudo ufw allow ssh` |
 | nginx container keeps restarting | Check `docker logs <container>` — most likely a missing cert (`testdata/`) or a tmpfs/cap issue |
 | nginx logs `chown ... Operation not permitted` | `CHOWN` cap is missing from nginx `cap_add` — verify `compose.split.yaml` has `CHOWN` listed |
 | `502 Bad Gateway` from proxy | nginx or WP not ready — wait 20 s and retry; check `docker compose -f compose.split.yaml ps` |

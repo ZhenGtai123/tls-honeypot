@@ -2,17 +2,15 @@
 # Host firewall + port routing for the honeypot VM.  Run with sudo.
 #
 # What this script does:
-#   1. ufw deny-by-default, allow SSH (your IP only), allow public :443.
+#   1. ufw deny-by-default, allow SSH from anywhere (key-based auth only),
+#      allow public :443.
 #   2. iptables REDIRECT: steers traffic from each public IP's :443 into the
 #      correct host-side proxy port (8443 for vuln, 8444 for hardened).
 #      The proxies listen on 0.0.0.0:8443 / 0.0.0.0:8444 — they are not
 #      exposed externally (ufw blocks direct access to those ports).
-#
-# EDIT SSH_ALLOW_FROM below before running or you will lock yourself out.
 
 set -euo pipefail
 
-SSH_ALLOW_FROM="1.2.3.4"   # your static/home IP — CHANGE THIS
 SSH_PORT=22
 TLS_PORT=443
 
@@ -34,12 +32,6 @@ if [[ $EUID -ne 0 ]]; then
   exit 1
 fi
 
-if [[ "$SSH_ALLOW_FROM" == "1.2.3.4" ]]; then
-  echo "ERROR: edit SSH_ALLOW_FROM in this script to your real IP first." >&2
-  echo "       Otherwise you will lock yourself out." >&2
-  exit 1
-fi
-
 command -v ufw      >/dev/null || { echo "ufw not installed: apt install -y ufw"      >&2; exit 1; }
 command -v iptables >/dev/null || { echo "iptables not found"                         >&2; exit 1; }
 
@@ -51,9 +43,9 @@ ufw --force reset
 ufw default deny incoming
 ufw default deny outgoing
 
-# Inbound: SSH (you only) + HTTPS (what attackers reach; iptables routes it below)
-ufw allow from "$SSH_ALLOW_FROM" to any port "$SSH_PORT" proto tcp comment "ssh from home"
-ufw allow "$TLS_PORT"/tcp                                             comment "public TLS"
+# Inbound: SSH (key-based, any source) + HTTPS (iptables routes it to proxy below)
+ufw allow "$SSH_PORT"/tcp  comment "ssh"
+ufw allow "$TLS_PORT"/tcp  comment "public TLS"
 
 # Outbound: bare minimum — deliberately NOT allowing SMTP/IRC so a compromised
 # WordPress (sandboxed in Docker) cannot be weaponised even if Docker bypasses ufw.
