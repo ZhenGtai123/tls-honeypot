@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="robots" content="noindex">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>AMP Cookie Consent</title>
+	<style>
+		#iubenda-iframe.iubenda-iframe-visible {
+	      background-color: transparent !important;
+	      border-radius: 4px !important;
+	    }
+
+	    #iubenda-cs-banner .iubenda-cs-container .iubenda-cs-content {
+	      border-radius: 4px !important;
+	    }
+
+	    .iubenda-cookie-solution #iubenda-cs-banner.iubenda-cs-default-floating.iubenda-cs-center:not(.iubenda-cs-top):not(.iubenda-cs-bottom) .iubenda-cs-container, #iubenda-cs-banner.iubenda-cs-default-floating:not(.iubenda-cs-bottom):not(.iubenda-cs-center) .iubenda-cs-container, #iubenda-cs-banner.iubenda-cs-default-floating:not(.iubenda-cs-top):not(.iubenda-cs-center) .iubenda-cs-container {
+	      width: 100vw !important;
+	      height: 100vh !important;
+	    }
+
+	    .iubenda-cookie-solution #iubenda-cs-banner.iubenda-cs-fix-height.iubenda-cs-default-floating .iubenda-cs-content {
+	      height: 100% !important;
+	    }
+
+	    .iubenda-cookie-solution #iubenda-iframe-popup .iubenda-iframe-top-container.bottom-border-radius,
+        .iubenda-cookie-solution #iubenda-iframe-popup #iab-container,
+        .iubenda-cookie-solution #iubenda-iframe-popup #iub-cmp-widget,
+        .iubenda-cookie-solution #iubenda-iframe-popup .iubenda-iframe-footer.iubenda-iframe-footer-absolute {
+            border-radius: 0 0 4px 4px !important;
+        }
+	</style>
+</head>
+<body class="iubenda-cookie-solution">
+<span class="iubenda-cs-preferences-link"></span>
+	<script type="text/javascript">
+	var _iub = _iub || [];
+	_iub.csConfiguration = {
+	  floatingPreferencesButtonDisplay:"bottom-right",lang:"fr",siteId:3633948,cookiePolicyId:19456767,whitelabel:false,googleAdditionalConsentMode:true,enableTcf:true,tcfPurposes:{"1":true,"2":"consent_only","3":"consent_only","4":"consent_only","5":"consent_only","6":"consent_only","7":"consent_only","8":"consent_only","9":"consent_only","10":"consent_only"},
+	  banner: {"closeButtonDisplay":false,"listPurposes":true,"explicitWithdrawal":true,"rejectButtonDisplay":true,"acceptButtonDisplay":true,"customizeButtonDisplay":true,"closeButtonRejects":true,"position":"float-center","style":"dark","backgroundOverlay":true,"applyStyles":true}
+    };
+	</script>
+	<script async type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js"></script>
+</body>
+</html>

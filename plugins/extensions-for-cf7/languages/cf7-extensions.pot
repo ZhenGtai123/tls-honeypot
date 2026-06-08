@@ -1,0 +1,836 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Extensions For CF7\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-12-17 06:39+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.6.6; wp-6.4.2\n"
+"X-Domain: cf7-extensions"
+
+#: includes/class.cf7-extensions.php:146
+#, php-format
+msgid ""
+"%1$sExtensions For CF7 %2$s requires %1$s\"Contact Form 7\"%2$s plugin to be "
+"active. Please activate Contact Form 7 to continue."
+msgstr ""
+
+#: includes/class.cf7-extensions.php:153
+#, php-format
+msgid ""
+"%1$sExtensions For CF7.%2$s requires %1$s\"Contact Form 7\"%2$s plugin to be "
+"installed and activated. Please install Contact Form 7 to continue."
+msgstr ""
+
+#: admin/include/class.cf7-conditional.php:106
+msgid "-- Select field --"
+msgstr ""
+
+#: admin/include/class.cf7-conditional.php:91
+msgid "-- Select group --"
+msgstr ""
+
+#: admin/template/redierect-options-layout.php:38
+msgid "---select---"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:46
+msgid "Acceptance Field"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:74
+msgid "Acceptance Field: "
+msgstr ""
+
+#: includes/class.cf7-extensions.php:147
+msgid "Activate Contact Form 7"
+msgstr ""
+
+#: admin/template/conditional-field-layout.php:31
+msgid "Add Condition"
+msgstr ""
+
+#: admin/template/conditional-field-layout.php:38
+msgid "Add New Condition"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:30
+msgid "Advanced Telephone"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:73
+msgid "Advanced Telephone: "
+msgstr ""
+
+#: admin/template/pro-feature-list.php:22
+msgid "Already Submitted"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:70
+msgid "Already Submitted: "
+msgstr ""
+
+#: admin/template/conditional-setting.php:21
+msgid "Animation"
+msgstr ""
+
+#: admin/template/conditional-setting.php:30
+msgid "Animation In Time"
+msgstr ""
+
+#: admin/template/conditional-setting.php:37
+msgid "Animation Out Time"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-list.php:420
+msgid "Apply"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:155
+msgid ""
+"Are you getting frustrated with WooCommerce’s current way of presenting the "
+"variants for your products? Well, say goodbye to dropdowns and start showing "
+"the product variations in a whole new light with Swatchly."
+msgstr ""
+
+#: admin/include/class-diagnostic-data.php:486
+#, php-format
+msgid ""
+"At %2$s%1$s%3$s, we prioritize continuous improvement and compatibility. To "
+"achieve this, we gather non-sensitive diagnostic information and details "
+"about plugin usage. This includes your site's URL, the versions of WordPress "
+"and PHP you're using, and a list of your installed plugins and themes. We "
+"also require your email address to provide you with exclusive discount "
+"coupons and updates. This data collection is crucial for ensuring that "
+"%2$s%1$s%3$s remains up-to-date and compatible with the most widely-used "
+"plugins and themes. Rest assured, your privacy is our priority – no spam, "
+"guaranteed. %4$sPrivacy Policy%5$s"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-list.php:414
+msgid "Bulk Actions"
+msgstr ""
+
+#: admin/admin-init.php:43 admin/admin-init.php:44
+msgid "Cf7 Conditional"
+msgstr ""
+
+#: admin/admin-init.php:34 admin/admin-init.php:35
+msgid "Cf7 DB"
+msgstr ""
+
+#: admin/admin-init.php:52 admin/admin-init.php:53
+msgid "Cf7 Redirection"
+msgstr ""
+
+#: admin/admin-init.php:144
+msgid "Conditional Field Options"
+msgstr ""
+
+#: admin/include/class.cf7-conditional.php:62
+msgid "Conditional Fields"
+msgstr ""
+
+#: admin/include/class.cf7-conditional.php:125
+#: admin/include/class.cf7-mailchimp-map.php:51
+#: admin/template/conditional-field-layout.php:9
+msgid "Conditional fields"
+msgstr ""
+
+#: admin/include/class.cf7-conditional.php:80
+msgid "Conditional fields Settings"
+msgstr ""
+
+#: admin/template/conditional-setting.php:11
+msgid "Conditional Ui Mode"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:69
+msgid "Contact form 7 drag and drop files upload."
+msgstr ""
+
+#: admin/include/class.cf7-post-list.php:49
+msgid "Contact Form List"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:191
+msgid ""
+"Contact Form7 Extensions plugin is a fantastic WordPress plugin that "
+"enriches the functionalities of Contact Form 7.This all-in-one WordPress "
+"plugin will help you turn any contact page into a well-organized, engaging "
+"tool for communicating with your website visitors by providing tons of "
+"advanced features like drag and drop file upload, repeater field, trigger "
+"error for already submitted forms, popup form response, country flags and "
+"dial codes with a telephone input field and acceptance field, etc. in "
+"addition to its basic features."
+msgstr ""
+
+#: admin/include/class-diagnostic-data.php:490
+msgid "Count Me In"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:333
+msgid "Coupon Zen"
+msgstr ""
+
+#: admin/template/redierect-options-layout.php:26
+#: admin/template/redierect-options-layout.php:49
+msgid "Custom URL"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:327
+msgid "DataCaptia"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-list.php:243
+msgid "Date"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-list.php:216
+#: admin/include/class.cf7-form-data-list.php:225
+#: admin/include/class.cf7-form-data-list.php:297
+msgid "Delete"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:269
+msgid "Docus Pro"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:321
+msgid "Docus – YouTube Video Playlist"
+msgstr ""
+
+#: admin/template/redierect-options-layout.php:76
+msgid "Don't need to use <script> tag."
+msgstr ""
+
+#: admin/template/pro-feature-list.php:69
+msgid "Drag & Drop File Upload: "
+msgstr ""
+
+#: admin/template/pro-feature-list.php:38
+msgid "Drag and Drop File Upload"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-detail.php:73
+msgid "Email Information"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-list.php:17
+msgid "Email List"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:272
+msgid ""
+"Embedding a YouTube playlist into your website plays a vital role to curate "
+"your content into several categories and make your web content more engaging "
+"and popular by keeping the visitors on your website for a longer period."
+msgstr ""
+
+#: admin/template/conditional-setting.php:26
+msgid "Enable Conditional Field Animation to show and hide field."
+msgstr ""
+
+#: admin/template/redierect-options-layout.php:31
+msgid "Enable Custom URL for Redirection."
+msgstr ""
+
+#: admin/template/redierect-options-layout.php:70
+msgid "Enable Javascript action to fire a javascript function."
+msgstr ""
+
+#: admin/template/redierect-options-layout.php:22
+msgid ""
+"Enable Redirection Option to redirect to any page after form submission."
+msgstr ""
+
+#: admin/template/redierect-options-layout.php:61
+msgid "Enable the option to open the redirection page in a new tab."
+msgstr ""
+
+#: admin/template/conditional-field-layout.php:25
+msgid "equal"
+msgstr ""
+
+#: includes/class.cf7-extensions.php:166
+msgid ""
+"Error: Contact Form 7 version is too old. Extensions For CF7 is compatible "
+"from version 5.3 and above. Please update Contact Form 7."
+msgstr ""
+
+#: admin/include/class.cf7-form-data-list.php:286
+msgid "Export CSV"
+msgstr ""
+
+#: admin/admin-init.php:70 admin/admin-init.php:71 admin/admin-init.php:191
+msgid "Extensions"
+msgstr ""
+
+#. Name of the plugin
+msgid "Extensions For CF7"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:188
+msgid "Extensions For CF7 Pro"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:297
+msgid "Faster YouTube Embed"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-list.php:271
+msgid "Filter"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-list.php:241
+msgid "Form Data"
+msgstr ""
+
+#: admin/include/class.cf7-post-list.php:53
+msgid "Form Name"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-list.php:242
+msgid "Form Title"
+msgstr ""
+
+#: admin/include/class.cf7-conditional.php:73
+msgid ""
+"Generate a fields_group tag to unite form elements that can be shown "
+"conditionally."
+msgstr ""
+
+#: admin/template/pro-feature-list.php:79
+msgid "Get Pro Now"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:80
+msgid "Get pro now"
+msgstr ""
+
+#: admin/template/conditional-field-layout.php:56
+msgid "Go To Conditional Settings"
+msgstr ""
+
+#: admin/admin-init.php:173 admin/template/conditional-setting.php:49
+msgid "Go To Contact Form 7 Editor"
+msgstr ""
+
+#: admin/template/redierect-options-layout.php:95
+msgid "Go To Redirection Setting"
+msgstr ""
+
+#: admin/template/conditional-field-layout.php:3
+msgid "Go To Text mode"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:242
+msgid "Google Place Review"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:61
+msgid "HashBar"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:200
+msgid ""
+"HashBar is a WordPress Notification / Alert / Offer Bar plugin which allows "
+"you to create unlimited notification bars to notify your customers. This "
+"plugin has option to show email subscription form (sometimes it increases up "
+"to 500% email subscriber), Offer text and buttons about your promotions. "
+"This plugin has the options to add unlimited background colors and images to "
+"make your notification bar more professional."
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:197
+msgid "HashBar Pro"
+msgstr ""
+
+#. Author of the plugin
+msgid "HasThemes"
+msgstr ""
+
+#: admin/admin-init.php:23 admin/admin-init.php:24
+msgid "HT Cf7 Extension"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:260
+msgid "HT Click To Call"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:73
+msgid "HT Contact Form 7"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:291
+msgid "HT Feed"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:55
+msgid "HT Mega"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:143
+msgid "HT Mega Pro"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:85
+msgid "HT Menu"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:224
+msgid "HT Menu Pro"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:91
+msgid "HT Script"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:215
+msgid "HT Script Pro"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:67
+msgid "HT Slider For Elementor"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:233
+msgid "HT Slider Pro For Elementor"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:236
+msgid ""
+"HT Slider Pro is a plugin to create a slider for WordPress websites easily "
+"using the Elementor page builder. 80+ prebuild slides/templates are included "
+"in this plugin. There is the option to create a post slider, WooCommerce "
+"product slider, Video slider, image slider, etc. Fullscreen, full width and "
+"box layout option are included."
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:345
+msgid "HT Social Share"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:79
+msgid "HT WPForms"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:263
+msgid ""
+"HT – Click to Call is a lightweight WordPress plugin that allows you to add "
+"a floating click to call button on your website. It will offer your website "
+"visitors an opportunity to call your business immediately at the right "
+"moment, especially when they are interested in your products or services and "
+"seeking more information."
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:146
+msgid ""
+"HTMega is an absolute addon for elementor that includes 80+ elements & 360 "
+"Blocks with unlimited variations. HT Mega brings limitless possibilities. "
+"Embellish your site with the elements of HT Mega."
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://hasthemes.com/"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:245
+msgid ""
+"If you are searching for a modern and excellent google places review "
+"WordPress plugin to showcase reviews from Google Maps and strengthen trust "
+"between you and your site visitors, look no further than HT Google Place "
+"Review"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:90
+msgid ""
+"If you’re loving how our product has helped your business, please let the "
+"WordPress community know by"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-list.php:278
+msgid "Import CSV"
+msgstr ""
+
+#: admin/template/conditional-setting.php:33
+msgid ""
+"Input a positive integer value for animation in time. The values in "
+"milliseconds and it will be applied for each field. Default Value:250"
+msgstr ""
+
+#: admin/template/conditional-setting.php:40
+msgid ""
+"Input a positive integer value for animation out time. The values in "
+"milliseconds and it will be applied for each field. Default Value:250"
+msgstr ""
+
+#: admin/admin-init.php:167
+msgid ""
+"Input a positive integer value for the dalay of redirection. The values in "
+"milliseconds(Default:200)"
+msgstr ""
+
+#: admin/template/redierect-options-layout.php:52
+msgid ""
+"Insert a custom URL, if you want to add form field values as parameters in "
+"the custom redirection URL that you will insert here, just by adding the "
+"form field shortcodes to the URL. e.g. \"https://example.com/?name=[you-name]"
+"\""
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:218
+msgid ""
+"Insert Headers and Footers Code allows you to insert Google Analytics, "
+"Facebook Pixel, custom CSS, custom HTML, JavaScript code to your website "
+"header and footer without modifying your theme code.This plugin has the "
+"option to add any custom code to your theme in one place, no need to edit "
+"the theme code. It will save your time and remove the hassle for the theme "
+"update."
+msgstr ""
+
+#: admin/template/fields-group-layout.php:30
+msgid "Insert Tag"
+msgstr ""
+
+#: includes/class.cf7-extensions.php:154
+msgid "Install Contact Form 7"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-list.php:86
+msgid "Invalid file.Please import a csv file"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-detail.php:128
+msgid "IP Address :"
+msgstr ""
+
+#: admin/template/redierect-options-layout.php:65
+msgid "Javascript Action"
+msgstr ""
+
+#: admin/template/redierect-options-layout.php:74
+msgid "Javascript Code"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:115
+msgid "JustTables"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:173
+msgid ""
+"JustTables is an incredible WordPress plugin that lets you showcase all your "
+"WooCommerce products in a sortable and filterable table view. It allows your "
+"customers to easily navigate through different attributes of the products "
+"and compare them on a single page. This plugin will be of great help if you "
+"are looking for an easy solution that increases the chances of landing a "
+"sale on your online store."
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:170
+msgid "JustTables Pro"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:90
+msgid "leaving us a review on our WP repository"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:73
+msgid ""
+"Make the telephone input field more attractive with the list of country flag "
+"and dial codes."
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:121
+msgid "Multi Currency"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:179
+msgid "Multi Currency Pro for WooCommerce"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:182
+msgid ""
+"Multi-Currency Pro for WooCommerce is a prominent currency switcher plugin "
+"for WooCommerce. This plugin allows your website or online store visitors to "
+"switch to their preferred currency or their country’s currency."
+msgstr ""
+
+#: admin/template/fields-group-layout.php:9
+msgid "Name"
+msgstr ""
+
+#: admin/include/class-diagnostic-data.php:493
+msgid "No, Thanks"
+msgstr ""
+
+#: admin/include/class-diagnostic-data.php:168
+msgid "Nonce Varification fail"
+msgstr ""
+
+#: admin/template/conditional-setting.php:14
+msgid "Normal"
+msgstr ""
+
+#: admin/template/conditional-field-layout.php:26
+msgid "not equal"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:279
+msgid "Others"
+msgstr ""
+
+#: admin/include/class.cf7-redirection.php:51
+msgid "Please save your form first"
+msgstr ""
+
+#: admin/include/class.cf7-conditional.php:126
+msgid "Please save your form first before adding condition."
+msgstr ""
+
+#: admin/include/class.cf7-mailchimp-map.php:52
+msgid "Please save your form first."
+msgstr ""
+
+#: admin/template/pro-feature-list.php:6
+msgid "Popup Form Response"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:72
+msgid "Popup Form Response: "
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:309
+msgid "Preview Link Generator"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:152
+msgid "Product Variation Swatches"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:315
+msgid "QuickSwish"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:87
+msgid "Rating icon"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:285
+msgid "Really Simple Google Tag Manager"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:42
+msgid "Recommended"
+msgstr ""
+
+#: admin/include/class.cf7-redirection.php:37
+msgid "Redirect Actions"
+msgstr ""
+
+#: admin/template/redierect-options-layout.php:56
+msgid "Redirect to New Tab"
+msgstr ""
+
+#: admin/template/redierect-options-layout.php:17
+msgid "Redirection"
+msgstr ""
+
+#: admin/admin-init.php:164
+msgid "Redirection Delay"
+msgstr ""
+
+#: admin/include/class.cf7-redirection.php:50
+#: admin/template/redierect-options-layout.php:13
+msgid "Redirection Options"
+msgstr ""
+
+#: admin/admin-init.php:154
+msgid "Redirection Setting"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-detail.php:122
+msgid "Referer :"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:14
+msgid "Repeater Field"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:71
+msgid "Repeater Field allows creating one or more field dynamically"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:71
+msgid "Repeater Field: "
+msgstr ""
+
+#: admin/template/pro-feature-list.php:72
+msgid ""
+"Replace your validation and success messages into beautiful popup message to "
+"attract visitors."
+msgstr ""
+
+#: admin/template/redierect-options-layout.php:35
+msgid "Select a page"
+msgstr ""
+
+#: admin/include/class-diagnostic-data.php:488
+#, php-format
+msgid ""
+"Server information (Web server, PHP version, MySQL version), WordPress "
+"information, site name, site URL, number of plugins, number of users, your "
+"name, and email address. You can rest assured that no sensitive data will be "
+"collected or tracked. %1$sLearn more%2$s."
+msgstr ""
+
+#: admin/template/conditional-setting.php:17
+msgid "Set the Conditional Ui mode.(Default:Normal)"
+msgstr ""
+
+#: includes/class.cf7-extensions.php:106 admin/admin-init.php:61
+#: admin/admin-init.php:62 admin/admin-init.php:181
+msgid "Settings"
+msgstr ""
+
+#: admin/template/conditional-field-layout.php:13
+msgid "Show"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:339
+msgid "Sirve – Simple Directory Listing"
+msgstr ""
+
+#: admin/include/class.cf7-post-list.php:54
+msgid "Submission Count"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-detail.php:117
+msgid "Submission Details"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-list.php:197
+msgid "Successfully Imported CSV File"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:74
+msgid ""
+"Take permission form the user to save the form submission into database."
+msgstr ""
+
+#: admin/template/conditional-setting.php:15
+msgid "Text Mode"
+msgstr ""
+
+#: admin/include/class-diagnostic-data.php:514
+#, php-format
+msgid "Thank you very much for supporting %2$s%1$s%3$s."
+msgstr ""
+
+#: admin/template/redierect-options-layout.php:78
+msgid ""
+"This options for developer only.If the javascript action doesn't work after "
+"form submission, it means You have a problem with your code."
+msgstr ""
+
+#: admin/template/pro-feature-list.php:70
+msgid "Trigger error if a field is already submitted"
+msgstr ""
+
+#. Description of the plugin
+msgid "Valuable Extensions for Contact Form 7."
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:251
+msgid "Was This Helpful?"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:254
+msgid ""
+"Was this helpful? is a WordPress plugin that allows you to take visitors' "
+"feedback on your post/pages or any article. A visitor can share his feedback "
+"by like/dislike/yes/no"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:103
+msgid "WC Builder"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:303
+msgid "WC Sales Notification"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:90
+msgid "Which will motivate us a lot."
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:109
+msgid "Whols"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:164
+msgid ""
+"Whols is an outstanding WordPress plugin for WooCommerce that allows store "
+"owners to set wholesale prices for the products of their online stores. This "
+"plugin enables you to show special wholesale prices to the wholesaler. Users "
+"can easily request to become a wholesale customer by filling out a simple "
+"online registration form. Once the registration is complete, the owner of "
+"the store will be able to review the request and approve the request either "
+"manually or automatically."
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:161
+msgid "Whols Pro"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:49
+#: admin/template/pro-feature-list.php:61
+msgid "WooLentor"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:137
+msgid ""
+"WooLentor is one of the most popular WooCommerce Elementor Addons on "
+"WordPress.org. It has been downloaded more than 672,148 times and 60,000 "
+"stores are using WooLentor plugin. Why not you?"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:134
+msgid "WooLentor Pro"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:227
+msgid "WordPress Mega Menu Builder for Elementor"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:97
+msgid "WP Plugin Manager"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:206
+msgid "WP Plugin Manager Pro"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:209
+msgid ""
+"WP Plugin Manager Pro is a specialized WordPress Plugin that helps you to "
+"deactivate unnecessary WordPress Plugins page wise and boosts the speed of "
+"your WordPress site to improve the overall site performance."
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:128
+msgid "You May Also Like"
+msgstr ""
+
+#: admin/include/class-diagnostic-data.php:498
+#, php-format
+msgid "🌟 Enhance Your %1$s Experience as a Valued Contributor!"
+msgstr ""

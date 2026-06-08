@@ -1,0 +1,1514 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Extensions For CF7\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-08-22 08:44+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.6.7; wp-6.4.3\n"
+"X-Domain: cf7-extensions"
+
+#. %1$s: strong start tag
+#. %2$s: strong end tag
+#: includes/class.cf7-extensions.php:205
+#, php-format
+msgid ""
+"%1$sExtensions For CF7 %2$s requires %1$s\"Contact Form 7\"%2$s plugin to be "
+"active. Please activate Contact Form 7 to continue."
+msgstr ""
+
+#. %1$s: strong start tag
+#. %2$s: strong end tag
+#: includes/class.cf7-extensions.php:216
+#, php-format
+msgid ""
+"%1$sExtensions For CF7.%2$s requires %1$s\"Contact Form 7\"%2$s plugin to be "
+"installed and activated. Please install Contact Form 7 to continue."
+msgstr ""
+
+#. %s: Number of installations.
+#: admin/include/Recommended_Plugins.php:302
+#, php-format
+msgid "%s Active Installations"
+msgstr ""
+
+#: admin/template/mailchimp-pannel-layout.php:155
+msgid "- Configure your form in exactly the same way as the"
+msgstr ""
+
+#: admin/template/mailchimp-pannel-layout.php:146
+msgid "- To create forms with user acceptability like"
+msgstr ""
+
+#: admin/template/mailchimp-pannel-layout.php:164
+msgid "- Use the tag [confirm-subscribe] in the MailChimp's settings as like"
+msgstr ""
+
+#: admin/include/class.cf7-conditional.php:108
+msgid "-- Select field --"
+msgstr ""
+
+#: admin/include/class.cf7-conditional.php:93
+msgid "-- Select group --"
+msgstr ""
+
+#: admin/template/redierect-options-layout.php:41
+msgid "---select---"
+msgstr ""
+
+#: admin/include/class.cf7-column.php:114
+msgid "1 Column"
+msgstr ""
+
+#: admin/include/class.cf7-column.php:127
+msgid "2 Column"
+msgstr ""
+
+#: admin/include/class.cf7-column.php:141
+msgid "3 Column"
+msgstr ""
+
+#: admin/include/class.cf7-column.php:156
+msgid "4 Column"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:46
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:305
+msgid "Acceptance Field"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:74
+msgid "Acceptance Field: "
+msgstr ""
+
+#: admin/include/Recommended_Plugins.php:247
+msgid "Activate"
+msgstr ""
+
+#: includes/class.cf7-extensions.php:206
+msgid "Activate Contact Form 7"
+msgstr ""
+
+#: admin/include/Recommended_Plugins.php:131
+#: admin/include/Recommended_Plugins.php:258
+msgid "Activated"
+msgstr ""
+
+#: admin/include/Recommended_Plugins.php:130
+msgid "Activating.."
+msgstr ""
+
+#. %s: Number of millions.
+#: admin/include/Recommended_Plugins.php:376
+#, php-format
+msgctxt "Active plugin installations"
+msgid "%s+ Million"
+msgid_plural "%s+ Million"
+msgstr[0] ""
+msgstr[1] ""
+
+#: admin/include/Recommended_Plugins.php:380
+msgctxt "Active plugin installations"
+msgid "Less Than 10"
+msgstr ""
+
+#: admin/template/conditional-field-layout.php:31
+msgid "Add Condition"
+msgstr ""
+
+#: admin/template/mailchimp-pannel-layout.php:126
+msgid "Add Custom Field"
+msgstr ""
+
+#: admin/template/mailchimp-pannel-layout.php:73
+msgid "Add more fields to send Mailchimp.com"
+msgstr ""
+
+#: admin/template/conditional-field-layout.php:38
+msgid "Add New Condition"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:30
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:287
+msgid "Advanced Telephone"
+msgstr ""
+
+#: admin/settings-panel/includes/templates/sidebar-banner.php:10
+msgid "Advanced Telephone (Flag and Country Code)"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:73
+msgid "Advanced Telephone: "
+msgstr ""
+
+#: admin/settings-panel/includes/templates/dashboard-submissions.php:16
+msgid "All"
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Menu.php:121
+msgid "All Data Restored"
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Menu.php:131
+msgid "All settings has been reset successfully."
+msgstr ""
+
+#: admin/template/pro-feature-list.php:22
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:278
+msgid "Already Submitted"
+msgstr ""
+
+#: admin/settings-panel/includes/templates/sidebar-banner.php:12
+msgid "Already Submitted Message"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:70
+msgid "Already Submitted: "
+msgstr ""
+
+#: admin/template/conditional-setting.php:21
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:204
+msgid "Animation"
+msgstr ""
+
+#: admin/template/conditional-setting.php:30
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:214
+msgid "Animation In Time"
+msgstr ""
+
+#: admin/template/conditional-setting.php:37
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:227
+msgid "Animation Out Time"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-list.php:537
+msgid "Apply"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:155
+msgid ""
+"Are you getting frustrated with WooCommerce’s current way of presenting the "
+"variants for your products? Well, say goodbye to dropdowns and start showing "
+"the product variations in a whole new light with Swatchly."
+msgstr ""
+
+#: admin/include/class.cf7-form-data-list.php:294
+#: admin/include/class.cf7-form-data-list.php:303
+msgid "Are you sure to delete this file"
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Menu.php:124
+msgid "Are you sure?"
+msgstr ""
+
+#. %1$s: project name
+#. %2$s: strong start tag
+#. %3$s: strong end tag
+#. %4$s: a tag start
+#. %5$s: a tag end
+#: admin/include/class-diagnostic-data.php:493
+#, php-format
+msgid ""
+"At %2$s%1$s%3$s, we prioritize continuous improvement and compatibility. To "
+"achieve this, we gather non-sensitive diagnostic information and details "
+"about plugin usage. This includes your site's URL, the versions of WordPress "
+"and PHP you're using, and a list of your installed plugins and themes. We "
+"also require your email address to provide you with exclusive discount "
+"coupons and updates. This data collection is crucial for ensuring that "
+"%2$s%1$s%3$s remains up-to-date and compatible with the most widely-used "
+"plugins and themes. Rest assured, your privacy is our priority – no spam, "
+"guaranteed. %4$sPrivacy Policy%5$s"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-detail.php:104
+#: admin/include/tmpl-form-data.php:40
+msgid "Attachment :"
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:251
+msgid "Autocomplete IP Geo Fields (Country, City, State, Zip)"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-list.php:531
+msgid "Bulk Actions"
+msgstr ""
+
+#: admin/include/Recommended_Plugins.php:127
+#: admin/include/Recommended_Plugins.php:235
+#: admin/include/Recommended_Plugins.php:289
+#: admin/settings-panel/includes/classes/Admin/Menu.php:106
+msgid "Buy Now"
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Menu.php:105
+msgid "BUY PRO"
+msgstr ""
+
+#: admin/include/Recommended_Plugins.php:275
+msgid "By "
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Menu.php:25
+#: admin/settings-panel/includes/classes/Admin/Menu.php:26
+msgid "Cf7 Extensions"
+msgstr ""
+
+#: admin/include/class.cf7-mailchimp-map.php:341
+msgid "Choose"
+msgstr ""
+
+#: admin/include/class.cf7-mailchimp-map.php:238
+msgid "City"
+msgstr ""
+
+#: admin/template/fields-group-layout.php:14
+msgid "Clear field on hide"
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:243
+msgid "Column Field"
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:174
+msgid "Conditional Field"
+msgstr ""
+
+#: admin/admin-init.php:90
+msgid "Conditional Field Options"
+msgstr ""
+
+#: admin/include/class.cf7-conditional.php:64
+msgid "Conditional Fields"
+msgstr ""
+
+#: admin/include/class.cf7-conditional.php:127
+#: admin/include/class.cf7-mailchimp-map.php:53
+#: admin/template/conditional-field-layout.php:9
+msgid "Conditional fields"
+msgstr ""
+
+#: admin/include/class.cf7-conditional.php:82
+msgid "Conditional fields Settings"
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:190
+msgid "Conditional UI Mode"
+msgstr ""
+
+#: admin/template/conditional-setting.php:11
+msgid "Conditional Ui Mode"
+msgstr ""
+
+#: admin/template/mailchimp-pannel-layout.php:18
+msgid "Connect With MailChimp"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:69
+msgid "Contact form 7 drag and drop files upload."
+msgstr ""
+
+#: admin/include/class.cf7-post-list.php:51
+msgid "Contact Form List"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:191
+msgid ""
+"Contact Form7 Extensions plugin is a fantastic WordPress plugin that "
+"enriches the functionalities of Contact Form 7.This all-in-one WordPress "
+"plugin will help you turn any contact page into a well-organized, engaging "
+"tool for communicating with your website visitors by providing tons of "
+"advanced features like drag and drop file upload, repeater field, trigger "
+"error for already submitted forms, popup form response, country flags and "
+"dial codes with a telephone input field and acceptance field, etc. in "
+"addition to its basic features."
+msgstr ""
+
+#: admin/include/class-diagnostic-data.php:500
+msgid "Count Me In"
+msgstr ""
+
+#: admin/include/class.cf7-mailchimp-map.php:241
+msgid "Country"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:333
+msgid "Coupon Zen"
+msgstr ""
+
+#: admin/template/mailchimp-pannel-layout.php:70
+msgid "Custom Fields"
+msgstr ""
+
+#: admin/template/redierect-options-layout.php:29
+#: admin/template/redierect-options-layout.php:52
+msgid "Custom URL"
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Menu.php:112
+msgid "Data Saved"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:327
+msgid "DataCaptia"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-list.php:321
+#: admin/include/class.download-csv.php:56
+msgid "Date"
+msgstr ""
+
+#: admin/include/tmpl-form-data.php:27
+msgid "Date :"
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:194
+msgid "Default"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-list.php:294
+#: admin/include/class.cf7-form-data-list.php:303
+#: admin/include/class.cf7-form-data-list.php:381
+msgid "Delete"
+msgstr ""
+
+#: admin/template/mailchimp-pannel-layout.php:137
+msgid "Disable"
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Menu.php:116
+msgid "Disable All"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:269
+msgid "Docus Pro"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:321
+msgid "Docus – YouTube Video Playlist"
+msgstr ""
+
+#: admin/template/mailchimp-pannel-layout.php:25
+msgid "Don't know how to get a Mailchimp API key? Get it from"
+msgstr ""
+
+#: admin/template/redierect-options-layout.php:79
+msgid "Don't need to use <script> tag."
+msgstr ""
+
+#: admin/settings-panel/includes/templates/sidebar-banner.php:9
+msgid "Drag & Drop File Upload"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:69
+msgid "Drag & Drop File Upload: "
+msgstr ""
+
+#: admin/template/pro-feature-list.php:38
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:296
+msgid "Drag and Drop File Upload"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-detail.php:88
+#: admin/include/tmpl-form-data.php:23
+msgid "Email Information"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-list.php:19
+msgid "Email List"
+msgstr ""
+
+#: admin/settings-panel/includes/templates/dashboard-submissions.php:13
+msgid "Email List "
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:272
+msgid ""
+"Embedding a YouTube playlist into your website plays a vital role to curate "
+"your content into several categories and make your web content more engaging "
+"and popular by keeping the visitors on your website for a longer period."
+msgstr ""
+
+#: admin/include/class.cf7-mailchimp-map.php:165
+#: admin/include/class.cf7-mailchimp-map.php:190
+msgid "empty list"
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Menu.php:115
+msgid "Enable All"
+msgstr ""
+
+#: admin/template/conditional-setting.php:26
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:209
+msgid "Enable Conditional Field Animation to show and hide field."
+msgstr ""
+
+#: admin/template/redierect-options-layout.php:34
+msgid "Enable Custom URL for Redirection."
+msgstr ""
+
+#: admin/template/redierect-options-layout.php:73
+msgid "Enable Javascript action to fire a javascript function."
+msgstr ""
+
+#: admin/template/redierect-options-layout.php:25
+msgid ""
+"Enable Redirection Option to redirect to any page after form submission."
+msgstr ""
+
+#: admin/template/redierect-options-layout.php:64
+msgid "Enable the option to open the redirection page in a new tab."
+msgstr ""
+
+#: admin/template/general-options-layout.php:24
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:128
+msgid "Enable this option to make the referrer link visible."
+msgstr ""
+
+#: admin/template/general-options-layout.php:15
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:119
+msgid "Enable this option to make the sender's IP Address visible."
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:67
+msgid "Enable/Disable Extensions"
+msgstr ""
+
+#: admin/template/conditional-field-layout.php:25
+msgid "equal"
+msgstr ""
+
+#: includes/class.cf7-extensions.php:229
+msgid ""
+"Error: Contact Form 7 version is too old. Extensions For CF7 is compatible "
+"from version 5.3 and above. Please update Contact Form 7."
+msgstr ""
+
+#: admin/include/class.cf7-form-data-list.php:370
+msgid "Export CSV"
+msgstr ""
+
+#: admin/admin-init.php:137
+#: admin/settings-panel/includes/classes/Admin/Menu.php:38
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:60
+msgid "Extensions"
+msgstr ""
+
+#. Name of the plugin
+msgid "Extensions For CF7"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:64
+msgid ""
+"Extensions for CF7 is a fantastic WordPress plugin that lets you extend the "
+"features of the Contact Form 7 plugin. Using this plugin, you can add "
+"conditional fields to your forms. That's not all, it also allows you to "
+"store the data for each form submission in a database while having the "
+"flexibility of redirecting the users anywhere you want after a successful "
+"submission. The pro version even comes with a lot more useful features to "
+"supercharge the forms by adding a lot of outstanding options. Some of them "
+"are listed below."
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:188
+msgid "Extensions For CF7 Pro"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:297
+msgid "Faster YouTube Embed"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-list.php:349
+msgid "Filter"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-list.php:319
+msgid "Form Data"
+msgstr ""
+
+#: admin/include/class.download-csv.php:56
+msgid "Form Id"
+msgstr ""
+
+#: admin/include/class.cf7-post-list.php:55
+#: admin/settings-panel/includes/templates/dashboard-forms.php:33
+msgid "Form Name"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-list.php:320
+msgid "Form Title"
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Menu.php:35
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:27
+msgid "Forms"
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:32
+msgid "Free VS Pro"
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:33
+msgid ""
+"Freely use these elements to create your site. You can enable which you are "
+"not using, and, all associated assets will be disable to improve your site "
+"loading speed."
+msgstr ""
+
+#: admin/include/class.cf7-form-data-list.php:332
+msgid "From"
+msgstr ""
+
+#: admin/include/class.cf7-conditional.php:50
+msgid "functions wpcf7_add_form_tag and wpcf7_add_shortcode not found."
+msgstr ""
+
+#: admin/include/class.cf7-column.php:39
+msgid "functions wpcf7_add_form_tag not found."
+msgstr ""
+
+#: admin/settings-panel/includes/templates/sidebar-banner.php:11
+msgid "GDPR Field to take permission"
+msgstr ""
+
+#: admin/include/class.cf7-conditional.php:75
+msgid ""
+"Generate a fields_group tag to unite form elements that can be shown "
+"conditionally."
+msgstr ""
+
+#: admin/template/pro-feature-list.php:79
+#: admin/settings-panel/includes/templates/sidebar-banner.php:15
+msgid "Get Pro Now"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:80
+msgid "Get pro now"
+msgstr ""
+
+#: admin/settings-panel/includes/templates/sidebar-banner.php:22
+msgid "Get Support"
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Menu.php:37
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:49
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:54
+msgid "Global Settings"
+msgstr ""
+
+#: admin/template/conditional-field-layout.php:55
+msgid "Go To Conditional Settings"
+msgstr ""
+
+#: admin/admin-init.php:119 admin/template/conditional-setting.php:49
+msgid "Go To Contact Form 7 Editor"
+msgstr ""
+
+#: admin/template/redierect-options-layout.php:98
+msgid "Go To Redirection Setting"
+msgstr ""
+
+#: admin/template/conditional-field-layout.php:3
+msgid "Go To Text mode"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:242
+msgid "Google Place Review"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:61
+msgid "HashBar"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:200
+msgid ""
+"HashBar is a WordPress Notification / Alert / Offer Bar plugin which allows "
+"you to create unlimited notification bars to notify your customers. This "
+"plugin has option to show email subscription form (sometimes it increases up "
+"to 500% email subscriber), Offer text and buttons about your promotions. "
+"This plugin has the options to add unlimited background colors and images to "
+"make your notification bar more professional."
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:197
+msgid "HashBar Pro"
+msgstr ""
+
+#: admin/include/Recommended_Plugins.php:232
+msgid "HasTheme"
+msgstr ""
+
+#. Author of the plugin
+msgid "HasThemes"
+msgstr ""
+
+#: admin/template/mailchimp-pannel-layout.php:25
+msgid "here"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:260
+msgid "HT Click To Call"
+msgstr ""
+
+#: admin/include/class.cf7-column.php:99
+msgid "HT Column"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:73
+msgid "HT Contact Form 7"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:291
+msgid "HT Feed"
+msgstr ""
+
+#: admin/include/class.cf7-mailchimp-map.php:39
+msgid "HT MailChimp"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:55
+msgid "HT Mega"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:143
+msgid "HT Mega Pro"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:85
+msgid "HT Menu"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:224
+msgid "HT Menu Pro"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:91
+msgid "HT Script"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:215
+msgid "HT Script Pro"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:67
+msgid "HT Slider For Elementor"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:233
+msgid "HT Slider Pro For Elementor"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:236
+msgid ""
+"HT Slider Pro is a plugin to create a slider for WordPress websites easily "
+"using the Elementor page builder. 80+ prebuild slides/templates are included "
+"in this plugin. There is the option to create a post slider, WooCommerce "
+"product slider, Video slider, image slider, etc. Fullscreen, full width and "
+"box layout option are included."
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:345
+msgid "HT Social Share"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:79
+msgid "HT WPForms"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:263
+msgid ""
+"HT – Click to Call is a lightweight WordPress plugin that allows you to add "
+"a floating click to call button on your website. It will offer your website "
+"visitors an opportunity to call your business immediately at the right "
+"moment, especially when they are interested in your products or services and "
+"seeking more information."
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:146
+msgid ""
+"HTMega is an absolute addon for elementor that includes 80+ elements & 360 "
+"Blocks with unlimited variations. HT Mega brings limitless possibilities. "
+"Embellish your site with the elements of HT Mega."
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://hasthemes.com/"
+msgstr ""
+
+#: admin/settings-panel/includes/templates/dashboard-forms.php:32
+msgid "ID"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:245
+msgid ""
+"If you are searching for a modern and excellent google places review "
+"WordPress plugin to showcase reviews from Google Maps and strengthen trust "
+"between you and your site visitors, look no further than HT Google Place "
+"Review"
+msgstr ""
+
+#: admin/settings-panel/includes/templates/sidebar-banner.php:21
+msgid ""
+"If you have any questions, concerns, or feedback, please do not hesitate to "
+"reach out to us. We are always available and ready to assist you with your "
+"needs. Thank you for choosing our products and services, and we look forward "
+"to hearing from you soon!"
+msgstr ""
+
+#: admin/template/conditional-field-layout.php:40
+msgid ""
+"If You use a single input checkbox field for condition, then You have to "
+"fill the conditional value filed with \"checked\"."
+msgstr ""
+
+#: admin/template/pro-feature-list.php:90
+msgid ""
+"If you’re loving how our product has helped your business, please let the "
+"WordPress community know by"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-list.php:362
+msgid "Import CSV"
+msgstr ""
+
+#: admin/template/conditional-setting.php:33
+msgid ""
+"Input a positive integer value for animation in time. The values in "
+"milliseconds and it will be applied for each field. Default Value:250"
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:219
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:232
+msgid ""
+"Input a positive integer value for animation in time. The values in "
+"milliseconds and it will be applied for each field. Default: 250"
+msgstr ""
+
+#: admin/template/conditional-setting.php:40
+msgid ""
+"Input a positive integer value for animation out time. The values in "
+"milliseconds and it will be applied for each field. Default Value:250"
+msgstr ""
+
+#: admin/admin-init.php:113
+msgid ""
+"Input a positive integer value for the dalay of redirection. The values in "
+"milliseconds(Default:200)"
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:157
+msgid ""
+"Input a positive integer value for the dalay of redirection. The values in "
+"milliseconds. Default:200"
+msgstr ""
+
+#: admin/template/redierect-options-layout.php:55
+msgid ""
+"Insert a custom URL, if you want to add form field values as parameters in "
+"the custom redirection URL that you will insert here, just by adding the "
+"form field shortcodes to the URL. e.g. \"https://example.com/?name=[you-name]"
+"\""
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:218
+msgid ""
+"Insert Headers and Footers Code allows you to insert Google Analytics, "
+"Facebook Pixel, custom CSS, custom HTML, JavaScript code to your website "
+"header and footer without modifying your theme code.This plugin has the "
+"option to add any custom code to your theme in one place, no need to edit "
+"the theme code. It will save your time and remove the hassle for the theme "
+"update."
+msgstr ""
+
+#: admin/include/class.cf7-column.php:176
+#: admin/template/fields-group-layout.php:30
+msgid "Insert Tag"
+msgstr ""
+
+#: admin/include/class.cf7-column.php:115
+#: admin/include/class.cf7-column.php:128
+#: admin/include/class.cf7-column.php:142
+#: admin/include/class.cf7-column.php:157
+msgid "Insert tag"
+msgstr ""
+
+#: includes/class.cf7-extensions.php:217
+msgid "Install Contact Form 7"
+msgstr ""
+
+#: admin/include/Recommended_Plugins.php:253
+msgid "Install Now"
+msgstr ""
+
+#: admin/include/Recommended_Plugins.php:129
+msgid "Installing.."
+msgstr ""
+
+#: admin/template/mailchimp-pannel-layout.php:24
+msgid "Invalid Api Key"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-list.php:87
+msgid "Invalid file.Please import a csv file"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-detail.php:153
+#: admin/include/tmpl-form-data.php:88
+msgid "Invalid Ip"
+msgstr ""
+
+#: admin/template/general-options-layout.php:10
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:114
+msgid "IP Address"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-detail.php:142
+#: admin/include/tmpl-form-data.php:77
+msgid "IP Address :"
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Menu.php:125
+msgid ""
+"It will reset all the settings to default, and all the changes you made will "
+"be deleted."
+msgstr ""
+
+#: admin/template/redierect-options-layout.php:68
+msgid "Javascript Action"
+msgstr ""
+
+#: admin/template/redierect-options-layout.php:77
+msgid "Javascript Code"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:115
+msgid "JustTables"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:173
+msgid ""
+"JustTables is an incredible WordPress plugin that lets you showcase all your "
+"WooCommerce products in a sortable and filterable table view. It allows your "
+"customers to easily navigate through different attributes of the products "
+"and compare them on a single page. This plugin will be of great help if you "
+"are looking for an easy solution that increases the chances of landing a "
+"sale on your online store."
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:170
+msgid "JustTables Pro"
+msgstr ""
+
+#. %s: array key
+#: includes/class.mailchimp-subscribe.php:213
+#, php-format
+msgid "Key \"%s\" does not contain scalar value"
+msgstr ""
+
+#. %s: required column name
+#. %s: array key
+#: includes/class.mailchimp-subscribe.php:195
+#: includes/class.mailchimp-subscribe.php:206
+#, php-format
+msgid "Key \"%s\" does not exist in array"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:90
+msgid "leaving us a review on our WP repository"
+msgstr ""
+
+#: admin/template/mailchimp-pannel-layout.php:1
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:166
+msgid "MailChimp"
+msgstr ""
+
+#: admin/template/mailchimp-pannel-layout.php:15
+msgid "MailChimp Api Key:"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:73
+msgid ""
+"Make the telephone input field more attractive with the list of country flag "
+"and dial codes."
+msgstr ""
+
+#: admin/template/mailchimp-pannel-layout.php:80
+msgid "Map Contact Form 7 Fields with Mailchimp Field"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-list.php:382
+msgid "Mark as Read"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-list.php:383
+msgid "Mark as Unread"
+msgstr ""
+
+#: admin/include/Recommended_Plugins.php:297
+msgid "More Details"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:121
+msgid "Multi Currency"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:179
+msgid "Multi Currency Pro for WooCommerce"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:182
+msgid ""
+"Multi-Currency Pro for WooCommerce is a prominent currency switcher plugin "
+"for WooCommerce. This plugin allows your website or online store visitors to "
+"switch to their preferred currency or their country’s currency."
+msgstr ""
+
+#: admin/template/fields-group-layout.php:9
+msgid "Name"
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Menu.php:127
+msgid "No"
+msgstr ""
+
+#: admin/include/tmpl-form-data.php:18
+msgid "No data found!"
+msgstr ""
+
+#: admin/include/class-diagnostic-data.php:503
+msgid "No, Thanks"
+msgstr ""
+
+#: admin/include/class-diagnostic-data.php:168
+msgid "Nonce Varification fail"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-list.php:448
+msgid "Nope! Security check failed!"
+msgstr ""
+
+#: admin/template/conditional-setting.php:14
+msgid "Normal"
+msgstr ""
+
+#: admin/template/conditional-field-layout.php:26
+msgid "not equal"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-detail.php:81
+msgid "Not valid contact form"
+msgstr ""
+
+#: admin/include/class.download-csv.php:21
+msgid "Not Valid.. Download Request..!!"
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:118
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:127
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:148
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:156
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:170
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:186
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:198
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:208
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:218
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:231
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:247
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:255
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:264
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:273
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:282
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:291
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:300
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:309
+msgid "Off"
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Menu.php:132
+msgid "OK"
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:117
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:126
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:147
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:155
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:169
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:185
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:197
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:207
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:217
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:230
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:246
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:254
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:263
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:272
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:281
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:290
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:299
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:308
+msgid "On"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:279
+msgid "Others"
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Menu.php:107
+msgid ""
+"Our free version is great, but it doesn't have all our advanced features. "
+"The best way to unlock all of the features in our plugin is by purchasing "
+"the pro version."
+msgstr ""
+
+#: admin/include/class.cf7-mailchimp-map.php:246
+msgid "PHONE"
+msgstr ""
+
+#: admin/include/class.cf7-mailchimp-map.php:247
+msgid "Phone Number"
+msgstr ""
+
+#: admin/include/class.cf7-redirection.php:53
+msgid "Please save your form first"
+msgstr ""
+
+#: admin/include/class.cf7-conditional.php:128
+msgid "Please save your form first before adding condition."
+msgstr ""
+
+#: admin/include/class.cf7-mailchimp-map.php:54
+msgid "Please save your form first."
+msgstr ""
+
+#: admin/include/Recommended_Plugins.php:401
+msgid "Plugin Not Found"
+msgstr ""
+
+#: admin/include/Recommended_Plugins.php:421
+msgid "Plugin Successfully Activated"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:6
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:260
+msgid "Popup Form Response"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:72
+msgid "Popup Form Response: "
+msgstr ""
+
+#: admin/include/Recommended_Plugins.php:128
+msgid "Preview"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:309
+msgid "Preview Link Generator"
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Menu.php:103
+msgid "Pro"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:152
+msgid "Product Variation Swatches"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:315
+msgid "QuickSwish"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:87
+msgid "Rating icon"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:285
+msgid "Really Simple Google Tag Manager"
+msgstr ""
+
+#: admin/include/Recommended_Plugins.php:69
+msgid "Recommendations"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:42
+msgid "Recommended"
+msgstr ""
+
+#: admin/include/class.cf7-redirection.php:39
+msgid "Redirect Actions"
+msgstr ""
+
+#: admin/template/redierect-options-layout.php:59
+msgid "Redirect to New Tab"
+msgstr ""
+
+#: admin/template/redierect-options-layout.php:20
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:136
+msgid "Redirection"
+msgstr ""
+
+#: admin/admin-init.php:110
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:152
+msgid "Redirection Delay"
+msgstr ""
+
+#: admin/include/class.cf7-redirection.php:52
+#: admin/template/redierect-options-layout.php:16
+msgid "Redirection Options"
+msgstr ""
+
+#: admin/admin-init.php:100
+msgid "Redirection Setting"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-detail.php:136
+#: admin/include/tmpl-form-data.php:71
+msgid "Referer :"
+msgstr ""
+
+#: admin/template/general-options-layout.php:19
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:123
+msgid "Referer Link"
+msgstr ""
+
+#: admin/template/mailchimp-pannel-layout.php:98
+msgid "Remove"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:14
+#: admin/settings-panel/includes/templates/sidebar-banner.php:8
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:269
+msgid "Repeater Field"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:71
+msgid "Repeater Field allows creating one or more field dynamically"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:71
+msgid "Repeater Field: "
+msgstr ""
+
+#: admin/template/pro-feature-list.php:72
+msgid ""
+"Replace your validation and success messages into beautiful popup message to "
+"attract visitors."
+msgstr ""
+
+#: admin/template/mailchimp-pannel-layout.php:54
+#: admin/template/mailchimp-pannel-layout.php:61
+msgid "Required"
+msgstr ""
+
+#: admin/include/class.cf7-mailchimp-map.php:341
+msgid "Required by MailChimp"
+msgstr ""
+
+#: admin/template/mailchimp-pannel-layout.php:142
+msgid "Required User Aacceptance"
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Menu.php:119
+msgid "Reset All Settings"
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Menu.php:130
+msgid "Reset!"
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Menu.php:120
+msgid "Resetting..."
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Menu.php:110
+msgid "Save Settings"
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Menu.php:111
+msgid "Saving..."
+msgstr ""
+
+#: admin/template/redierect-options-layout.php:38
+msgid "Select a page"
+msgstr ""
+
+#: admin/template/mailchimp-pannel-layout.php:87
+#: admin/template/mailchimp-pannel-layout.php:107
+msgid "Select Contact Form Field"
+msgstr ""
+
+#: admin/include/class.cf7-mailchimp-map.php:369
+#: admin/template/mailchimp-pannel-layout.php:91
+#: admin/template/mailchimp-pannel-layout.php:115
+msgid "Select Mailchimp Field"
+msgstr ""
+
+#: admin/template/mailchimp-pannel-layout.php:61
+msgid "Selected tag will be send as subscriber name."
+msgstr ""
+
+#. %1$s: a tag start
+#. %2$s: a tag end
+#: admin/include/class-diagnostic-data.php:498
+#, php-format
+msgid ""
+"Server information (Web server, PHP version, MySQL version), WordPress "
+"information, site name, site URL, number of plugins, number of users, your "
+"name, and email address. You can rest assured that no sensitive data will be "
+"collected or tracked. %1$sLearn more%2$s."
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:199
+msgid "Set the Conditional Ui mode."
+msgstr ""
+
+#: admin/template/conditional-setting.php:17
+msgid "Set the Conditional Ui mode.(Default:Normal)"
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:55
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:68
+msgid "Set the fields value to use these features"
+msgstr ""
+
+#: admin/admin-init.php:127 includes/class.cf7-extensions.php:149
+msgid "Settings"
+msgstr ""
+
+#: admin/template/conditional-field-layout.php:13
+msgid "Show"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:339
+msgid "Sirve – Simple Directory Listing"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-detail.php:41
+msgid "Sorry you are not authorised to do this"
+msgstr ""
+
+#: admin/include/class.cf7-mailchimp-map.php:239
+msgid "State"
+msgstr ""
+
+#: admin/include/class.cf7-mailchimp-map.php:236
+msgid "Street Line 1"
+msgstr ""
+
+#: admin/include/class.cf7-mailchimp-map.php:237
+msgid "Street Line 2"
+msgstr ""
+
+#: admin/include/class.cf7-post-list.php:56
+msgid "Submission Count"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-detail.php:131
+#: admin/include/tmpl-form-data.php:66
+msgid "Submission Details"
+msgstr ""
+
+#: includes/helper-functions.php:116
+#: admin/settings-panel/includes/templates/dashboard-forms.php:34
+#: admin/settings-panel/includes/classes/Admin/Menu.php:36
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:38
+msgid "Submissions"
+msgstr ""
+
+#: includes/class.mailchimp-subscribe.php:88
+#: includes/class.mailchimp-subscribe.php:93
+msgid "subscribed"
+msgstr ""
+
+#: admin/template/mailchimp-pannel-layout.php:52
+msgid "Subscriber Email"
+msgstr ""
+
+#: admin/template/mailchimp-pannel-layout.php:59
+msgid "Subscriber Name "
+msgstr ""
+
+#: admin/template/mailchimp-pannel-layout.php:134
+msgid "Subscription"
+msgstr ""
+
+#: admin/include/class.cf7-form-data-list.php:275
+msgid "Successfully Imported CSV File"
+msgstr ""
+
+#: admin/settings-panel/includes/templates/sidebar-banner.php:20
+msgid "Support And Feedback"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:74
+msgid ""
+"Take permission form the user to save the form submission into database."
+msgstr ""
+
+#: admin/template/conditional-setting.php:15
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:195
+msgid "Text Mode"
+msgstr ""
+
+#. %1$s: project name
+#. %2$s: strong start tag
+#. %3$s: strong end tag
+#: admin/include/class-diagnostic-data.php:532
+#, php-format
+msgid "Thank you very much for supporting %2$s%1$s%3$s."
+msgstr ""
+
+#: admin/template/mailchimp-pannel-layout.php:54
+msgid ""
+"This field will receive subscriber emails so, make sure to select the email "
+"tag."
+msgstr ""
+
+#: admin/template/redierect-options-layout.php:81
+msgid ""
+"This options for developer only.If the javascript action doesn't work after "
+"form submission, it means You have a problem with your code."
+msgstr ""
+
+#: admin/include/class.cf7-form-data-list.php:334
+msgid "To"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:70
+msgid "Trigger error if a field is already submitted"
+msgstr ""
+
+#: includes/class-ajax-actions.php:55 includes/helper-functions.php:106
+#: includes/helper-functions.php:116
+msgid "Unread Message"
+msgstr ""
+
+#: admin/settings-panel/includes/templates/sidebar-banner.php:13
+msgid "Validation Message in Popup"
+msgstr ""
+
+#. Description of the plugin
+msgid "Valuable Extensions for Contact Form 7."
+msgstr ""
+
+#: admin/include/class.cf7-form-data-list.php:293
+#: admin/include/class.cf7-form-data-list.php:302
+msgid "View"
+msgstr ""
+
+#: admin/template/redierect-options-layout.php:81
+msgid "Warnings!"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:251
+msgid "Was This Helpful?"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:254
+msgid ""
+"Was this helpful? is a WordPress plugin that allows you to take visitors' "
+"feedback on your post/pages or any article. A visitor can share his feedback "
+"by like/dislike/yes/no"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:103
+msgid "WC Builder"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:303
+msgid "WC Sales Notification"
+msgstr ""
+
+#: admin/template/pro-feature-list.php:90
+msgid "Which will motivate us a lot."
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:109
+msgid "Whols"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:164
+msgid ""
+"Whols is an outstanding WordPress plugin for WooCommerce that allows store "
+"owners to set wholesale prices for the products of their online stores. This "
+"plugin enables you to show special wholesale prices to the wholesaler. Users "
+"can easily request to become a wholesale customer by filling out a simple "
+"online registration form. Once the registration is complete, the owner of "
+"the store will be able to review the request and approve the request either "
+"manually or automatically."
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:161
+msgid "Whols Pro"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:49
+#: admin/template/pro-feature-list.php:61
+msgid "WooLentor"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:137
+msgid ""
+"WooLentor is one of the most popular WooCommerce Elementor Addons on "
+"WordPress.org. It has been downloaded more than 672,148 times and 60,000 "
+"stores are using WooLentor plugin. Why not you?"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:134
+msgid "WooLentor Pro"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:227
+msgid "WordPress Mega Menu Builder for Elementor"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:97
+msgid "WP Plugin Manager"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:206
+msgid "WP Plugin Manager Pro"
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:209
+msgid ""
+"WP Plugin Manager Pro is a specialized WordPress Plugin that helps you to "
+"deactivate unnecessary WordPress Plugins page wise and boosts the speed of "
+"your WordPress site to improve the overall site performance."
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Menu.php:126
+msgid "Yes"
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:181
+msgid "You can enable / disable Connditional Field from here."
+msgstr ""
+
+#: admin/settings-panel/includes/classes/Admin/Options_field.php:143
+msgid "You can enable / disable redirection from here."
+msgstr ""
+
+#: admin/include/class.cf7-extensions-recomendation.php:128
+msgid "You May Also Like"
+msgstr ""
+
+#: admin/include/class.cf7-mailchimp-map.php:291
+msgid "Your mailchimp lists: "
+msgstr ""
+
+#: admin/include/class.cf7-mailchimp-map.php:240
+msgid "Zip"
+msgstr ""
+
+#. %1$s: project name
+#: admin/include/class-diagnostic-data.php:510
+#, php-format
+msgid "🌟 Enhance Your %1$s Experience as a Valued Contributor!"
+msgstr ""
