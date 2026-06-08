@@ -1,0 +1,17 @@
+[
+    {
+        "id": "extensioncf7-notice-151124",
+        "message": "🛍️ Black Friday Sale is LIVE! Get 30% OFF with Code BFCM24 – Don't Miss Out! <a href='https://hasthemes.com/plugins/cf7-extensions/' target='_blank'>SAVE 30% NOW</a>",
+        "banner": {
+            "url": "https://hasthemes.com/plugins/cf7-extensions/",
+            "image": "<img src='https://feed.hasthemes.com/notices/extensions-for-cf7-upgrade.png' />"
+        },
+        "message_type": "html",
+        "close_by": "transient",
+        "display_after": 0,
+        "expire_time": 0,
+        "dismissible": true,
+        "disable": false,
+        "priority": -1
+    }
+]

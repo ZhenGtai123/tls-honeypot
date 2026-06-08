@@ -1,0 +1,244 @@
+# VM deployment: WordPress services only — proxies run directly on the host.
+#
+#   attacker --TLS--> proxy (host :8443/:8444) --HTTP--> nginx (127.0.0.1:8081/8082) --HTTP--> wordpress --> db
+#
+# iptables (see deployments/firewall.sh) redirects:
+#   145.220.231.96–103  :443  →  host :8443  (vuln proxy)
+#   145.220.231.104–111 :443  →  host :8444  (hardened proxy)
+#
+# Start proxies on the host with deployments/proxy-start.sh after bringing
+# this stack up:  docker compose -f compose.split.yaml up -d
+#
+# Containment: wp-* and db-* sit on internal: true networks with no outbound
+# internet route. nginx is exposed only on 127.0.0.1 — unreachable from outside.
+#
+# Rate limits: change NGINX_RATE_LIMIT / NGINX_RATE_BURST per service and
+# run `docker compose -f compose.split.yaml up -d --no-deps <service>` to apply.
+
+services:
+  # ============ VULNERABLE stack ============
+  nginx-vuln:
+    image: nginx:latest
+    restart: unless-stopped
+    depends_on: [wp-vuln]
+    ports:
+      - "127.0.0.1:8081:443"
+    networks: [back-vuln]
+    environment:
+      NGINX_RATE_LIMIT: "30r/s"   # CONFIGURE: requests/sec per client IP
+      NGINX_RATE_BURST: "60"      # CONFIGURE: burst queue depth before HTTP 429
+    volumes:
+      - ./honeypot/wordpress-https-vurn/nginx/vuln.split.conf:/etc/nginx/templates/vuln.conf.template:ro
+      - ./honeypot/wordpress-https-vurn/nginx/rate-limit.conf.template:/etc/nginx/templates/rate-limit.conf.template:ro
+      - ./testdata:/etc/nginx/certs:ro
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - NET_BIND_SERVICE
+      - SETGID
+      - SETUID
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /var/cache/nginx
+      - /var/run
+      - /etc/nginx/conf.d
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+          cpus: "0.25"
+          pids: 100
+
+  # Vulnerable WordPress: PHP 7.4 (EOL), WP 5.9, debug on, permissive uploads.
+  wp-vuln:
+    image: wordpress:5.9-php7.4-apache
+    restart: unless-stopped
+    depends_on: [db-vuln]
+    networks: [back-vuln]
+    environment:
+      WORDPRESS_DB_HOST: db-vuln:3306
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress_password
+      WORDPRESS_CONFIG_EXTRA: |
+        if (isset($$_SERVER['HTTP_X_FORWARDED_PROTO']) && $$_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') { $$_SERVER['HTTPS'] = 'on'; }
+        if (!empty($$_SERVER['HTTP_HOST'])) {
+            define('WP_HOME',         'https://' . $$_SERVER['HTTP_HOST']);
+            define('WP_SITEURL',      'https://' . $$_SERVER['HTTP_HOST']);
+        }
+        define('WP_DEBUG',         true);
+        define('WP_DEBUG_DISPLAY', true);
+        define('WP_DEBUG_LOG',     true);
+    volumes:
+      - wp_vuln_data:/var/www/html
+      - ./honeypot/wordpress-https-vurn/php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini:ro
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - DAC_OVERRIDE
+      - FOWNER
+      - SETGID
+      - SETUID
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "0.5"
+          pids: 200
+
+  db-vuln:
+    image: mysql:8.0
+    restart: unless-stopped
+    command: --default-authentication-plugin=mysql_native_password
+    networks: [back-vuln]
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress_password
+      MYSQL_ROOT_PASSWORD: root_password
+    volumes:
+      - db_vuln_data:/var/lib/mysql
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - DAC_OVERRIDE
+      - FOWNER
+      - SETGID
+      - SETUID
+      - SYS_NICE
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "0.5"
+          pids: 200
+
+  # ============ HARDENED stack ============
+  nginx-hardened:
+    image: nginx:latest
+    restart: unless-stopped
+    depends_on: [wp-hardened]
+    ports:
+      - "127.0.0.1:8082:443"
+    networks: [back-hardened]
+    environment:
+      NGINX_RATE_LIMIT: "10r/s"   # CONFIGURE: requests/sec per client IP
+      NGINX_RATE_BURST: "20"      # CONFIGURE: burst queue depth before HTTP 429
+    volumes:
+      - ./honeypot/wordpress-https-hardened/nginx/default.split.conf:/etc/nginx/templates/default.conf.template:ro
+      - ./honeypot/wordpress-https-hardened/nginx/rate-limit.conf.template:/etc/nginx/templates/rate-limit.conf.template:ro
+      - ./testdata:/etc/nginx/certs:ro
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - NET_BIND_SERVICE
+      - SETGID
+      - SETUID
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /var/cache/nginx
+      - /var/run
+      - /etc/nginx/conf.d
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+          cpus: "0.25"
+          pids: 100
+
+  # Hardened WordPress: PHP 8.3, WP 6.7, debug off, tight uploads, file editing disabled.
+  wp-hardened:
+    image: wordpress:6.7-php8.3-apache
+    restart: unless-stopped
+    depends_on: [db-hardened]
+    networks: [back-hardened]
+    environment:
+      WORDPRESS_DB_HOST: db-hardened:3306
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress_password
+      WORDPRESS_CONFIG_EXTRA: |
+        if (isset($$_SERVER['HTTP_X_FORWARDED_PROTO']) && $$_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') { $$_SERVER['HTTPS'] = 'on'; }
+        if (!empty($$_SERVER['HTTP_HOST'])) {
+            define('WP_HOME',             'https://' . $$_SERVER['HTTP_HOST']);
+            define('WP_SITEURL',          'https://' . $$_SERVER['HTTP_HOST']);
+        }
+        define('WP_DEBUG',            false);
+        define('DISALLOW_FILE_EDIT',  true);
+        define('WP_AUTO_UPDATE_CORE', true);
+    volumes:
+      - wp_hardened_data:/var/www/html
+      - ./honeypot/wordpress-https-hardened/php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini:ro
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - DAC_OVERRIDE
+      - FOWNER
+      - SETGID
+      - SETUID
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "0.5"
+          pids: 200
+
+  db-hardened:
+    image: mysql:8.4
+    restart: unless-stopped
+    networks: [back-hardened]
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress_password
+      MYSQL_ROOT_PASSWORD: root_password
+    volumes:
+      - db_hardened_data:/var/lib/mysql
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - DAC_OVERRIDE
+      - FOWNER
+      - SETGID
+      - SETUID
+      - SYS_NICE
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "0.5"
+          pids: 200
+
+networks:
+  back-vuln:
+    driver: bridge
+    internal: true
+  back-hardened:
+    driver: bridge
+    internal: true
+
+volumes:
+  wp_vuln_data:
+  db_vuln_data:
+  wp_hardened_data:
+  db_hardened_data:
