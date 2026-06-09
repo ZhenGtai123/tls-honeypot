@@ -45,7 +45,7 @@ services:
         condition: service_started
     ports:
       - "127.0.0.1:8081:443"
-    networks: [back-vuln]
+    networks: [edge-vuln, back-vuln]
     environment:
       NGINX_RATE_LIMIT: "30r/s"   # CONFIGURE: requests/sec per client IP
       NGINX_RATE_BURST: "60"      # CONFIGURE: burst queue depth before HTTP 429
@@ -156,7 +156,7 @@ services:
         condition: service_started
     ports:
       - "127.0.0.1:8082:443"
-    networks: [back-hardened]
+    networks: [edge-hardened, back-hardened]
     environment:
       NGINX_RATE_LIMIT: "10r/s"   # CONFIGURE: requests/sec per client IP
       NGINX_RATE_BURST: "20"      # CONFIGURE: burst queue depth before HTTP 429
@@ -256,9 +256,16 @@ services:
           pids: 200
 
 networks:
+  # nginx straddles edge (publishable to host :8081/:8082) + back (reach wp).
+  # wp-* / db-* stay on back-* only, which is internal (no internet egress) so
+  # a compromised WordPress cannot call out.
+  edge-vuln:
+    driver: bridge
   back-vuln:
     driver: bridge
     internal: true
+  edge-hardened:
+    driver: bridge
   back-hardened:
     driver: bridge
     internal: true
