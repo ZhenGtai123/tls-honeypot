@@ -6,8 +6,10 @@
 #      allow public :443.
 #   2. iptables REDIRECT: steers traffic from each public IP's :443 into the
 #      correct host-side proxy port (8443 for vuln, 8444 for hardened).
-#      The proxies listen on 0.0.0.0:8443 / 0.0.0.0:8444 — they are not
-#      exposed externally (ufw blocks direct access to those ports).
+#      The proxies listen on 0.0.0.0:8443 / 0.0.0.0:8444. ufw must ALLOW these
+#      ports: the REDIRECT rewrites :443 -> :8443/:8444 in PREROUTING (before
+#      ufw's INPUT filter), so redirected packets reach INPUT with dport
+#      8443/8444 and would otherwise be dropped by the default-deny policy.
 
 set -euo pipefail
 
@@ -46,6 +48,12 @@ ufw default deny outgoing
 # Inbound: SSH (key-based, any source) + HTTPS (iptables routes it to proxy below)
 ufw allow "$SSH_PORT"/tcp  comment "ssh"
 ufw allow "$TLS_PORT"/tcp  comment "public TLS"
+# The REDIRECT below rewrites :443 -> :8443/:8444 in PREROUTING, which runs
+# BEFORE ufw's INPUT filter — so the redirected packets reach INPUT with dport
+# 8443/8444 and would hit the default-deny. Allow them. (A direct external hit
+# to 8443/8444 reaches the same proxy, which is acceptable for a honeypot.)
+ufw allow "$PROXY_VULN_PORT"/tcp     comment "vuln proxy (redirected from 443)"
+ufw allow "$PROXY_HARDENED_PORT"/tcp comment "hardened proxy (redirected from 443)"
 
 # Outbound: bare minimum — deliberately NOT allowing SMTP/IRC so a compromised
 # WordPress (sandboxed in Docker) cannot be weaponised even if Docker bypasses ufw.
@@ -64,18 +72,24 @@ ufw status verbose
 
 echo "[firewall.sh] Installing iptables REDIRECT rules ..."
 
-# Flush only the PREROUTING chain in nat so we start clean.
-iptables -t nat -F PREROUTING
+# Put our REDIRECT rules in a dedicated chain (HONEYPOT) and only ever flush
+# THAT. The previous version ran `iptables -t nat -F PREROUTING`, which also
+# deletes Docker's own "-j DOCKER" jump and breaks every published container
+# port (e.g. the 127.0.0.1:8081/8082 nginx ports the proxies forward to).
+iptables -t nat -N HONEYPOT 2>/dev/null || iptables -t nat -F HONEYPOT
+# Jump into HONEYPOT from PREROUTING exactly once (idempotent on re-run).
+iptables -t nat -C PREROUTING -j HONEYPOT 2>/dev/null \
+  || iptables -t nat -A PREROUTING -j HONEYPOT
 
 for ip in "${VULN_IPS[@]}"; do
-  iptables -t nat -A PREROUTING \
+  iptables -t nat -A HONEYPOT \
     -d "$ip" -p tcp --dport "$TLS_PORT" \
     -j REDIRECT --to-port "$PROXY_VULN_PORT"
   echo "  $ip:$TLS_PORT  →  :$PROXY_VULN_PORT (vuln)"
 done
 
 for ip in "${HARDENED_IPS[@]}"; do
-  iptables -t nat -A PREROUTING \
+  iptables -t nat -A HONEYPOT \
     -d "$ip" -p tcp --dport "$TLS_PORT" \
     -j REDIRECT --to-port "$PROXY_HARDENED_PORT"
   echo "  $ip:$TLS_PORT  →  :$PROXY_HARDENED_PORT (hardened)"
