@@ -76,8 +76,11 @@ services:
           pids: 100
 
   # Vulnerable WordPress: PHP 7.4 (EOL), WP 5.9, debug on, permissive uploads.
+  # Built from wp-vuln.Dockerfile so the vulnerable plugin (bait) is baked in.
   wp-vuln:
-    image: wordpress:5.9-php7.4-apache
+    build:
+      context: .
+      dockerfile: deployments/wp-vuln.Dockerfile
     restart: unless-stopped
     depends_on: [db-vuln]
     networks: [back-vuln]
