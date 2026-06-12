@@ -347,20 +347,22 @@ func createTransport(forwardHTTPS bool) http.RoundTripper {
 }
 
 func createTLSConfig() *tls.Config {
+	// Honeypot TLS posture: accept the WIDEST range the Go stack allows, so that
+	// legacy / weak-crypto clients (old bots, exploit kits, scanners probing for
+	// SSL-era bugs) complete the handshake and get logged — instead of being
+	// rejected at the TLS layer before they send a single request. This leg has
+	// nothing to protect (we are a passive MitM observer), so weak ciphers are
+	// acceptable and in fact desirable for capture. Limits: Go's floor is TLS 1.0
+	// (SSLv3 was removed from crypto/tls) and a few export-grade ciphers are gone,
+	// so SSLv3-only / export-only clients still cannot be captured.
 	cfg := &tls.Config{
-		MinVersion:   tls.VersionTLS12,
+		MinVersion:   tls.VersionTLS10,
 		MaxVersion:   tls.VersionTLS13,
-		Certificates: nil, // Will be loaded from files
-		CurvePreferences: []tls.CurveID{
-			tls.CurveP256,
-			tls.X25519,
-		},
-		PreferServerCipherSuites: true,
-		CipherSuites: []uint16{
-			tls.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
-			tls.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,
-			tls.TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,
-		},
+		Certificates: nil, // loaded from files, or via the cert rotator's GetCertificate
+		// Offer every suite Go implements, including the ones it flags insecure
+		// (RC4 / 3DES / CBC). CurvePreferences left nil so Go offers all supported
+		// curves. Maximises the set of clients that can complete a handshake.
+		CipherSuites: allCipherSuites(),
 	}
 	// Observe the ClientHello for fingerprinting. Returning (nil, nil) keeps
 	// the same config for the handshake (cert rotation's GetCertificate still
@@ -379,6 +381,22 @@ func createTLSConfig() *tls.Config {
 		return nil, nil
 	}
 	return cfg
+}
+
+// allCipherSuites returns every cipher suite ID the Go TLS stack implements,
+// including those it classifies as insecure (RC4 / 3DES / CBC), so the honeypot
+// can complete handshakes with weak / legacy clients and log them. Affects only
+// TLS 1.0–1.2; TLS 1.3 suites are always enabled and not configurable, and any
+// 1.3 IDs returned here are ignored by crypto/tls in Config.CipherSuites.
+func allCipherSuites() []uint16 {
+	var ids []uint16
+	for _, s := range tls.CipherSuites() {
+		ids = append(ids, s.ID)
+	}
+	for _, s := range tls.InsecureCipherSuites() {
+		ids = append(ids, s.ID)
+	}
+	return ids
 }
 
 func (p *HoneypotProxy) ServeHTTP(w http.ResponseWriter, r *http.Request) {
