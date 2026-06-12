@@ -36,6 +36,7 @@ else
     --rotate-cert-interval=24h \
     --cert-cn=sys-admin.internal \
     --experiment-group=vuln \
+    --min-tls-version=1.0 \
     --log-dir="$ROOT/logs/vuln" \
     >> "$ROOT/logs/vuln/proxy.log" 2>&1 &
   echo $! > /tmp/proxy-vuln.pid
@@ -54,6 +55,7 @@ else
     --rotate-cert-interval=24h \
     --cert-cn=fge-integration-test.internal.coralset.com \
     --experiment-group=hardened \
+    --min-tls-version=1.2 \
     --log-dir="$ROOT/logs/hardened" \
     >> "$ROOT/logs/hardened/proxy.log" 2>&1 &
   echo $! > /tmp/proxy-hardened.pid

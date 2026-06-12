@@ -53,6 +53,7 @@ services:
       - --cert-cn=sys-admin.internal
       - --experiment-group=vuln
       - --log-dir=/logs
+      - --min-tls-version=1.0
 
   nginx-vuln:
     image: nginx:latest
@@ -174,6 +175,7 @@ services:
       - --cert-cn=fge-integration-test.internal.coralset.com
       - --experiment-group=hardened
       - --log-dir=/logs
+      - --min-tls-version=1.2
 
   nginx-hardened:
     image: nginx:latest

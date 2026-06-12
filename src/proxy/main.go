@@ -244,6 +244,7 @@ func main() {
 	rotateCertInterval := flag.Duration("rotate-cert-interval", 0, "How often to rotate the TLS certificate (e.g. 24h). 0 disables rotation and uses --cert/--key files instead.")
 	certCN := flag.String("cert-cn", "", "Fixed Common Name for every generated cert (empty = random per rotation). Set a distinct value per proxy instance so each stack looks like a different server.")
 	expGroup := flag.String("experiment-group", "default", "Experiment group tag written to every log line (e.g. vuln or hardened). Run one proxy instance per group.")
+	minTLSVersion := flag.String("min-tls-version", "1.2", "Minimum TLS version to accept: 1.0, 1.1, 1.2, or 1.3. Use 1.0 on the vuln stack to attract legacy scanners.")
 	flag.Parse()
 
 	// Create log directory
@@ -268,7 +269,7 @@ func main() {
 	}
 
 	// Build TLS config — either rotating certs or static files.
-	tlsCfg := createTLSConfig()
+	tlsCfg := createTLSConfig(parseTLSVersion(*minTLSVersion))
 	if *rotateCertInterval > 0 {
 		cr, err := newCertRotator(*rotateCertInterval, *certCN)
 		if err != nil {
@@ -346,21 +347,56 @@ func createTransport(forwardHTTPS bool) http.RoundTripper {
 	return transport
 }
 
-func createTLSConfig() *tls.Config {
+// parseTLSVersion maps the --min-tls-version string to a tls constant.
+func parseTLSVersion(s string) uint16 {
+	switch s {
+	case "1.0":
+		return tls.VersionTLS10
+	case "1.1":
+		return tls.VersionTLS11
+	case "1.3":
+		return tls.VersionTLS13
+	default:
+		return tls.VersionTLS12
+	}
+}
+
+func createTLSConfig(minVersion uint16) *tls.Config {
+	// Cipher suites only apply to TLS 1.2 and below; TLS 1.3 has its own
+	// fixed set. When accepting TLS 1.0/1.1 we add CBC and RSA-key-exchange
+	// suites so legacy scanners and old tools can complete a handshake.
+	ciphers := []uint16{
+		tls.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+		tls.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,
+		tls.TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,
+	}
+	curves := []tls.CurveID{
+		tls.X25519,
+		tls.CurveP256,
+	}
+	if minVersion < tls.VersionTLS12 {
+		// Legacy suites: CBC modes and RSA key exchange (no forward secrecy).
+		// These are needed for TLS 1.0/1.1 clients and old scanners.
+		ciphers = append(ciphers,
+			tls.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,
+			tls.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
+			tls.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256,
+			tls.TLS_RSA_WITH_AES_128_GCM_SHA256,
+			tls.TLS_RSA_WITH_AES_256_GCM_SHA384,
+			tls.TLS_RSA_WITH_AES_128_CBC_SHA,
+			tls.TLS_RSA_WITH_AES_256_CBC_SHA,
+			tls.TLS_RSA_WITH_3DES_EDE_CBC_SHA,
+		)
+		curves = append(curves, tls.CurveP384, tls.CurveP521)
+	}
+
 	cfg := &tls.Config{
-		MinVersion:   tls.VersionTLS12,
-		MaxVersion:   tls.VersionTLS13,
-		Certificates: nil, // Will be loaded from files
-		CurvePreferences: []tls.CurveID{
-			tls.CurveP256,
-			tls.X25519,
-		},
+		MinVersion:               minVersion,
+		MaxVersion:               tls.VersionTLS13,
+		Certificates:             nil,
+		CurvePreferences:         curves,
 		PreferServerCipherSuites: true,
-		CipherSuites: []uint16{
-			tls.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
-			tls.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,
-			tls.TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,
-		},
+		CipherSuites:             ciphers,
 	}
 	// Observe the ClientHello for fingerprinting. Returning (nil, nil) keeps
 	// the same config for the handshake (cert rotation's GetCertificate still
