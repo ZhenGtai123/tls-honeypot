@@ -445,9 +445,6 @@ func (p *HoneypotProxy) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Add proxy header
-	w.Header().Set("X-Proxy", "Honeypot-MitM")
-
 	// Send response
 	w.WriteHeader(resp.StatusCode)
 	if _, err := w.Write(respBody); err != nil {

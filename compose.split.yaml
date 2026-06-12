@@ -16,14 +16,36 @@
 # run `docker compose -f compose.split.yaml up -d --no-deps <service>` to apply.
 
 services:
+  # ---- shared: generate the backend TLS cert (TLS B, proxy->nginx leg) into
+  # ./testdata if absent, so a fresh clone/VM boots without a manual openssl
+  # step. Attackers never see this cert; the proxy skips verification. ----
+  certgen:
+    image: alpine/openssl:latest
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        if [ -f /certs/cert.pem ] && [ -f /certs/key.pem ]; then
+          echo "[certgen] certs present, skipping"; exit 0
+        fi
+        echo "[certgen] generating self-signed backend cert"
+        openssl req -x509 -newkey rsa:2048 -nodes -days 3650 \
+          -subj "/CN=honeypot-backend" \
+          -keyout /certs/key.pem -out /certs/cert.pem
+    volumes:
+      - ./testdata:/certs
+
   # ============ VULNERABLE stack ============
   nginx-vuln:
     image: nginx:latest
     restart: unless-stopped
-    depends_on: [wp-vuln]
+    depends_on:
+      certgen:
+        condition: service_completed_successfully
+      wp-vuln:
+        condition: service_started
     ports:
       - "127.0.0.1:8081:443"
-    networks: [back-vuln]
+    networks: [edge-vuln, back-vuln]
     environment:
       NGINX_RATE_LIMIT: "30r/s"   # CONFIGURE: requests/sec per client IP
       NGINX_RATE_BURST: "60"      # CONFIGURE: burst queue depth before HTTP 429
@@ -54,8 +76,11 @@ services:
           pids: 100
 
   # Vulnerable WordPress: PHP 7.4 (EOL), WP 5.9, debug on, permissive uploads.
+  # Built from wp-vuln.Dockerfile so the vulnerable plugin (bait) is baked in.
   wp-vuln:
-    image: wordpress:5.9-php7.4-apache
+    build:
+      context: .
+      dockerfile: deployments/wp-vuln.Dockerfile
     restart: unless-stopped
     depends_on: [db-vuln]
     networks: [back-vuln]
@@ -75,6 +100,7 @@ services:
         define('WP_DEBUG_LOG',     true);
     volumes:
       - wp_vuln_data:/var/www/html
+      - ./plugins:/var/www/html/wp-content/plugins
       - ./honeypot/wordpress-https-vurn/php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini:ro
     security_opt:
       - no-new-privileges:true
@@ -127,10 +153,14 @@ services:
   nginx-hardened:
     image: nginx:latest
     restart: unless-stopped
-    depends_on: [wp-hardened]
+    depends_on:
+      certgen:
+        condition: service_completed_successfully
+      wp-hardened:
+        condition: service_started
     ports:
       - "127.0.0.1:8082:443"
-    networks: [back-hardened]
+    networks: [edge-hardened, back-hardened]
     environment:
       NGINX_RATE_LIMIT: "10r/s"   # CONFIGURE: requests/sec per client IP
       NGINX_RATE_BURST: "20"      # CONFIGURE: burst queue depth before HTTP 429
@@ -230,9 +260,16 @@ services:
           pids: 200
 
 networks:
+  # nginx straddles edge (publishable to host :8081/:8082) + back (reach wp).
+  # wp-* / db-* stay on back-* only, which is internal (no internet egress) so
+  # a compromised WordPress cannot call out.
+  edge-vuln:
+    driver: bridge
   back-vuln:
     driver: bridge
     internal: true
+  edge-hardened:
+    driver: bridge
   back-hardened:
     driver: bridge
     internal: true

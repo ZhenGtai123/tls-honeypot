@@ -18,6 +18,24 @@ x-proxy-build: &proxy-build
   restart: unless-stopped
 
 services:
+  # ---- shared: generate the backend TLS cert (TLS B, proxy->nginx leg) into
+  # ./testdata if absent, so a fresh clone/VM boots without a manual openssl
+  # step. Attackers never see this cert; the proxy skips verification. ----
+  certgen:
+    image: alpine/openssl:latest
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        if [ -f /certs/cert.pem ] && [ -f /certs/key.pem ]; then
+          echo "[certgen] certs present, skipping"; exit 0
+        fi
+        echo "[certgen] generating self-signed backend cert"
+        openssl req -x509 -newkey rsa:2048 -nodes -days 3650 \
+          -subj "/CN=honeypot-backend" \
+          -keyout /certs/key.pem -out /certs/cert.pem
+    volumes:
+      - ./testdata:/certs
+
   # ============ VULNERABLE stack ============
   proxy-vuln:
     <<: *proxy-build
@@ -39,7 +57,11 @@ services:
   nginx-vuln:
     image: nginx:latest
     restart: unless-stopped
-    depends_on: [wp-vuln]
+    depends_on:
+      certgen:
+        condition: service_completed_successfully
+      wp-vuln:
+        condition: service_started
     networks: [edge-vuln, back-vuln]
     volumes:
       - ./honeypot/wordpress-https-vurn/nginx/vuln.conf:/etc/nginx/conf.d/default.conf:ro
@@ -156,7 +178,11 @@ services:
   nginx-hardened:
     image: nginx:latest
     restart: unless-stopped
-    depends_on: [wp-hardened]
+    depends_on:
+      certgen:
+        condition: service_completed_successfully
+      wp-hardened:
+        condition: service_started
     networks: [edge-hardened, back-hardened]
     volumes:
       - ./honeypot/wordpress-https-hardened/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro

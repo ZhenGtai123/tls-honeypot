@@ -192,47 +192,7 @@ docker compose down -v       # also wipe DB + WP volumes (full reset)
 
 ## VM deployment — proxies on host, WordPress in Docker (`compose.split.yaml`)
 
-Use this on the VM. WordPress stays sandboxed in Docker. The proxy binaries run directly on the host so they can bind to real network interfaces before Docker's NAT layer.
-
-### Container hardening
-
-Every container in `compose.split.yaml` is hardened against an attacker who gains code execution inside a container:
-
-| Measure | Applied to | Effect |
-|---|---|---|
-| `cap_drop: ALL` + minimum `cap_add` | all | Removes all Linux capabilities; only adds back what each service actually needs (e.g. `NET_BIND_SERVICE` for nginx, `SETUID`/`CHOWN`/`DAC_OVERRIDE` for Apache and MySQL startup) |
-| `no-new-privileges: true` | all | Blocks privilege escalation via setuid executables inside the container |
-| `pids_limit: 100/200` | all | Caps total processes; prevents fork-bomb DoS from inside a compromised container |
-| `deploy.resources.limits` (memory + CPU) | all | Prevents one container from starving the VM |
-| `read_only: true` + tmpfs | nginx only | Root filesystem is read-only; `/tmp`, `/var/cache/nginx`, `/var/run`, `/etc/nginx/conf.d` are tmpfs in-memory mounts |
-
-The primary isolation is still the `internal: true` Docker networks — no outbound route exists even with a full shell. The measures above add depth.
-
-### Tuning rate limits
-
-Rate limits are set per nginx service in `compose.split.yaml` and applied without rebuilding images:
-
-```yaml
-nginx-vuln:
-  environment:
-    NGINX_RATE_LIMIT: "30r/s"   # sustained requests/sec per client IP
-    NGINX_RATE_BURST: "60"      # burst queue depth before HTTP 429
-```
-
-| Variable | Vuln default | Hardened default | Effect |
-|---|---|---|---|
-| `NGINX_RATE_LIMIT` | `30r/s` | `10r/s` | Token refill rate — sustained throughput per IP |
-| `NGINX_RATE_BURST` | `60` | `20` | Queue depth for bursty legitimate traffic (browser asset loads) |
-
-Apply a change to a running stack:
-
-```bash
-# Edit compose.split.yaml, then:
-docker compose -f compose.split.yaml up -d --no-deps nginx-vuln
-docker compose -f compose.split.yaml up -d --no-deps nginx-hardened
-```
-
-The nginx image processes `*.conf.template` files via `envsubst` on startup, substituting only variables that are defined as container env vars — nginx variables like `$binary_remote_addr` and `$host` are left intact.
+Use this on the VM. WordPress and its databases stay sandboxed in Docker. The Go proxy binaries run directly on the host to bind to the real public network interfaces before Docker's NAT layer intercepts traffic.
 
 ```
 internet
@@ -240,7 +200,30 @@ internet
   └─ 145.220.231.104–111 :443 ──iptables──▶ host :8444 (proxy-hardened) ──TLS──▶ 127.0.0.1:8082 (nginx-hardened in Docker)
 ```
 
-### I — First-time setup on the VM
+### I — VM prerequisites
+
+On a fresh Ubuntu 22.04 VM, install everything needed before touching the project:
+
+```bash
+# Docker engine + Compose plugin
+sudo apt update
+sudo apt install -y docker.io docker-compose-plugin
+
+# Add your user to the docker group so you don't need sudo
+sudo usermod -aG docker $USER
+newgrp docker
+
+# Go 1.21+ (needed to compile the proxy on the host)
+wget -q https://go.dev/dl/go1.23.0.linux-amd64.tar.gz
+sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.23.0.linux-amd64.tar.gz
+echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc && source ~/.bashrc
+go version   # should print go1.23.x
+
+# Firewall tools
+sudo apt install -y ufw iptables-persistent openssl jq
+```
+
+### J — Clone the repository
 
 ```bash
 ssh <user>@<vpn-ip>
@@ -248,98 +231,201 @@ git clone https://github.com/<org>/tls-honeypot
 cd tls-honeypot
 ```
 
-### J — Generate backend cert (same as step B)
+### K — Generate the nginx backend certificate
+
+This cert is used for the internal proxy→nginx TLS leg (TLS B). Attackers never see it.
 
 ```bash
 mkdir -p testdata logs/vuln logs/hardened
 
 openssl req -x509 -newkey rsa:2048 -nodes \
   -keyout testdata/key.pem \
-  -out  testdata/cert.pem \
-  -days 3650 \
-  -subj "/CN=honeypot-backend"
+  -out    testdata/cert.pem \
+  -days   3650 \
+  -subj   "/CN=honeypot-backend"
 ```
 
-### K — Start the WordPress Docker stack
+> Do **not** commit `testdata/key.pem` — it is in `.gitignore`. The public `cert.pem` can be committed.
+
+### L — Start the WordPress Docker stack
 
 ```bash
 docker compose -f compose.split.yaml up -d
 ```
 
-Verify nginx containers are up and listening on localhost:
+Wait ~20 seconds for MySQL and WordPress to finish initialising, then check every container is `Up` with no `Restarting`:
 
 ```bash
 docker compose -f compose.split.yaml ps
-curl -k https://localhost:8081/   # nginx-vuln  (no proxy in front yet)
-curl -k https://localhost:8082/   # nginx-hardened
 ```
 
-### L — Configure the firewall and IP routing
+Expected output:
 
-Edit `SSH_ALLOW_FROM` in `deployments/firewall.sh` to your own IP first — otherwise you will lock yourself out.
+```
+NAME                     IMAGE                         STATUS
+...-db-hardened-1        mysql:8.4                     Up X seconds
+...-db-vuln-1            mysql:8.0                     Up X seconds
+...-nginx-hardened-1     nginx:latest                  Up X seconds
+...-nginx-vuln-1         nginx:latest                  Up X seconds
+...-wp-hardened-1        wordpress:6.7-php8.3-apache   Up X seconds
+...-wp-vuln-1            wordpress:5.9-php7.4-apache   Up X seconds
+```
+
+Smoke-test the nginx containers directly (proxies not started yet):
 
 ```bash
-nano deployments/firewall.sh   # set SSH_ALLOW_FROM="your.ip.here"
+curl -sk -o /dev/null -w "%{http_code}\n" https://localhost:8081/   # expect 200 or 302
+curl -sk -o /dev/null -w "%{http_code}\n" https://localhost:8082/   # expect 200 or 302
+```
+
+If either nginx container keeps restarting, check:
+
+```bash
+docker logs <container-name>
+```
+
+### M — Configure the firewall and IP routing
+
+```bash
 sudo bash deployments/firewall.sh
 ```
 
-This applies two things:
-1. **ufw** — deny-by-default, allow SSH (your IP only) + public port 443
-2. **iptables PREROUTING REDIRECT** — steers traffic from each public IP's `:443` into the correct host proxy port
+What it does:
+1. **ufw** — default deny, allow SSH from any IP (key-based auth), allow public port 443
+2. **iptables PREROUTING REDIRECT** — steers each IP range's port 443 to the correct proxy port on the host:
 
 ```
 145.220.231.96–103  :443  →  :8443   (vuln proxy)
 145.220.231.104–111 :443  →  :8444   (hardened proxy)
 ```
 
-### M — Build and start the host proxies
+Rules survive reboots because `iptables-persistent` saves them automatically.
+
+Verify the rules are in place:
+
+```bash
+sudo iptables -t nat -L PREROUTING -n --line-numbers
+```
+
+### N — Build and start the host proxies
 
 ```bash
 bash deployments/proxy-start.sh
 ```
 
-This compiles the proxy binary and starts both instances as background processes:
+This compiles the Go proxy binary and starts both instances as background daemons:
 
-- `proxy-vuln` on `:8443` → `localhost:8081` (nginx-vuln), CN=`sys-admin.internal`
-- `proxy-hardened` on `:8444` → `localhost:8082` (nginx-hardened), CN=`fge-integration-test.internal.coralset.com`
+| Proxy | Listens | Forwards to | Certificate CN |
+|---|---|---|---|
+| `proxy-vuln` | `:8443` | `localhost:8081` | `sys-admin.internal` |
+| `proxy-hardened` | `:8444` | `localhost:8082` | `fge-integration-test.internal.coralset.com` |
 
-Tail the proxy logs:
+PIDs are written to `/tmp/proxy-vuln.pid` and `/tmp/proxy-hardened.pid`.
+
+Confirm both are running:
 
 ```bash
-tail -f logs/vuln/proxy.log
-tail -f logs/hardened/proxy.log
+ps aux | grep honeypot-proxy
+tail -20 logs/vuln/proxy.log
+tail -20 logs/hardened/proxy.log
 ```
 
-### N — Verify from off-VPN
+### O — Verify end-to-end from off-VPN
 
-Use a phone hotspot or any machine that is **not** the VM itself.
+Use a phone hotspot or any machine that is **not** the VM (on-VM curl bypasses the iptables redirect):
 
 ```bash
-# Each proxy presents a different certificate — attacker sees two unrelated servers
+# Each proxy must show a different certificate CN
 echo | openssl s_client -connect 145.220.231.96:443  2>/dev/null | openssl x509 -noout -subject
+# expected: subject=CN=sys-admin.internal
+
 echo | openssl s_client -connect 145.220.231.104:443 2>/dev/null | openssl x509 -noout -subject
+# expected: subject=CN=fge-integration-test.internal.coralset.com
 
-# WordPress should load through the proxy
-curl -k https://145.220.231.96/
-curl -k https://145.220.231.104/
+# WordPress must load through both paths
+curl -k -o /dev/null -w "%{http_code}\n" https://145.220.231.96/
+curl -k -o /dev/null -w "%{http_code}\n" https://145.220.231.104/
 
-# Check experiment_group tag in logs
-tail -1 logs/vuln/traffic-$(date -u +%F).jsonl     | jq .request.experiment_group
-tail -1 logs/hardened/traffic-$(date -u +%F).jsonl | jq .request.experiment_group
+# Confirm traffic is being logged
+tail -1 logs/vuln/traffic-$(date -u +%F).jsonl     | jq '{group: .request.experiment_group, ip: .request.client_ip}'
+tail -1 logs/hardened/traffic-$(date -u +%F).jsonl | jq '{group: .request.experiment_group, ip: .request.client_ip}'
 ```
 
-### O — Update the running deployment
+### P — Tuning rate limits
+
+Rate limits live in `compose.split.yaml` under each nginx service and take effect after a container restart — no image rebuild needed:
+
+```yaml
+nginx-vuln:
+  environment:
+    NGINX_RATE_LIMIT: "30r/s"   # sustained requests/sec per client IP
+    NGINX_RATE_BURST: "60"      # burst queue depth before HTTP 429
+
+nginx-hardened:
+  environment:
+    NGINX_RATE_LIMIT: "10r/s"
+    NGINX_RATE_BURST: "20"
+```
+
+| Variable | Description |
+|---|---|
+| `NGINX_RATE_LIMIT` | Token refill rate — how many requests/sec each IP is allowed to sustain |
+| `NGINX_RATE_BURST` | Queue depth — excess requests are held here before being rejected with 429 |
+
+Apply without touching the WordPress or DB containers:
+
+```bash
+# Edit compose.split.yaml, then:
+docker compose -f compose.split.yaml up -d --no-deps nginx-vuln
+docker compose -f compose.split.yaml up -d --no-deps nginx-hardened
+```
+
+### Q — Container hardening reference
+
+All six containers in `compose.split.yaml` are hardened assuming an attacker achieves code execution inside one:
+
+| Measure | Applied to | What it prevents |
+|---|---|---|
+| `cap_drop: ALL` + minimum `cap_add` | all | Removes all Linux capabilities; only the minimum are re-granted (e.g. `NET_BIND_SERVICE`+`CHOWN` for nginx, `SETUID`/`DAC_OVERRIDE`/`FOWNER` for Apache and MySQL) |
+| `security_opt: no-new-privileges:true` | all | Blocks privilege escalation via setuid-bit executables inside the container |
+| `deploy.resources.limits.pids` | all | Caps total processes — prevents fork-bomb DoS from inside a compromised container |
+| `deploy.resources.limits` (memory + CPU) | all | Prevents one container from exhausting VM resources |
+| `read_only: true` + tmpfs | nginx only | Root FS is read-only; only `/tmp`, `/var/cache/nginx`, `/var/run`, `/etc/nginx/conf.d` are writable in-memory mounts |
+
+The primary containment is the `internal: true` Docker networks — even with a full shell inside a container there is no outbound internet route. The measures above add depth-in-defence.
+
+### R — Updating a running deployment
 
 ```bash
 ssh <user>@<vpn-ip>
 cd tls-honeypot && git pull
 
-# Restart WordPress containers
+# Restart WordPress + nginx containers (picks up compose changes)
 docker compose -f compose.split.yaml up -d
 
-# Rebuild and restart host proxies
+# Rebuild and restart host proxies (picks up proxy source changes)
 kill $(cat /tmp/proxy-vuln.pid /tmp/proxy-hardened.pid) 2>/dev/null || true
 bash deployments/proxy-start.sh
+```
+
+To restart only one service without touching the others:
+
+```bash
+docker compose -f compose.split.yaml up -d --no-deps <service-name>
+# e.g.: nginx-vuln, wp-hardened, db-vuln ...
+```
+
+### S — Stopping the deployment
+
+```bash
+# Stop host proxies
+kill $(cat /tmp/proxy-vuln.pid /tmp/proxy-hardened.pid) 2>/dev/null || true
+
+# Stop Docker stack (keeps data volumes)
+docker compose -f compose.split.yaml down
+
+# Full reset — also wipes DB and WordPress data volumes
+docker compose -f compose.split.yaml down -v
 ```
 
 ---
@@ -350,11 +436,16 @@ bash deployments/proxy-start.sh
 |---|---|
 | `bind: address already in use` on port 8443/8444 | Another process or Docker container holds the port — `docker compose down` first |
 | `bind: socket access permission` on Windows | Hyper-V owns the port — change `--listen` to `:18443` and update `WP_HOME` in compose.yaml |
-| nginx container keeps restarting | Config syntax error or missing cert — `docker logs <container>` |
-| `502 Bad Gateway` from proxy | nginx or WP not ready — wait 15 s and retry |
-| iptables rules lost after reboot | `apt install -y iptables-persistent` then re-run `firewall.sh` |
+| SSH locked out after running `firewall.sh` | Should not happen — SSH is open to all IPs. If ufw was pre-configured differently, use the cloud console to run `sudo ufw allow ssh` |
+| nginx container keeps restarting | Check `docker logs <container>` — most likely a missing cert (`testdata/`) or a tmpfs/cap issue |
+| nginx logs `chown ... Operation not permitted` | `CHOWN` cap is missing from nginx `cap_add` — verify `compose.split.yaml` has `CHOWN` listed |
+| `502 Bad Gateway` from proxy | nginx or WP not ready — wait 20 s and retry; check `docker compose -f compose.split.yaml ps` |
+| Clients get HTTP 429 unexpectedly | Rate limit too tight — raise `NGINX_RATE_BURST` in `compose.split.yaml` and restart nginx |
+| iptables rules lost after reboot | Run `sudo netfilter-persistent save` or `apt install -y iptables-persistent` then re-run `firewall.sh` |
+| Proxies not receiving traffic after reboot | iptables PREROUTING rules are gone — re-run `sudo bash deployments/firewall.sh` |
 | Logs dated one day off | Containers run UTC — expected |
-| Both proxies show the same cert CN | Check `--cert-cn` flag is set differently per proxy instance |
+| Both proxies show the same cert CN | Check `--cert-cn` flag is set differently in `proxy-start.sh` per proxy instance |
+| `WP_DEBUG already defined` PHP warning | Pre-existing: `wp-config.php` defines it before `WORDPRESS_CONFIG_EXTRA` is injected — harmless on the vuln stack, doesn't affect logging |
 
 ---
 
