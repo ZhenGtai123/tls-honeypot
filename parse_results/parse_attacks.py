@@ -9,6 +9,13 @@ from datetime import datetime
 from pathlib import Path
 from typing import List, Optional, Tuple
 
+from classify_request import (
+    CLASSIFICATION_DESCRIPTIONS,
+    CLASSIFICATION_LABELS,
+    SEVERITY,
+    classify_request,
+    resolve_classification,
+)
 from log_loader import (
     extract_date_from_filename,
     find_all_log_pairs,
@@ -17,55 +24,6 @@ from log_loader import (
     load_requests,
     load_traffic,
 )
-
-
-CLASSIFICATION_LABELS = {
-    "reconnaissance": "Reconnaissance / scanning",
-    "sensitive_file_probe": "Sensitive file probing (.env, .git, config)",
-    "wordpress_probe": "WordPress vulnerability probing",
-    "path_traversal_attempt": "Path traversal attempt",
-    "login_attempt": "Login / credential attack",
-    "command_injection_probe": "Command injection probe",
-    "unknown": "Unclassified / other",
-}
-
-CLASSIFICATION_DESCRIPTIONS = {
-    "command_injection_probe": (
-        "Probes for command injection / RCE vulnerabilities. The @zdi/Powershell "
-        "payload targets Microsoft Exchange ProxyLogon (CVE-2021-26855)."
-    ),
-    "path_traversal_attempt": (
-        "Attempts to escape the web root using ../ sequences, often targeting "
-        "CGI binaries like /bin/sh for remote code execution."
-    ),
-    "login_attempt": (
-        "Credential stuffing or brute-force login attempts, typically POST requests "
-        "to login endpoints or the site root."
-    ),
-    "wordpress_probe": (
-        "Scans for WordPress installations and known vulnerable paths such as "
-        "wp-login.php, plugins, and themes."
-    ),
-    "sensitive_file_probe": (
-        "Attempts to retrieve sensitive configuration files such as .env, .git/config, "
-        "and config.json that may leak secrets."
-    ),
-    "reconnaissance": (
-        "General scanning and information gathering: root paths, robots.txt, "
-        "favicon, and other discovery requests."
-    ),
-    "unknown": "Requests that did not match a specific attack signature.",
-}
-
-SEVERITY = {
-    "path_traversal_attempt": "HIGH",
-    "command_injection_probe": "HIGH",
-    "login_attempt": "HIGH",
-    "sensitive_file_probe": "MEDIUM",
-    "wordpress_probe": "MEDIUM",
-    "reconnaissance": "LOW",
-    "unknown": "LOW",
-}
 
 
 def parse_timestamp(ts: str) -> datetime:
@@ -104,7 +62,8 @@ def build_report(
 
     for req in requests:
         rid = req["request_id"]
-        cls = req.get("classification", "unknown")
+        cls = classify_request(req)
+        log_cls = req.get("classification", "unknown")
         ip = req.get("client_ip", "unknown")
         path = req.get("path", req.get("url", ""))
         method = req.get("method", "")
@@ -131,6 +90,7 @@ def build_report(
             "method": method,
             "path": path,
             "classification": cls,
+            "log_classification": log_cls,
             "severity": SEVERITY.get(cls, "LOW"),
             "user_agent": ua,
         }
@@ -153,7 +113,7 @@ def build_report(
     for t in traffic:
         req = t["request"]
         resp = t["response"]
-        cls = req.get("classification", "unknown")
+        cls = classify_request(req)
         status_by_class[cls][resp.get("status_code")] += 1
         status_codes[resp.get("status_code")] += 1
         if resp.get("duration_ms") is not None:
@@ -369,24 +329,11 @@ def format_text_report(report: dict) -> str:
     return "\n".join(lines)
 
 
-def resolve_classification(name: str) -> Optional[str]:
-    """Resolve a classification name case-insensitively, including label substrings."""
-    if name in CLASSIFICATION_LABELS:
-        return name
-    lower = name.lower().replace(" ", "_").replace("-", "_")
-    if lower in CLASSIFICATION_LABELS:
-        return lower
-    for cls, label in CLASSIFICATION_LABELS.items():
-        if lower in cls or lower in label.lower().replace(" ", "_"):
-            return cls
-    return None
-
-
 def build_classification_detail(
     requests: List[dict], traffic: List[dict], classification: str
 ) -> dict:
     traffic_by_id = {t["request"]["request_id"]: t for t in traffic}
-    matched = [r for r in requests if r.get("classification") == classification]
+    matched = [r for r in requests if classify_request(r) == classification]
 
     paths = Counter()
     methods = Counter()
@@ -420,6 +367,8 @@ def build_classification_detail(
             "user_agent": req.get("user_agent"),
             "forwarded_to": req.get("forwarded_to"),
             "experiment_group": req.get("experiment_group"),
+            "classification": classify_request(req),
+            "log_classification": req.get("classification", "unknown"),
             "headers": req.get("headers", {}),
             "body": req.get("body"),
             "body_encoding": req.get("body_encoding"),
@@ -616,7 +565,7 @@ def format_detail_report(detail: dict) -> str:
 
 
 def list_classifications(requests: List[dict]) -> str:
-    counts = Counter(r.get("classification", "unknown") for r in requests)
+    counts = Counter(classify_request(r) for r in requests)
     lines = ["Available classifications:", ""]
     for cls, count in counts.most_common():
         label = CLASSIFICATION_LABELS.get(cls, cls)
@@ -624,7 +573,7 @@ def list_classifications(requests: List[dict]) -> str:
         lines.append(f"  {cls:30s}  [{sev:6s}]  {count:5,}  {label}")
     lines.append("")
     lines.append("Usage: python3 parse_attacks.py --detail <classification>")
-    lines.append("  e.g. python3 parse_attacks.py --detail command_injection_probe")
+    lines.append("  e.g. python3 parse_attacks.py --detail rce_attempt")
     return "\n".join(lines)
 
 
@@ -721,7 +670,7 @@ def main():
     parser.add_argument(
         "--detail",
         metavar="CLASSIFICATION",
-        help="Show full per-event breakdown for a classification (e.g. command_injection_probe)",
+        help="Show full per-event breakdown for a classification (e.g. rce_attempt)",
     )
     parser.add_argument(
         "--all",

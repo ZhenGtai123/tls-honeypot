@@ -9,6 +9,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import List, Optional, Tuple
 
+from classify_request import CLASSIFICATION_LABELS, classify_request
 from log_loader import (
     extract_date_from_filename,
     find_latest_log_pair,
@@ -16,17 +17,6 @@ from log_loader import (
     load_requests,
     load_traffic,
 )
-
-
-CLASSIFICATION_LABELS = {
-    "reconnaissance": "Reconnaissance / scanning",
-    "sensitive_file_probe": "Sensitive file probing (.env, .git, config)",
-    "wordpress_probe": "WordPress vulnerability probing",
-    "path_traversal_attempt": "Path traversal attempt",
-    "login_attempt": "Login / credential attack",
-    "command_injection_probe": "Command injection probe",
-    "unknown": "Unclassified / other",
-}
 
 
 def parse_timestamp(ts: str) -> datetime:
@@ -85,7 +75,7 @@ def build_traffic_report(
 
     for req in requests:
         rid = req["request_id"]
-        cls = req.get("classification", "unknown")
+        cls = classify_request(req)
         method = req.get("method", "")
         path = req.get("path", req.get("url", ""))
 
@@ -126,7 +116,7 @@ def build_traffic_report(
         req = t["request"]
         resp = t["response"]
         method = req.get("method", "")
-        cls = req.get("classification", "unknown")
+        cls = classify_request(req)
         code = resp.get("status_code")
 
         status_codes[code] += 1
