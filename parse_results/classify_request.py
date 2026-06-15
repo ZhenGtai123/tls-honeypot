@@ -92,10 +92,12 @@ SEVERITY: Dict[str, str] = {
 OPERATOR_IPS = frozenset({"86.85.100.18"})
 
 # Ordered rules: first match wins (most specific patterns first).
+# /etc/passwd is intentionally omitted: bare passwd reads are sensitive_file_probe
+# or path_traversal_attempt; only requests with other exploit indicators stay RCE.
 _RCE_BODY_PATTERNS = re.compile(
     r"(?:__proto__|child_process|execsync|exec\s*\(|/bin/sh|/bin/bash|"
     r"powershell|cmd\.exe|wget\s+http|curl\s+http|process\.mainmodule|"
-    r"base64_decode|passthru\s*\(|system\s*\(|shell_exec|/etc/passwd|"
+    r"base64_decode|passthru\s*\(|system\s*\(|shell_exec|"
     r"proxylogon|autodiscover\.json|eval\s*\(|invoke-expression|"
     r"<\?php|<\?=|phpinfo\s*\(|md5\s*\(\s*[\"']phpunit|md5\s*\(\s*[\"']Hello)",
     re.IGNORECASE,
