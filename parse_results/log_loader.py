@@ -4,6 +4,8 @@ import json
 from pathlib import Path
 from typing import List, Optional, Tuple
 
+from classify_request import is_operator_request
+
 
 def load_requests(path: Path) -> List[dict]:
     records = []
@@ -23,6 +25,17 @@ def load_traffic(path: Path) -> List[dict]:
             if line:
                 records.append(json.loads(line))
     return records
+
+
+def filter_operator_traffic(
+    requests: List[dict], traffic: List[dict]
+) -> Tuple[List[dict], List[dict]]:
+    """Drop honeypot operator / lab traffic from request and traffic records."""
+    filtered_requests = [r for r in requests if not is_operator_request(r)]
+    filtered_traffic = [
+        t for t in traffic if not is_operator_request(t.get("request", {}))
+    ]
+    return filtered_requests, filtered_traffic
 
 
 def extract_date_from_filename(path: Path, prefix: str) -> Optional[str]:

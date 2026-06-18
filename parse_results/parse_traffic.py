@@ -12,6 +12,7 @@ from typing import List, Optional, Tuple
 from classify_request import CLASSIFICATION_LABELS, classify_request
 from log_loader import (
     extract_date_from_filename,
+    filter_operator_traffic,
     find_latest_log_pair,
     load_merged_logs,
     load_requests,
@@ -425,6 +426,8 @@ def main():
 
         requests = load_requests(req_path)
         traffic = load_traffic(traf_path)
+
+    requests, traffic = filter_operator_traffic(requests, traffic)
 
     report = build_traffic_report(requests, traffic, source_files)
     text = format_traffic_report(report)

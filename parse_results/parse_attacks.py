@@ -26,6 +26,7 @@ from map_cve import (
 )
 from log_loader import (
     extract_date_from_filename,
+    filter_operator_traffic,
     find_all_log_pairs,
     find_latest_log_pair,
     load_merged_logs,
@@ -1121,6 +1122,8 @@ def main():
 
         requests = load_requests(req_path)
         traffic = load_traffic(traf_path)
+
+    requests, traffic = filter_operator_traffic(requests, traffic)
 
     if args.list_cves:
         print(list_cve_catalog())

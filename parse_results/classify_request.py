@@ -490,6 +490,11 @@ def _client_ip(req: dict) -> str:
     return (req.get("client_ip") or "").strip()
 
 
+def is_operator_request(req: dict) -> bool:
+    """Return True for honeypot operator / lab traffic that should be excluded from reports."""
+    return _client_ip(req) in OPERATOR_IPS
+
+
 def _has_wp_auth_session(req: dict) -> bool:
     cookie = _header(req, "cookie")
     return "wordpress_logged_in" in cookie or bool(re.search(r"wp-settings-\d+", cookie))
