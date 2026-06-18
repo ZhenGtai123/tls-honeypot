@@ -16,6 +16,8 @@ from classify_request import (
     classify_request,
     resolve_classification,
 )
+from analyze_campaigns import build_campaign_analysis
+from analyze_outcomes import build_outcome_analysis, score_outcome
 from map_cve import (
     get_cve_catalog,
     get_cve_info,
@@ -127,7 +129,10 @@ def build_report(
             resp = traffic_by_id[rid]["response"]
             entry["status_code"] = resp.get("status_code")
             entry["duration_ms"] = resp.get("duration_ms")
-            if resp.get("status_code") == 200 and cls not in ("reconnaissance", "unknown"):
+            scored = score_outcome(req, resp, cls)
+            entry["outcome"] = scored["outcome"]
+            entry["concern"] = scored["concern"]
+            if scored["concern"]:
                 successful_attacks.append(entry)
         else:
             entry["status_code"] = None
@@ -223,6 +228,8 @@ def build_report(
             else 0,
             "max_duration_ms": max(response_times) if response_times else 0,
         },
+        "outcome_analysis": build_outcome_analysis(requests, traffic),
+        "campaign_analysis": build_campaign_analysis(requests),
     }
 
 
@@ -298,6 +305,60 @@ def format_text_report(report: dict) -> str:
 
     lines.extend(_format_cve_section(report.get("cve_summary") or {}))
 
+    oa = report.get("outcome_analysis") or {}
+    if oa.get("summary"):
+        os_ = oa["summary"]
+        lines.append("OUTCOME ANALYSIS (attack requests)")
+        lines.append("-" * 40)
+        lines.append(
+            f"  Defensive outcome:     {os_['defensive_success_count']:,} "
+            f"({os_['defensive_success_pct']}% blocked/404/429/redirect)"
+        )
+        lines.append(f"  Decoy served (200):    {os_['decoy_served_count']:,}")
+        lines.append(f"  Potential concern:     {os_['concern_count']:,}")
+        lines.append("")
+        for outcome, count in (oa.get("attack_outcomes") or {}).items():
+            label = outcome.replace("_", " ")
+            pct = round(100 * count / os_["attack_requests"], 1) if os_["attack_requests"] else 0
+            lines.append(f"  {outcome:18s}  {count:6,} ({pct:5.1f}%)")
+        lines.append("")
+
+    ca = report.get("campaign_analysis") or {}
+    if ca.get("summary"):
+        cs = ca["summary"]
+        lines.append("CAMPAIGN ANALYSIS")
+        lines.append("-" * 40)
+        lines.append(
+            f"  Unique probes:         {cs['unique_probes']:,} "
+            f"({cs['dedup_savings_pct']}% repetitive traffic)"
+        )
+        profiles = ", ".join(f"{k}={v}" for k, v in cs.get("ip_profiles", {}).items())
+        lines.append(f"  IP profiles:           {profiles}")
+        lines.append("")
+        lines.append("  Top campaigns:")
+        for camp in ca.get("top_campaigns", [])[:8]:
+            classes = ", ".join(
+                f"{k}({v})" for k, v in list(camp["classifications"].items())[:2]
+            )
+            lines.append(
+                f"    {camp['ip']:18s}  {camp['total_requests']:5,} reqs  "
+                f"{camp['unique_paths']:4,} paths  [{camp['profile']}]  {classes}"
+            )
+        lines.append("")
+
+    if report.get("status_by_classification"):
+        lines.append("RESPONSE STATUS BY CLASSIFICATION")
+        lines.append("-" * 40)
+        for cls, codes in sorted(
+            report["status_by_classification"].items(),
+            key=lambda x: -sum(x[1].values()),
+        )[:8]:
+            if cls in ("reconnaissance",):
+                continue
+            code_str = ", ".join(f"{c}={n}" for c, n in list(codes.items())[:5])
+            lines.append(f"  {cls:28s}  {code_str}")
+        lines.append("")
+
     lines.append("HTTP METHODS")
     lines.append("-" * 40)
     for method, count in report["http_methods"].items():
@@ -357,15 +418,16 @@ def format_text_report(report: dict) -> str:
 
     probes = report["successful_exploitation_probes"]
     if probes:
-        lines.append("PROBES THAT RECEIVED HTTP 200 (potential exposure)")
+        lines.append("POTENTIAL CONCERN EVENTS (outcome-scored)")
         lines.append("-" * 40)
         for p in probes[:20]:
             cve = (p.get("primary_cve") or {}).get("cve_id", "")
             cve_tag = f"  {cve}" if cve else ""
+            outcome = p.get("outcome", "")
             lines.append(
                 f"  {p['timestamp'][:19]}  {p['client_ip']:18s}  "
-                f"{p['method']:6s}  {p['path'][:40]:40s}  "
-                f"[{p['classification']}]{cve_tag}"
+                f"{p.get('status_code', '—'):>3}  {p['path'][:35]:35s}  "
+                f"[{p['classification']}]{cve_tag}  ({outcome})"
             )
         lines.append("")
 

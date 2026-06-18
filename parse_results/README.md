@@ -1,267 +1,205 @@
 # Honeypot Log Report Tools
 
-Two Python scripts parse honeypot request and traffic logs and produce human-readable text reports plus structured JSON.
+Python scripts that parse honeypot request and traffic logs and produce human-readable text reports plus structured JSON. No third-party packages are required — Python 3.7+ with the standard library is enough.
+
+## Scripts
 
 | Script | Purpose |
 |--------|---------|
-| `parse_attacks.py` | Cybersecurity attack report: classifications, severity, CVE mapping, top attackers, drill-down detail reports |
-| `parse_traffic.py` | General traffic report: HTTP methods, status codes, TLS, response times, experiment groups |
+| `generate_all_reports.py` | **Recommended.** Generates the full report set in one run |
+| `parse_attacks.py` | Attack summary and individual classification/CVE drill-down reports |
+| `parse_traffic.py` | General traffic overview (TLS, latency, experiment groups) |
+| `compare_configs.py` | Standalone comparison of two honeypot configurations |
 
-Shared modules:
+## Shared modules
 
 | Module | Purpose |
 |--------|---------|
 | `log_loader.py` | Load and merge paired `requests-*.jsonl` / `traffic-*.jsonl` files |
 | `classify_request.py` | Heuristic attack classification (RCE, login attempts, sensitive file probes, etc.) |
 | `map_cve.py` | CVE and exploit-signature mapping from request paths, queries, and bodies |
-
-No third-party packages are required — Python 3.7+ with the standard library is enough.
+| `analyze_outcomes.py` | Outcome scoring by HTTP status and response body (blocked, decoy, concern) |
+| `analyze_campaigns.py` | IP profiles, sessions, and multi-step attack sequences |
+| `compare_configs.py` | Side-by-side comparison of two log directories |
 
 ## Log files
 
-Place paired JSONL files in a directory (e.g. `logs/`):
+Place paired JSONL files in a directory (e.g. `logs/vuln/`):
 
 ```
-logs/
+logs/vuln/
   requests-2026-06-11.jsonl
   traffic-2026-06-11.jsonl
   requests-2026-06-12.jsonl
   traffic-2026-06-12.jsonl
 ```
 
-Each line in a file is one JSON object. `requests-*.jsonl` holds incoming request metadata; `traffic-*.jsonl` holds matched request/response pairs. Filenames must follow the pattern `requests-YYYY-MM-DD.jsonl` and `traffic-YYYY-MM-DD.jsonl` so the scripts can pair them by date.
+Each line in a file is one JSON object. `requests-*.jsonl` holds incoming request metadata; `traffic-*.jsonl` holds matched request/response pairs. Filenames must follow `requests-YYYY-MM-DD.jsonl` and `traffic-YYYY-MM-DD.jsonl` so the scripts can pair them by date.
 
-When you do not pass explicit file paths, the scripts pick the **latest date pair** in `--dir`. Use `--all` to merge every matching pair into one report.
+By default, `generate_all_reports.py` merges **all** matching pairs. Use `--latest` to process only the most recent date pair.
+
+---
+
+## generate_all_reports.py
+
+The primary entry point. Generates every report type and writes a manifest listing all output files.
+
+### Basic usage
+
+```bash
+# Full report set for vuln logs (aggregates all days)
+python3 generate_all_reports.py --dir logs/vuln --output-dir reports/vuln
+
+# Compare vuln against hardened config
+python3 generate_all_reports.py --dir logs/vuln --output-dir reports/vuln \
+  --compare-with logs/hardened
+
+# Summary + extended analysis only (skip large detail reports)
+python3 generate_all_reports.py --dir logs/vuln --output-dir reports/vuln \
+  --skip-classifications --skip-cves
+
+# Single day only
+python3 generate_all_reports.py --dir logs/vuln --output-dir reports/vuln --latest
+```
+
+### Output files
+
+Aggregated runs use the `-all` suffix. Single-day runs use `-YYYY-MM-DD`.
+
+| File | Content |
+|------|---------|
+| `attack-report-all.txt/json` | Main attack summary with CVE counts, outcome/campaign sections |
+| `detail-<classification>-all.txt/json` | Full per-event detail for each attack classification |
+| `cve-<CVE_ID>-all.txt/json` | Full per-event detail for each matched CVE/technique |
+| `analysis-outcomes-all.txt/json` | Outcome scoring: blocked, rate-limited, decoy, concern rates |
+| `analysis-concerns-all.txt/json` | Full per-event detail for potential concern events only |
+| `analysis-campaigns-all.txt/json` | IP profiles, sessions, multi-step attack sequences |
+| `compare-<A>-vs-<B>.txt/json` | Config comparison (when `--compare-with` is set) |
+| `report-manifest.json` | Index of all generated files with counts and summary stats |
+
+### Options
+
+| Flag | Description |
+|------|-------------|
+| `--dir DIR` | Directory containing log files (default: `.`) |
+| `--requests PATH` | Specific requests JSONL file (implies `--latest`) |
+| `--traffic PATH` | Specific traffic JSONL file (implies `--latest`) |
+| `--output-dir DIR` | Output directory (default: `reports`) |
+| `--latest` | Process only the latest log pair (default: aggregate all days) |
+| `--skip-summary` | Skip the main attack summary report |
+| `--skip-classifications` | Skip per-classification detail reports |
+| `--skip-cves` | Skip per-CVE detail reports |
+| `--skip-extended` | Skip outcome, concern, and campaign analysis |
+| `--include-empty` | Write detail reports even for zero-match classifications/CVEs |
+| `--all-catalog-cves` | Write CVE detail for the full catalog, not just matches in logs |
+| `--compare-with DIR` | Compare `--dir` logs against another config directory |
+| `--compare-baseline-label` | Display label for the baseline (`--compare-with`) config |
+| `--compare-label` | Display label for the current (`--dir`) config |
+
+### Extended analysis
+
+**Outcome analysis** scores each attack request by HTTP response:
+
+- `blocked` / `rate_limited` / `not_found` / `redirected` — honeypot contained the probe
+- `decoy_served` — attacker received expected fake content (HTTP 200)
+- Concern events — empty HTTP 200 on a sensitive path, or body matching leak patterns
+
+**Concern report** (`analysis-concerns-all.txt`) lists every flagged event with full request/response detail.
+
+**Campaign analysis** groups traffic by source IP: profiles (`bulk_scanner`, `targeted`, etc.), sessions (30-minute gap), deduplication stats, and multi-step attack sequences.
+
+**Config comparison** (`--compare-with`) shows classification and outcome-rate deltas between two honeypot configurations.
+
+Standalone comparison:
+
+```bash
+python3 compare_configs.py logs/hardened logs/vuln --output-dir reports
+```
 
 ---
 
 ## parse_attacks.py
 
-`parse_attacks.py` can produce three kinds of report:
+Generates individual reports. Useful for ad-hoc drill-down; prefer `generate_all_reports.py` for batch runs.
 
-| Mode | Flag | Output files (with `--all`) |
-|------|------|-----------------------------|
-| **Summary** | *(default)* | `attack-report-all.txt`, `attack-report-all.json` |
-| **Classification detail** | `--detail CLASSIFICATION` | `detail-<classification>-all.txt`, `detail-<classification>-all.json` |
-| **CVE detail** | `--cve CVE_ID` | `cve-<CVE_ID>-all.txt`, `cve-<CVE_ID>-all.json` |
-
-Without `--all`, the date from the log filename is used instead of `-all` (e.g. `attack-report-2026-06-12.txt`).
-
-`--detail` and `--cve` are mutually exclusive. Both produce a full per-event breakdown with request headers, bodies, and responses where available.
-
-### Basic usage
-
-From the project root, using the latest log pair in `logs/` and writing output to `reports/`:
+| Mode | Flag | Output files (aggregated) |
+|------|------|---------------------------|
+| **Summary** | *(default)* | `attack-report-all.txt/json` |
+| **Classification detail** | `--detail CLASSIFICATION` | `detail-<classification>-all.txt/json` |
+| **CVE detail** | `--cve CVE_ID` | `cve-<CVE_ID>-all.txt/json` |
 
 ```bash
-python3 parse_attacks.py --dir logs --output-dir reports
-```
-
-Output (date taken from the log filename):
-
-- `reports/attack-report-2026-06-12.txt`
-- `reports/attack-report-2026-06-12.json`
-
-### Aggregate all days
-
-```bash
-python3 parse_attacks.py --dir logs --output-dir reports --all
-```
-
-Output:
-
-- `reports/attack-report-all.txt`
-- `reports/attack-report-all.json`
-
-The summary report includes a **LIKELY CVE / EXPLOIT SIGNATURES** section with counts and top paths for each matched CVE or technique.
-
-### Explicit input files
-
-```bash
-python3 parse_attacks.py \
-  --requests logs/requests-2026-06-11.jsonl \
-  --traffic logs/traffic-2026-06-11.jsonl \
-  --output-dir reports
-```
-
-### CVE mapping
-
-Attack reports include a `cve_summary` section (JSON) and a matching text section that links request signatures to likely CVEs. Mappings are heuristic: a match means the traffic *resembles* a known exploit, not that your server is vulnerable.
-
-List all supported CVE and technique rules:
-
-```bash
+python3 parse_attacks.py --dir logs/vuln --output-dir reports/vuln --all
+python3 parse_attacks.py --dir logs/vuln --output-dir reports/vuln --all --detail rce_attempt
+python3 parse_attacks.py --dir logs/vuln --output-dir reports/vuln --all --cve CVE-2017-9841
+python3 parse_attacks.py --list-classifications
 python3 parse_attacks.py --list-cves
 ```
 
-Example mappings:
+The summary report includes outcome and campaign sections. CVE mappings are heuristic — a match means the traffic *resembles* a known exploit, not that the target is vulnerable.
+
+Example CVE mappings:
 
 | Request signature | Likely CVE |
 |-------------------|------------|
 | `/vendor/phpunit/.../eval-stdin.php` | CVE-2017-9841 (PHPUnit RCE) |
 | POST body with `__proto__` + `child_process` | CVE-2025-55182 (React2Shell) |
 | `/developmentserver/metadatauploader` | CVE-2024-34102 (Magento CosmicSting) |
-| `/cgi-bin/../../bin/sh` | CVE-2021-41773 (Apache path traversal) |
-| `/_ignition/execute-solution` | CVE-2021-3129 (Laravel Ignition) |
-| `/webui/` | CVE-2024-3400 (Palo Alto PAN-OS) |
-| `/.env` | TECH-ENV-EXPOSURE (exposed config file) |
-| `/.git/config` | TECH-GIT-EXPOSURE (exposed repository) |
-
-Technique IDs (prefixed `TECH-`) cover common exploit patterns that are not tied to a single CVE.
-
-### Per-CVE detail report
-
-Drill into every request that matches a specific CVE or technique signature:
-
-```bash
-python3 parse_attacks.py --dir logs --output-dir reports --all --cve CVE-2017-9841
-```
-
-Output:
-
-- `reports/cve-CVE-2017-9841-all.txt`
-- `reports/cve-CVE-2017-9841-all.json`
-
-Technique IDs work the same way:
-
-```bash
-python3 parse_attacks.py --dir logs --output-dir reports --all --cve TECH-ENV-EXPOSURE
-```
-
-CVE detail reports include:
-
-- CVE metadata (name, product, severity, confidence, notes)
-- Summary stats (primary vs secondary signature matches, IPs, paths, time range)
-- Attack classification breakdown for matching requests
-- Full per-event details (headers, body, response, match role)
-
-A request counts as a **primary** match when the CVE is its highest-confidence signature; otherwise it is **secondary** (the CVE matched but another signature ranked higher).
-
-### Per-classification detail report
-
-List classifications found in the logs:
-
-```bash
-python3 parse_attacks.py --dir logs --list-classifications
-```
-
-Generate a full event-by-event breakdown for one classification:
-
-```bash
-python3 parse_attacks.py --dir logs --output-dir reports --all --detail rce_attempt
-```
-
-Output:
-
-- `reports/detail-rce_attempt-all.txt`
-- `reports/detail-rce_attempt-all.json`
-
-Aliases work too (e.g. `command_injection`, `rce`, `webdav`).
-
-Detail reports include a **Likely CVE** field per event when the request matches a known exploit signature (e.g. `eval-stdin.php` → CVE-2017-9841).
-
-### Print to terminal
-
-```bash
-python3 parse_attacks.py --dir logs --all --print
-```
-
-With `--print`, the text report goes to stdout. Use `--output-json` to still write JSON to disk.
+| `/.env` | TECH-ENV-EXPOSURE |
+| `/.git/config` | TECH-GIT-EXPOSURE |
 
 ### Options
 
 | Flag | Description |
 |------|-------------|
-| `--dir DIR` | Directory to search for log files (default: `.`) |
+| `--dir DIR` | Directory to search for log files |
 | `--requests PATH` | Path to a specific requests JSONL file |
 | `--traffic PATH` | Path to a specific traffic JSONL file |
-| `--output-dir DIR` | Directory for default output filenames (default: `.`) |
-| `--output-text PATH` | Override text report path |
-| `--output-json PATH` | Override JSON report path |
-| `--all` | Merge all `requests-*.jsonl` / `traffic-*.jsonl` pairs (cannot combine with `--requests` / `--traffic`) |
-| `--detail CLASSIFICATION` | Per-event detail report for one attack type |
-| `--cve CVE_ID` | Per-event detail report for one CVE or technique signature |
+| `--output-dir DIR` | Directory for output files |
+| `--all` | Merge all log pairs |
+| `--detail CLASSIFICATION` | Per-event detail for one attack type |
+| `--cve CVE_ID` | Per-event detail for one CVE or technique |
 | `--list-classifications` | List classifications and counts, then exit |
-| `--list-cves` | List CVE / exploit signature rules and exit |
-| `--print` | Print text report to stdout instead of writing a file |
+| `--list-cves` | List CVE rules and exit |
+| `--print` | Print text report to stdout |
 
 ---
 
 ## parse_traffic.py
 
-Generates a broader traffic overview: request/response coverage, HTTP methods, status codes, top paths and hosts, TLS versions, response latency percentiles, and experiment groups.
-
-### Basic usage
+Broader traffic overview: request/response coverage, HTTP methods, status codes, top paths and hosts, TLS versions, response latency percentiles, and experiment groups.
 
 ```bash
-python3 parse_traffic.py --dir logs --output-dir reports
+python3 parse_traffic.py --dir logs/vuln --output-dir reports/vuln --all
 ```
 
-Output:
-
-- `reports/traffic-report-2026-06-12.txt`
-- `reports/traffic-report-2026-06-12.json`
-
-### Aggregate all days
-
-```bash
-python3 parse_traffic.py --dir logs --output-dir reports --all
-```
-
-Output:
-
-- `reports/traffic-report-all.txt`
-- `reports/traffic-report-all.json`
-
-### Explicit input files
-
-```bash
-python3 parse_traffic.py \
-  --requests logs/requests-2026-06-11.jsonl \
-  --traffic logs/traffic-2026-06-11.jsonl \
-  --output-dir reports
-```
-
-### Print to terminal
-
-```bash
-python3 parse_traffic.py --dir logs --all --print
-```
-
-### Options
-
-| Flag | Description |
-|------|-------------|
-| `--dir DIR` | Directory to search for log files (default: `.`) |
-| `--requests PATH` | Path to a specific requests JSONL file |
-| `--traffic PATH` | Path to a specific traffic JSONL file |
-| `--output-dir DIR` | Directory for default output filenames (default: `.`) |
-| `--output-text PATH` | Override text report path |
-| `--output-json PATH` | Override JSON report path |
-| `--all` | Merge all log pairs (cannot combine with `--requests` / `--traffic`) |
-| `--print` | Print text report to stdout instead of writing a file |
+Output: `traffic-report-all.txt/json`
 
 ---
 
 ## Typical workflow
 
 ```bash
-# 1. Attack summary across all collected logs (includes CVE counts)
-python3 parse_attacks.py --dir logs --output-dir reports --all
+# 1. Full report set (summary + details + extended analysis)
+python3 generate_all_reports.py --dir logs/vuln --output-dir reports/vuln \
+  --compare-with logs/hardened
 
-# 2. General traffic stats for the same period
-python3 parse_traffic.py --dir logs --output-dir reports --all
+# 2. General traffic stats
+python3 parse_traffic.py --dir logs/vuln --output-dir reports/vuln --all
 
-# 3. Drill into a specific attack type
-python3 parse_attacks.py --dir logs --output-dir reports --all --detail login_attempt
+# 3. Review concern events
+less reports/vuln/analysis-concerns-all.txt
 
-# 4. Drill into a specific CVE seen in the summary report
-python3 parse_attacks.py --dir logs --output-dir reports --all --cve CVE-2017-9841
+# 4. Ad-hoc drill-down (if needed)
+python3 parse_attacks.py --dir logs/vuln --output-dir reports/vuln --all --detail rce_attempt
+python3 parse_attacks.py --dir logs/vuln --output-dir reports/vuln --all --cve CVE-2017-9841
 ```
 
 ## Help
 
 ```bash
+python3 generate_all_reports.py --help
 python3 parse_attacks.py --help
 python3 parse_traffic.py --help
+python3 compare_configs.py --help
 ```

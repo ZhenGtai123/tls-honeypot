@@ -13,7 +13,8 @@ CLASSIFICATION_LABELS: Dict[str, str] = {
     "dns_probe": "DNS-over-HTTPS / DNS tunnel probe",
     "path_traversal_attempt": "Path traversal attempt",
     "sensitive_file_probe": "Sensitive file probing (.env, .git, config)",
-    "citrix_vpn_probe": "VPN / network appliance probing",
+    "citrix_vpn_probe": "Citrix ADC / Gateway probing",
+    "appliance_probe": "Network appliance / product fingerprinting",
     "wordpress_plugin_probe": "WordPress plugin vulnerability probing",
     "login_attempt": "Login / credential attack",
     "wordpress_probe": "WordPress vulnerability probing",
@@ -46,8 +47,13 @@ CLASSIFICATION_DESCRIPTIONS: Dict[str, str] = {
         "CI/CD secrets, cloud credentials, terraform vars, and database dumps."
     ),
     "citrix_vpn_probe": (
-        "Scans for VPN gateways, firewalls, and network appliances: Citrix, SonicWall, "
-        "SSL VPN, WebUI login pages, Geoserver, ONVIF, MikroTik, and similar services."
+        "Probes for Citrix ADC, NetScaler, and Gateway endpoints: /vpn/, /vpns/, "
+        "/citrix/, LogonPoint, and nf/auth paths."
+    ),
+    "appliance_probe": (
+        "Fingerprint scans for VPN gateways, firewalls, NAS, monitoring, media servers, "
+        "and enterprise apps by product-specific paths: SonicWall, Palo Alto, Cisco ASA, "
+        "MikroTik, GeoServer, ONVIF, Zabbix, Emby, Oracle, and similar services."
     ),
     "wordpress_plugin_probe": (
         "Probes for vulnerable WordPress plugin PHP endpoints, readme files, and "
@@ -80,6 +86,7 @@ SEVERITY: Dict[str, str] = {
     "crypto_mining_probe": "MEDIUM",
     "sensitive_file_probe": "MEDIUM",
     "citrix_vpn_probe": "MEDIUM",
+    "appliance_probe": "MEDIUM",
     "wordpress_plugin_probe": "MEDIUM",
     "wordpress_probe": "MEDIUM",
     "dns_probe": "LOW",
@@ -136,6 +143,8 @@ _RCE_PATH = re.compile(
     r"/cron\.php|"
     r"/file\.php|"
     r"/download\.php|"
+    r"telerik\.web\.ui\.webresource\.axd|"
+    r"helpers/utility\.js|"
     r"alive\.php"
     r")",
     re.IGNORECASE,
@@ -245,13 +254,16 @@ _SENSITIVE_KEYWORDS = re.compile(
     r"mongooserc|\.bazelrc|"
     r"/\.(?:_env|~env)|^/\.$|"
     r"nginx/sites-available|/messages$|/syslog$|"
-    r"themes/\.env|includes/\.env|wp-admin/\.env|wp-includes/\.env|plugins/\.env"
+    r"themes/\.env|includes/\.env|wp-admin/\.env|wp-includes/\.env|plugins/\.env|"
+    r"telescope/"
     r")",
     re.IGNORECASE,
 )
 _SENSITIVE_PHP = re.compile(
+    r"(?:"
+    r"^/(?:install|admin|update)\.php$|"
     r"/(?:settings|config|database|db|connect|connection|adminer|phpinfo|info|test|debug|"
-    r"wp-config|(?:^|/)install\.php|setup|restore|dump|upload|backup|export|import|migrate|repair|"
+    r"wp-config|install|setup|restore|dump|upload|backup|export|import|migrate|repair|"
     r"upgrade|cron|function|global|common|localsettings|"
     r"configuration|credentials|secrets|passwd|passwords|setting|dbconn|"
     r"includes/(?:db|database|connect|connection|settings)|"
@@ -260,7 +272,33 @@ _SENSITIVE_PHP = re.compile(
     r"config_(?:local|dev|prod|test|staging)|config\d|config_local|config_dev|"
     r"config_prod|local\.php|global\.php|common\.php|connection\.php|"
     r"dump|restore|repair|upgrade|migrate|export|import|backup|upload|download|"
-    r"file|setup|test|debug|info)\.php",
+    r"file|setup|test|debug|info)\.php"
+    r")",
+    re.IGNORECASE,
+)
+# Short phpinfo / php-sysinfo probe filenames used by automated scanners.
+_PHPINFO_PROBE = re.compile(
+    r"(?:"
+    r"^/(?:"
+    r"i|inf|info\d*|infos|ini|in|php\d*|pinfo|infophp|php[_-]?info|phpinf|phptest|"
+    r"phpversion|isadmin|sysinfo|tester|testing|developer|devs?|dep|apache\d*|"
+    r"asdf|123|cache|jo|lindex|ocp|temp|time|tz|"
+    r"test\d*|test_info\d*|qq|rest|"
+    r"[a-opqrstuwxyz]|wp|web|up|of|new|pi"
+    r")\.php\d?$|"
+    r"^/(?:apache|dashboard)/i\.php$|"
+    r"^/phpsysinfo(?:/phpsysinfo)?\.php$|"
+    r"^/info\.asp$|"
+    r"^/info\.htm$"
+    r")",
+    re.IGNORECASE,
+)
+_JS_SECRET_HUNT = re.compile(
+    r"^/(?:"
+    r"(?:app|main|index|server|bundle|vendor|chunk)(?:\.bundle)?\.js|"
+    r"(?:static/js|dist|build/static/js|assets|js|_next/static/chunks)/"
+    r"(?:app|main|index|bundle|vendor|chunk)(?:\.bundle)?\.js"
+    r")(?:\?|$)",
     re.IGNORECASE,
 )
 _NOT_SENSITIVE = re.compile(
@@ -273,7 +311,10 @@ _NOT_SENSITIVE = re.compile(
 )
 _SENSITIVE_PATH = re.compile(
     r"(?:"
+    r"(?:^|/)\.flaskenv|"
+    r"(?:^|/)proc/self/environ|"
     r"(?:^|/)\.env[\w.-]*|"
+    r"(?:^|/)_vti_|"
     r"(?:^|/)\.git[\w.-]*|"
     r"^/\.git/|"
     r"^/\.aws/|"
@@ -321,6 +362,10 @@ _SENSITIVE_PATH = re.compile(
     r"^/phpinfo\.php|"
     r"^/server-status|"
     r"^/\.well-known/security\.txt|"
+    r"%2eenv|"
+    r"wpp-config|"
+    r"(?:^|/)s3\.js$|"
+    r"(?:^|/)server/s3\.js$|"
     r"/actuator(?:/|$)|"
     r"/_ignition/|"
     r"/adminer|"
@@ -337,11 +382,114 @@ _CITRIX_PATH = re.compile(
     r"logon/logonpoint|"
     r"vpns/|"
     r"citrix/|"
-    r"nf/auth|"
-    r"vpnsvc/connect\.cgi|"
+    r"nf/auth"
+    r")",
+    re.IGNORECASE,
+)
+_APPLIANCE_PATH = re.compile(
+    r"(?:"
+    r"\+cscoe\+|"
     r"sonicos/|"
     r"is-sslvpn-enabled|"
-    r"/webui/?$|"
+    r"vpnsvc/connect\.cgi|"
+    r"ftnt-icons|"
+    r"migadmin|"
+    r"filechecksum|"
+    r"/lang/(?:/+)?(?:custom|legacy)/|"
+    r"/static/lang/|"
+    r"/api/v2/static/not\.found|"
+    r"cgi-mod/|"
+    r"CFIDE/|"
+    r"dana-cached/|"
+    r"human\.aspx|"
+    r"zxtm/|"
+    r"fog/management|"
+    r"magento_version|"
+    r"ise/img/|"
+    r"phoenix/|"
+    r"helpdesk/WebObjects|"
+    r"confluence/rest/applinks|"
+    r"rest/applinks/|"
+    r"centreon/|"
+    r"nifi(?:-api)?/|"
+    r"pandora_console|"
+    r"sap/bc/|"
+    r"kubepi/|"
+    r"kylin/?|"
+    r"vicidial\.php|"
+    r"dniapi/|"
+    r"r-seenet/|"
+    r"tos/index|"
+    r"lms/db|"
+    r"webui|"
+    r"/api/v[12]/about|"
+    r"/api/v1/check-version|"
+    r"/api/server/version|"
+    r"^/api/version$|"
+    r"^/dashboard/|"
+    r"^/portal/|"
+    r"^/graphql$|"
+    r"cgi-bin/(?:info|param|getagent|luci|meteobridge)(?:\.cgi)?|"
+    r"webportal\.cgi|"
+    r"base\.cgi|"
+    r"nmc/rss/|"
+    r"hx/api/|"
+    r"System/info/|"
+    r"workplace/home|"
+    r"AppsHome\.do|"
+    r"idexpert/|"
+    r"am_bin/|"
+    r"json/login_session|"
+    r"cslu/v1/|"
+    r"decisioncenter-api/|"
+    r"config_dump|"
+    r"rs/application-about|"
+    r"help/en_US/Content/utm|"
+    r"admin/reports/|"
+    r"sms_mp/|"
+    r"pluginManager/|"
+    r"_matrix/identity|"
+    r"plugin/webs_model|"
+    r"css/eonweb|"
+    r"css/elfinder|"
+    r"i18n/component/|"
+    r"browser/index|"
+    r"^/objects/|"
+    r"photo/webapi/|"
+    r"download/python/|"
+    r"WebApp/js/|"
+    r"javascript/validation/OEM|"
+    r"^/metrics$|"
+    r"system/gwinfo|"
+    r"system/version/|"
+    r"^/contact$|"
+    r"backend/banner|"
+    r"api-description|"
+    r"api/documentation|"
+    r"api/swagger|"
+    r"api/system/status|"
+    r"api/v1\.0/environment|"
+    r"api/v2\.0/systeminfo|"
+    r"api/v3/meta|"
+    r"^/api/v1/$|"
+    r"^/api/v1/info$|"
+    r"^/api/v1/version$|"
+    r"^/api/status$|"
+    r"api/vip/i18n/|"
+    r"app_dev\.php|"
+    r"^/index\.php$|"
+    r"images/logo\.(?:png|gif)|"
+    r"assets/(?:png/|img/)favicon|"
+    r"assets/favicon\.png|"
+    r"App_Themes/|"
+    r"public/static/favicon|"
+    r"themes/admin/default/build/assets/favicon|"
+    r"dashboard/favicon|"
+    r"^/favicon\.png$|"
+    r"^/angular\.js$|"
+    r"main\.php|"
+    r"jtcgi/|"
+    r"^/sms\.py$|"
     r"geoserver|"
     r"onvif/|"
     r"/mcp(?:/|$)|"
@@ -349,6 +497,28 @@ _CITRIX_PATH = re.compile(
     r"/ab2[gh]|"
     r"/HNAP1|"
     r"/evox/|"
+    r"webfig/|"
+    r"zabbix|"
+    r"ptzoptics|"
+    r"aspera/faspex|"
+    r"oa_html/|"
+    r"webinterface/|"
+    r"owncloud/status|"
+    r"(?:^|/)status\.php$|"
+    r"xmldata|"
+    r"partymgr/|"
+    r"progs/homepage|"
+    r"ext-js/app/common|"
+    r"idmbrandingbar|"
+    r"newwindow_2_all|"
+    r"static/historypage|"
+    r"emby/web|"
+    r"/web/index\.html|"
+    r"^/web/?$|"
+    r"cf_scripts/|"
+    r"internal_forms_authentication|"
+    r"favicon-32x32\.png|"
+    r"(?:^|/)index\.jsp$|"
     r"^/version$|"
     r"^/sdk$|"
     r"^/status$|"
@@ -386,6 +556,7 @@ _WP_STATIC_ASSET = re.compile(
     r"/wp-includes/(?:css|js|images|fonts)/|"
     r"/wp-includes/js/thickbox/|"
     r"/wp-admin/(?:css|js|images|fonts)/|"
+    r"/wp-admin/favicon\.ico|"
     r"/wp-content/themes/[^/]+/.+\.(?:css|js|woff2?|ttf|eot|png|jpe?g|gif|webp|svg|ico)|"
     r"/wp-content/uploads/.+\.(?:css|js|woff2?|ttf|eot|png|jpe?g|gif|webp|svg|ico)|"
     r"/wp-includes/.+\.(?:css|js|min\.css|min\.js|woff2?|ttf|eot|png|jpe?g|gif|webp|svg|ico)(?:\?|$)"
@@ -428,17 +599,27 @@ _LOGIN_PATH = re.compile(
     r"(?:"
     r"wp-login\.php|"
     r"wp-admin/?$|"
-    r"/login(?:/|$|\?|\.(?:html|jsp|cc|do|action))|"
+    r"/login(?:/|$|\?|\.(?:html|jsp|cc|do|action|php))|"
+    r"php/login\.php|"
+    r"cgi-bin/(?:auth)?login\.cgi|"
+    r"login\.htm|"
+    r"ssi\.cgi/login|"
+    r"admin/index\.html|"
+    r"doc/index\.html|"
+    r"^/index\.html$|"
     r"showlogin|"
     r"logon\.aspx|"
+    r"\+cscoe\+/logon|"
     r"proxy_subdomain_whm/login|"
-    r"/owa/auth/|"
+    r"/owa(?:/auth/|/)|"
     r"/admin/login|"
     r"/user/login|"
     r"/remote/login|"
     r"/auth/login|"
     r"/manager/html|"
     r"^/admin/?$|"
+    r"/web/auth|"
+    r"api/session/properties|"
     r"signin|sign-in"
     r")",
     re.IGNORECASE,
@@ -447,6 +628,22 @@ _LOGIN_BODY = re.compile(
     r"(?:^|[&\s])(?:log|pwd|pass|password|user|username|admin_password|"
     r"admin_password2|wp-submit|Submit)=|"
     r"weblog_title=.*admin_password",
+    re.IGNORECASE,
+)
+# Default login / admin entry-point discovery across ASP, JSP, PHP, etc.
+_LOGIN_PAGE_PROBE = re.compile(
+    r"(?:"
+    r"^/(?:admin|login|logon|signin)\.(?:asp|aspx|cfm|cgi|html|htm|jsp|jsa|jhtml|php|pl|shtml)$|"
+    r"^/(?:Main_Login|logon)\.asp$|"
+    r"^/UOF/Login\.aspx$|"
+    r"^/~login$|"
+    r"^/(?:home|index|indice|inicio|localstart|menu|main|start|base|default)\."
+    r"(?:asp|aspx|cfm|cgi|html|htm|jsp|jsa|jhtml|php|pl|shtml)$|"
+    r"^/index\.do$|"
+    r"^/index\.lua$|"
+    r"^/index1\.php$|"
+    r"^/main/main\.html$"
+    r")",
     re.IGNORECASE,
 )
 _DNS_PATH = re.compile(r"^/(?:dns-query|resolve)(?:/|$)", re.IGNORECASE)
@@ -468,6 +665,9 @@ _SCANNER_PATH = re.compile(
     r"^/teorema505$|"
     r"^/book-appointment$|"
     r"^/AGENTS\.md$|"
+    r"^/\.e\d+$|"
+    r"^/api/tags$|"
+    r"^/v1/models$|"
     r"^/[A-Za-z0-9]{8,}$"
     r")",
     re.IGNORECASE,
@@ -551,6 +751,8 @@ def _is_sensitive_path(path: str) -> bool:
         return False
     if _NOT_SENSITIVE.search(path):
         return False
+    if _JS_SECRET_HUNT.search(path):
+        return True
     if _SENSITIVE_PATH.search(path):
         return True
     if _SENSITIVE_KEYWORDS.search(path):
@@ -608,6 +810,9 @@ def classify_request(req: dict) -> str:
     if _CITRIX_PATH.search(path):
         return "citrix_vpn_probe"
 
+    if _APPLIANCE_PATH.search(path):
+        return "appliance_probe"
+
     if _WP_PLUGIN_STATIC_ASSET.search(path):
         return "reconnaissance"
 
@@ -619,11 +824,18 @@ def classify_request(req: dict) -> str:
             method == "POST"
             or _LOGIN_BODY.search(body)
             or "logon" in path
-            or "owa/auth" in path
+            or "owa" in path
             or "/login" in path
             or "showlogin" in path
             or path.rstrip("/") == "/admin"
             or path.rstrip("/").endswith("wp-admin")
+            or re.search(
+                r"(?:php/login\.php|cgi-bin/(?:auth)?login\.cgi|login\.htm|"
+                r"ssi\.cgi/login|admin/index\.html|doc/index\.html|"
+                r"^/index\.html$|api/session/properties|/web/auth)",
+                path,
+                re.I,
+            )
         ):
             return "login_attempt"
 
@@ -639,8 +851,14 @@ def classify_request(req: dict) -> str:
     if re.search(r"/wp-admin/install\.php/", path, re.IGNORECASE):
         return "wordpress_probe"
 
+    if _PHPINFO_PROBE.search(path):
+        return "sensitive_file_probe"
+
     if _is_sensitive_path(path):
         return "sensitive_file_probe"
+
+    if re.search(r"^/wp-admin\.php$", path, re.IGNORECASE):
+        return "wordpress_probe"
 
     if _WP_PROBE_PATH.search(path):
         return "wordpress_probe"
@@ -657,7 +875,7 @@ def classify_request(req: dict) -> str:
     if _WP_DISCOVERY.search(path):
         return "wordpress_probe"
 
-    if method == "PROPFIND" or (method == "OPTIONS" and path == "*"):
+    if method == "PROPFIND" or (method == "OPTIONS" and path in ("*", "/")):
         return "webdav_probe"
 
     if _SCANNER_PATH.match(path):
@@ -671,6 +889,9 @@ def classify_request(req: dict) -> str:
 
     if method in ("GET", "HEAD", "POST") and path == "/":
         return "reconnaissance"
+
+    if _LOGIN_PAGE_PROBE.search(path):
+        return "login_attempt"
 
     return "unknown"
 
@@ -697,7 +918,9 @@ def resolve_classification(name: str) -> Optional[str]:
         "wordpress_plugins": "wordpress_plugin_probe",
         "wordpress_plugin": "wordpress_plugin_probe",
         "citrix": "citrix_vpn_probe",
-        "vpn_probe": "citrix_vpn_probe",
+        "appliance": "appliance_probe",
+        "vpn_probe": "appliance_probe",
+        "network_appliance": "appliance_probe",
         "webdav": "webdav_probe",
     }
     if lower in aliases:
