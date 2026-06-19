@@ -27,7 +27,7 @@ Two stacks run in parallel. Each has its own proxy with a different certificate 
 
 ---
 
-## A — Prerequisites
+## Prerequisites
 
 ### Local machine (dev/testing)
 
@@ -44,7 +44,7 @@ Two stacks run in parallel. Each has its own proxy with a different certificate 
 
 ---
 
-## B — Generate the nginx backend certificate
+## Generate the nginx backend certificate
 
 nginx needs a TLS certificate for **TLS B** (the proxy→nginx leg). This cert is never seen by attackers; it just encrypts the internal connection. Generate it once and commit the public cert (not the key).
 
@@ -70,13 +70,13 @@ The proxy connects to nginx with `--forward-https` and skips cert verification, 
 
 Use this for development. Both proxies and both WordPress stacks run as containers.
 
-### C — Create log directories
+### Create log directories
 
 ```bash
 mkdir -p logs/vuln logs/hardened
 ```
 
-### D — Start the full stack
+### Start the full stack
 
 ```bash
 docker compose up -d --build
@@ -108,7 +108,7 @@ tls-honeypot-db-vuln-1          Up
 tls-honeypot-db-hardened-1      Up
 ```
 
-### E — Verify the MitM is transparent
+### Verify the MitM is transparent
 
 Check that each proxy presents a different certificate (the attacker sees two unrelated servers):
 
@@ -127,7 +127,7 @@ curl -k https://localhost:8443/          # vulnerable WordPress home
 curl -k https://localhost:8444/          # hardened WordPress home
 ```
 
-### F — Test attacker behaviour
+### Test attacker behaviour
 
 ```bash
 # Credential stuffing — captured by both stacks
@@ -150,7 +150,7 @@ curl -k "https://localhost:8443/wp-content/../../../../etc/passwd"
 curl -k -A "Expanse, a Palo Alto Networks company" https://localhost:8443/
 ```
 
-### G — Inspect the logs
+### Inspect the logs
 
 ```bash
 # Latest traffic entry from the vulnerable proxy
@@ -181,7 +181,7 @@ Key log fields:
 | `body_encoding` | `base64` when body is binary |
 | `body_truncated` | `true` when body exceeded 1 MiB cap |
 
-### H — Stop
+###  Stop
 
 ```bash
 docker compose down          # keep WordPress data volumes
@@ -190,7 +190,7 @@ docker compose down -v       # also wipe DB + WP volumes (full reset)
 
 ---
 
-## VM deployment — proxies on host, WordPress in Docker (`compose.split.yaml`)
+# VM deployment — proxies on host, WordPress in Docker (`compose.split.yaml`)
 
 Use this on the VM. WordPress and its databases stay sandboxed in Docker. The Go proxy binaries run directly on the host to bind to the real public network interfaces before Docker's NAT layer intercepts traffic.
 
@@ -200,7 +200,7 @@ internet
   └─ 145.220.231.104–111 :443 ──iptables──▶ host :8444 (proxy-hardened) ──TLS──▶ 127.0.0.1:8082 (nginx-hardened in Docker)
 ```
 
-### I — VM prerequisites
+### VM prerequisites
 
 On a fresh Ubuntu 22.04 VM, install everything needed before touching the project:
 
@@ -223,7 +223,7 @@ go version   # should print go1.23.x
 sudo apt install -y ufw iptables-persistent openssl jq
 ```
 
-### J — Clone the repository
+### Clone the repository
 
 ```bash
 ssh <user>@<vpn-ip>
@@ -231,7 +231,7 @@ git clone https://github.com/<org>/tls-honeypot
 cd tls-honeypot
 ```
 
-### K — Generate the nginx backend certificate
+### Generate the nginx backend certificate
 
 This cert is used for the internal proxy→nginx TLS leg (TLS B). Attackers never see it.
 
@@ -247,7 +247,7 @@ openssl req -x509 -newkey rsa:2048 -nodes \
 
 > Do **not** commit `testdata/key.pem` — it is in `.gitignore`. The public `cert.pem` can be committed.
 
-### L — Start the WordPress Docker stack
+### Start the WordPress Docker stack
 
 ```bash
 docker compose -f compose.split.yaml up -d
@@ -284,7 +284,7 @@ If either nginx container keeps restarting, check:
 docker logs <container-name>
 ```
 
-### M — Configure the firewall and IP routing
+### Configure the firewall and IP routing
 
 ```bash
 sudo bash deployments/firewall.sh
@@ -307,7 +307,7 @@ Verify the rules are in place:
 sudo iptables -t nat -L PREROUTING -n --line-numbers
 ```
 
-### N — Build and start the host proxies
+### Build and start the host proxies
 
 ```bash
 bash deployments/proxy-start.sh
@@ -330,7 +330,7 @@ tail -20 logs/vuln/proxy.log
 tail -20 logs/hardened/proxy.log
 ```
 
-### O — Verify end-to-end from off-VPN
+### Verify end-to-end from off-VPN
 
 Use a phone hotspot or any machine that is **not** the VM (on-VM curl bypasses the iptables redirect):
 
@@ -351,7 +351,7 @@ tail -1 logs/vuln/traffic-$(date -u +%F).jsonl     | jq '{group: .request.experi
 tail -1 logs/hardened/traffic-$(date -u +%F).jsonl | jq '{group: .request.experiment_group, ip: .request.client_ip}'
 ```
 
-### P — Tuning rate limits
+### Tuning rate limits
 
 Rate limits live in `compose.split.yaml` under each nginx service and take effect after a container restart — no image rebuild needed:
 
@@ -380,7 +380,7 @@ docker compose -f compose.split.yaml up -d --no-deps nginx-vuln
 docker compose -f compose.split.yaml up -d --no-deps nginx-hardened
 ```
 
-### Q — Container hardening reference
+### Container hardening reference
 
 All six containers in `compose.split.yaml` are hardened assuming an attacker achieves code execution inside one:
 
@@ -394,7 +394,7 @@ All six containers in `compose.split.yaml` are hardened assuming an attacker ach
 
 The primary containment is the `internal: true` Docker networks — even with a full shell inside a container there is no outbound internet route. The measures above add depth-in-defence.
 
-### R — Updating a running deployment
+### Updating a running deployment
 
 ```bash
 ssh <user>@<vpn-ip>
@@ -415,7 +415,7 @@ docker compose -f compose.split.yaml up -d --no-deps <service-name>
 # e.g.: nginx-vuln, wp-hardened, db-vuln ...
 ```
 
-### S — Stopping the deployment
+### Stopping the deployment
 
 ```bash
 # Stop host proxies
@@ -459,6 +459,5 @@ docker compose -f compose.split.yaml down -v
 - [x] Container hardening — `cap_drop`, `no-new-privileges`, `pids_limit`, resource limits, read-only nginx filesystem
 - [x] Rate limiting — per-IP `limit_req` in nginx, configurable via env vars in `compose.split.yaml`
 - [x] Firewall + iptables routing for 16-IP VM deployment
-- [ ] Vulnerable plugin installation
-- [ ] GitHub Actions CI
-- [ ] Data analysis + report
+- [X] Vulnerable plugin installation
+- [X] Data analysis + report
