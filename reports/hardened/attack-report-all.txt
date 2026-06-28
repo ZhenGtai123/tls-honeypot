@@ -1,0 +1,400 @@
+========================================================================
+CYBERSECURITY ATTACK REPORT
+========================================================================
+
+OVERVIEW
+----------------------------------------
+  Period:              2026-06-09T04:04:50.015122+00:00 → 2026-06-18T19:42:12.994356+00:00
+  Duration:            231.6 hours
+  Total requests:      34,002
+  With response:       34,002
+  No response logged:  0
+  Unique attacker IPs: 2,516
+  Unique paths hit:    3,098
+  Days covered:        10
+
+SOURCE FILES
+----------------------------------------
+  2026-06-08      2 requests      2 responses  (requests-2026-06-08.jsonl)
+  2026-06-09  4,313 requests  4,313 responses  (requests-2026-06-09.jsonl)
+  2026-06-10  3,235 requests  3,235 responses  (requests-2026-06-10.jsonl)
+  2026-06-11  3,110 requests  3,110 responses  (requests-2026-06-11.jsonl)
+  2026-06-12  2,862 requests  2,862 responses  (requests-2026-06-12.jsonl)
+  2026-06-13  2,344 requests  2,344 responses  (requests-2026-06-13.jsonl)
+  2026-06-14  3,638 requests  3,638 responses  (requests-2026-06-14.jsonl)
+  2026-06-15  3,830 requests  3,830 responses  (requests-2026-06-15.jsonl)
+  2026-06-16  4,494 requests  4,494 responses  (requests-2026-06-16.jsonl)
+  2026-06-17  3,725 requests  3,725 responses  (requests-2026-06-17.jsonl)
+  2026-06-18  2,770 requests  2,770 responses  (requests-2026-06-18.jsonl)
+
+SEVERITY BREAKDOWN
+----------------------------------------
+  HIGH      1,498  █████████████████████████████
+  MEDIUM    26,164  ████████████████████████████████████████
+  LOW       6,340  ████████████████████████████████████████
+
+ATTACK CLASSIFICATIONS
+----------------------------------------
+  [MEDIUM] 23,686 ( 69.7%)  Sensitive file probing (.env, .git, config)
+  [LOW   ] 5,113 ( 15.0%)  Benign discovery / page-load traffic
+  [MEDIUM] 1,805 (  5.3%)  Network appliance / product fingerprinting
+  [HIGH  ]   716 (  2.1%)  Remote code execution (RCE) attempt
+  [HIGH  ]   689 (  2.0%)  Login / credential attack
+  [LOW   ]   567 (  1.7%)  WebDAV scanning (PROPFIND)
+  [LOW   ]   552 (  1.6%)  DNS-over-HTTPS / DNS tunnel probe
+  [MEDIUM]   512 (  1.5%)  WordPress vulnerability probing
+  [MEDIUM]   124 (  0.4%)  WordPress plugin vulnerability probing
+  [LOW   ]   108 (  0.3%)  Unclassified / other
+  [HIGH  ]    93 (  0.3%)  Path traversal attempt
+  [MEDIUM]    22 (  0.1%)  Cryptocurrency mining RPC probe
+  [MEDIUM]    15 (  0.0%)  Citrix ADC / Gateway probing
+
+LIKELY CVE / EXPLOIT SIGNATURES
+----------------------------------------
+  Heuristic mapping from request paths, queries, and bodies.
+
+  11,766  TECH-ENV-EXPOSURE   [HIGH    ]  Application configuration
+         Exposed environment file (.env) (confirmed)
+         paths: /.env, /.env.local
+    503  TECH-GIT-EXPOSURE   [HIGH    ]  Git
+         Exposed .git repository (confirmed)
+         paths: /.git/config, /.git/HEAD
+    255  CVE-2021-41773      [HIGH    ]  Apache HTTP Server
+         Apache HTTP Server path traversal (confirmed)
+         paths: /cgi-bin/../../../../../../../../../../bin/sh
+     98  TECH-SPRING-ACTUATOR  [MEDIUM  ]  Spring Boot Actuator
+         Spring Boot Actuator information disclosure (likely)
+         paths: /actuator/env, /actuator/configprops
+     95  CVE-2024-36401      [CRITICAL]  GeoServer
+         GeoServer OGC Filter SQL injection RCE (likely)
+         paths: /geoserver/web/, /geoserver
+     90  CVE-2024-3400       [CRITICAL]  Palo Alto PAN-OS
+         Palo Alto PAN-OS GlobalProtect command injection (confirmed)
+         paths: /webui/, /api/auth/validate-sso/../../../proxy/users/api/v2
+     72  CVE-2020-1472       [CRITICAL]  Microsoft Windows Netlogon
+         Netlogon elevation of privilege (Zerologon) (possible)
+         paths: /Dr0v
+     63  CVE-2024-34102      [CRITICAL]  Adobe Commerce / Magento
+         Adobe Commerce CosmicSting XXE (metadatauploader) (confirmed)
+         paths: /developmentserver/metadatauploader
+     53  CVE-2017-9841       [CRITICAL]  PHPUnit
+         PHPUnit eval-stdin.php remote code execution (confirmed)
+         paths: /vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.ph, /vendor/phpunit/phpunit/Util/PHP/eval-stdin.php
+     48  TECH-XDEBUG-RCE     [HIGH    ]  Xdebug (misconfiguration)
+         Xdebug remote debugging code execution (likely)
+         paths: /
+     48  CVE-2022-22947      [CRITICAL]  Spring Cloud Gateway
+         Spring Cloud Gateway SpEL injection RCE (likely)
+         paths: /actuator/gateway/routes
+     42  CVE-2025-55182      [CRITICAL]  React / Next.js
+         React Server Components unsafe deserialization (React2Shell) (confirmed)
+         paths: /
+     34  CVE-2021-27065      [CRITICAL]  Microsoft Exchange Server
+         Microsoft Exchange ProxyLogon arbitrary file write (confirmed)
+         paths: /ecp/Current/exporttool/microsoft.exchange.ediscov
+     31  CVE-2021-26855      [CRITICAL]  Microsoft Exchange Server
+         Microsoft Exchange ProxyLogon SSRF (confirmed)
+         paths: /autodiscover/autodiscover.json
+     16  CVE-2024-53704      [CRITICAL]  SonicWall SMA
+         SonicWall SMA100 SSLVPN authentication bypass (likely)
+         paths: /vpnsvc/connect.cgi
+     15  CVE-2019-19781      [CRITICAL]  Citrix ADC / Gateway
+         Citrix ADC/Gateway directory traversal (likely)
+         paths: /logon/LogonPoint/index.html, /vpn/index.html
+     10  CVE-2021-3129       [CRITICAL]  Laravel Ignition
+         Laravel Ignition debug mode RCE (confirmed)
+         paths: /_ignition/execute-solution
+      8  CVE-2022-41082      [HIGH    ]  Microsoft Exchange Server
+         Microsoft Exchange ProxyNotShell RCE (likely)
+         paths: /Autodiscover/Autodiscover.xml
+      7  CVE-2019-1003000    [HIGH    ]  Jenkins
+         Jenkins script security sandbox bypass (likely)
+         paths: /jenkins/script
+      5  CVE-2023-34362      [CRITICAL]  Progress MOVEit Transfer
+         MOVEit Transfer SQL injection (likely)
+         paths: /human.aspx
+      2  CVE-2019-0193       [CRITICAL]  Apache Solr
+         Apache Solr DataImportHandler RCE (likely)
+         paths: /solr/
+      2  CVE-2018-20062      [CRITICAL]  ThinkPHP
+         ThinkPHP invokefunction RCE (confirmed)
+         paths: /index.php, /public/index.php
+      2  CVE-2022-24086      [CRITICAL]  Adobe Commerce / Magento
+         Magento PEAR command injection (likely)
+         paths: /index.php
+      1  TECH-DOCKER-API     [CRITICAL]  Docker
+         Exposed Docker remote API (confirmed)
+         paths: /containers/json
+
+OUTCOME ANALYSIS (attack requests)
+----------------------------------------
+  Defensive outcome:     27,652 (96.1% blocked/404/429/redirect)
+  Decoy served (200):    1,069
+  Potential concern:     55
+
+  rate_limited        15,349 ( 53.3%)
+  not_found           11,185 ( 38.9%)
+  decoy_served         1,069 (  3.7%)
+  redirected             703 (  2.4%)
+  blocked                415 (  1.4%)
+  content_served          55 (  0.2%)
+  server_error             5 (  0.0%)
+
+CAMPAIGN ANALYSIS
+----------------------------------------
+  Unique probes:         11,933 (64.9% repetitive traffic)
+  IP profiles:           drive_by=2176, moderate=187, targeted=129, bulk_scanner=14, active_attacker=10
+
+  Top campaigns:
+    151.243.150.23      8,351 reqs  1,702 paths  [bulk_scanner]  sensitive_file_probe(8104), rce_attempt(85)
+    176.65.144.128      3,000 reqs  1,649 paths  [bulk_scanner]  sensitive_file_probe(2924), appliance_probe(29)
+    45.148.10.200       2,967 reqs   176 paths  [bulk_scanner]  sensitive_file_probe(2871), reconnaissance(96)
+    213.209.159.175     2,009 reqs   380 paths  [bulk_scanner]  sensitive_file_probe(1853), unknown(96)
+    192.253.248.169     1,553 reqs   268 paths  [bulk_scanner]  sensitive_file_probe(1523), appliance_probe(30)
+    80.94.95.211        1,029 reqs    89 paths  [bulk_scanner]  sensitive_file_probe(994), appliance_probe(35)
+    179.43.150.26         825 reqs   117 paths  [bulk_scanner]  sensitive_file_probe(817), reconnaissance(8)
+    52.200.76.145         609 reqs    77 paths  [bulk_scanner]  sensitive_file_probe(601), reconnaissance(8)
+
+RESPONSE STATUS BY CLASSIFICATION
+----------------------------------------
+  sensitive_file_probe          429=14778, 404=8181, 302=560, 403=97, 200=65
+  appliance_probe               404=1536, 429=207, 302=58, 301=4
+  rce_attempt                   400=255, 404=251, 429=102, 200=99, 302=7
+  login_attempt                 404=607, 429=62, 302=19, 301=1
+  webdav_probe                  200=543, 302=24
+  dns_probe                     404=460, 200=92
+  wordpress_probe               200=303, 429=130, 404=73, 302=6
+
+HTTP METHODS
+----------------------------------------
+  GET           32,417
+  POST            842
+  PROPFIND        559
+  PRI              99
+  CONNECT          48
+  HEAD             29
+  OPTIONS           8
+
+RESPONSE STATUS CODES
+----------------------------------------
+  429  15,489  Rate Limited
+  404  12,078  Not Found
+  200  4,990  OK (content served)
+  302    859  
+  400    327  Bad Request (blocked?)
+  502    104  Bad Gateway
+  403     99  Forbidden
+  405     48  
+  301      8  
+
+TOP TARGETED PATHS
+----------------------------------------
+  4,554  /
+    699  /favicon.ico
+    363  /.env
+    349  /wp-admin/install.php
+    338  /.git/config
+    255  /cgi-bin/../../../../../../../../../../bin/sh
+    221  /.env.local
+    217  /.env.production
+    217  /.env.save
+    191  /robots.txt
+    171  /backend/.env
+    169  /.env.prod
+    168  /app/.env
+    168  /api/.env
+    158  /.env.backup
+    154  /.env.example
+    147  /laravel/.env
+    144  /core/.env
+    144  /admin/.env
+    138  /dns-query
+
+TOP ATTACKER IPs
+----------------------------------------
+  151.243.150.23        8,351  [sensitive_file_probe(8104), rce_attempt(85), appliance_probe(75)]
+  176.65.144.128        3,000  [sensitive_file_probe(2924), appliance_probe(29), rce_attempt(21)]
+  45.148.10.200         2,967  [sensitive_file_probe(2871), reconnaissance(96)]
+  213.209.159.175       2,009  [sensitive_file_probe(1853), unknown(96), appliance_probe(44)]
+  192.253.248.169       1,553  [sensitive_file_probe(1523), appliance_probe(30)]
+  80.94.95.211          1,029  [sensitive_file_probe(994), appliance_probe(35)]
+  179.43.150.26           825  [sensitive_file_probe(817), reconnaissance(8)]
+  52.200.76.145           609  [sensitive_file_probe(601), reconnaissance(8)]
+  172.235.235.248         517  [appliance_probe(243), login_attempt(158), reconnaissance(56)]
+  165.22.224.68           438  [sensitive_file_probe(248), wordpress_probe(182), appliance_probe(8)]
+  46.151.178.13           341  [webdav_probe(341)]
+  45.205.1.80             334  [reconnaissance(168), webdav_probe(166)]
+  20.70.145.7             316  [sensitive_file_probe(272), reconnaissance(24), appliance_probe(14)]
+  45.148.10.67            307  [reconnaissance(294), wordpress_probe(13)]
+  179.43.146.227          252  [sensitive_file_probe(252)]
+
+SCANNER / BOT USER-AGENTS
+----------------------------------------
+  11,527  Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bo
+  2,871  l9explore/1.2.2
+  1,082  Mozilla/5.0
+    925  Go-http-client/1.1
+    634  Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHT
+    631  -
+    528  curl/7.68.0
+    501  Mozilla/5.0 (X11; Linux x86_64; rv:136.0.3) Gecko/20100101 Firefo
+    478  Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Geck
+    447  Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.6
+
+DAILY ACTIVITY
+----------------------------------------
+  2026-06-09  3,994  ██████████████████████████
+  2026-06-10  3,235  █████████████████████
+  2026-06-11  3,110  ████████████████████
+  2026-06-12  2,862  ███████████████████
+  2026-06-13  2,344  ███████████████
+  2026-06-14  3,638  ████████████████████████
+  2026-06-15  3,830  █████████████████████████
+  2026-06-16  4,494  ██████████████████████████████
+  2026-06-17  3,725  ████████████████████████
+  2026-06-18  2,770  ██████████████████
+
+HOURLY ACTIVITY (UTC, aggregated)
+----------------------------------------
+  00:00 UTC  2,515  █████████████████████████
+  01:00 UTC    999  ██████████
+  02:00 UTC    791  ███████
+  03:00 UTC  2,979  ██████████████████████████████
+  04:00 UTC    801  ████████
+  05:00 UTC  1,044  ██████████
+  06:00 UTC  1,268  ████████████
+  07:00 UTC  2,680  ██████████████████████████
+  08:00 UTC  2,738  ███████████████████████████
+  09:00 UTC  2,930  █████████████████████████████
+  10:00 UTC  1,242  ████████████
+  11:00 UTC  1,036  ██████████
+  12:00 UTC  1,116  ███████████
+  13:00 UTC    739  ███████
+  14:00 UTC    708  ███████
+  15:00 UTC  1,591  ████████████████
+  16:00 UTC  2,237  ██████████████████████
+  17:00 UTC  1,001  ██████████
+  18:00 UTC    886  ████████
+  19:00 UTC    601  ██████
+  20:00 UTC    553  █████
+  21:00 UTC  2,154  █████████████████████
+  22:00 UTC    550  █████
+  23:00 UTC    843  ████████
+
+POTENTIAL CONCERN EVENTS (outcome-scored)
+----------------------------------------
+  2026-06-10T06:41:39  48.217.54.85        200  /wp-config.php                       [sensitive_file_probe]  (content_served)
+  2026-06-10T07:24:58  104.209.5.148       200  /wp-config.php                       [sensitive_file_probe]  (content_served)
+  2026-06-10T09:45:54  52.188.87.49        200  /wp-config.php                       [sensitive_file_probe]  (content_served)
+  2026-06-10T11:52:13  172.178.119.23      200  /wp-config.php                       [sensitive_file_probe]  (content_served)
+  2026-06-10T14:03:28  148.66.142.37       200  /wp-config.php                       [sensitive_file_probe]  (content_served)
+  2026-06-10T15:15:53  172.183.131.201     200  /wp-config.php                       [sensitive_file_probe]  (content_served)
+  2026-06-10T16:08:14  64.236.160.17       200  /wp-config.php                       [sensitive_file_probe]  (content_served)
+  2026-06-10T16:54:41  151.243.150.23      200  /wp-config.php                       [sensitive_file_probe]  (content_served)
+  2026-06-10T17:00:30  20.163.6.182        200  /wp-config.php                       [sensitive_file_probe]  (content_served)
+  2026-06-10T23:13:25  20.3.221.184        200  /wp-config.php                       [sensitive_file_probe]  (content_served)
+  2026-06-11T03:52:24  172.200.183.242     200  /wp-config.php                       [sensitive_file_probe]  (content_served)
+  2026-06-11T05:51:43  20.55.163.180       200  /wp-config.php                       [sensitive_file_probe]  (content_served)
+  2026-06-12T03:05:40  176.65.144.128      200  /wp-config.php                       [sensitive_file_probe]  (content_served)
+  2026-06-12T22:44:45  135.237.130.178     200  /wp-config.php                       [sensitive_file_probe]  (content_served)
+  2026-06-13T01:48:22  135.237.130.178     200  /wp-config.php                       [sensitive_file_probe]  (content_served)
+  2026-06-13T02:36:06  20.102.134.104      200  /wp-config.php                       [sensitive_file_probe]  (content_served)
+  2026-06-13T07:45:43  204.197.252.169     200  /wp-config.php                       [sensitive_file_probe]  (content_served)
+  2026-06-14T10:09:51  48.214.53.114       200  /wp-config.php                       [sensitive_file_probe]  (content_served)
+  2026-06-14T10:46:52  64.236.143.36       200  /wp-config.php                       [sensitive_file_probe]  (content_served)
+  2026-06-14T14:01:43  20.55.87.144        200  /wp-config.php                       [sensitive_file_probe]  (content_served)
+
+SAMPLE: WORDPRESS VULNERABILITY PROBING
+----------------------------------------
+  2026-06-09T04:11:24  185.204.1.15        GET     200  /wp-admin/install.php
+  2026-06-09T04:21:54  45.148.10.67        GET     200  /wp-admin/install.php
+  2026-06-09T04:37:33  87.236.176.99       GET     200  /wp-admin/install.php
+  2026-06-09T04:52:33  45.148.10.67        GET     200  /wp-admin/install.php
+  2026-06-09T05:11:23  45.148.10.67        GET     200  /wp-admin/install.php
+
+SAMPLE: WEBDAV SCANNING (PROPFIND)
+----------------------------------------
+  2026-06-09T04:11:49  46.151.178.13       PROPFIND  302  /
+  2026-06-09T04:20:04  46.151.178.13       PROPFIND  302  /
+  2026-06-09T04:25:09  46.151.178.13       PROPFIND  302  /
+  2026-06-09T04:25:19  46.151.178.13       PROPFIND  302  /
+  2026-06-09T04:30:30  46.151.178.13       PROPFIND  302  /
+
+SAMPLE: SENSITIVE FILE PROBING (.ENV, .GIT, CONFIG)
+----------------------------------------
+  2026-06-09T04:20:07  108.175.213.101     GET     302  /.git/HEAD  TECH-GIT-EXPOSURE
+  2026-06-09T04:20:08  108.175.213.101     GET     302  /.git/config  TECH-GIT-EXPOSURE
+  2026-06-09T04:20:10  108.175.213.101     GET     302  /.env.local  TECH-ENV-EXPOSURE
+  2026-06-09T04:20:12  108.175.213.101     GET     302  /.env.backup  TECH-ENV-EXPOSURE
+  2026-06-09T04:20:16  108.175.213.101     GET     302  /wp-config.php.bak
+
+SAMPLE: LOGIN / CREDENTIAL ATTACK
+----------------------------------------
+  2026-06-09T04:20:33  108.175.213.101     POST    302  /___proxy_subdomain_whm/login/
+  2026-06-09T04:20:33  108.175.213.101     GET     302  /___proxy_subdomain_whm/login/
+  2026-06-09T05:19:23  74.82.47.5          GET     302  /remote/logincheck
+  2026-06-09T05:20:41  74.82.47.5          GET     302  /login
+  2026-06-09T05:25:57  64.62.197.48        GET     302  /remote/logincheck
+
+SAMPLE: REMOTE CODE EXECUTION (RCE) ATTEMPT
+----------------------------------------
+  2026-06-09T04:29:55  74.249.128.108      GET     302  /developmentserver/metadatauploader  CVE-2024-34102
+  2026-06-09T05:38:01  180.76.172.156      POST    400  /cgi-bin/../../../../../../../../../../bin/sh  CVE-2021-41773
+  2026-06-09T05:53:55  193.134.101.102     POST    400  /cgi-bin/../../../../../../../../../../bin/sh  CVE-2021-41773
+  2026-06-09T07:18:45  41.63.63.211        POST    400  /cgi-bin/../../../../../../../../../../bin/sh  CVE-2021-41773
+  2026-06-09T08:09:19  176.65.144.128      GET     429  /jenkins/script  CVE-2019-1003000
+
+SAMPLE: PATH TRAVERSAL ATTEMPT
+----------------------------------------
+  2026-06-09T04:48:05  176.65.148.183      GET     302  /api/auth/validate-sso/../../../proxy/users/a  CVE-2024-3400
+  2026-06-09T05:43:15  176.65.148.183      GET     302  /api/auth/validate-sso/../../../proxy/users/a  CVE-2024-3400
+  2026-06-09T08:09:19  176.65.144.128      GET     400  /../.env  TECH-ENV-EXPOSURE
+  2026-06-09T08:09:19  176.65.144.128      GET     400  /../.env.local  TECH-ENV-EXPOSURE
+  2026-06-09T08:09:19  176.65.144.128      GET     400  /../../../.env  TECH-ENV-EXPOSURE
+
+SAMPLE: NETWORK APPLIANCE / PRODUCT FINGERPRINTING
+----------------------------------------
+  2026-06-09T05:08:08  74.82.47.5          GET     302  /webui/  CVE-2024-3400
+  2026-06-09T05:14:31  64.62.197.48        GET     302  /webui/  CVE-2024-3400
+  2026-06-09T05:14:41  64.62.156.94        GET     302  /webui/  CVE-2024-3400
+  2026-06-09T05:20:26  74.82.47.5          GET     302  /fonts/ftnt-icons.woff
+  2026-06-09T05:21:49  74.82.47.5          GET     302  /lang/custom/sbin/init
+
+SAMPLE: CITRIX ADC / GATEWAY PROBING
+----------------------------------------
+  2026-06-09T05:25:03  74.82.47.5          GET     302  /vpn/index.html  CVE-2019-19781
+  2026-06-09T05:25:13  74.82.47.5          GET     302  /vpn/index.html  CVE-2019-19781
+  2026-06-09T05:25:16  74.82.47.5          GET     302  /logon/LogonPoint/index.html  CVE-2019-19781
+  2026-06-09T05:25:34  74.82.47.5          GET     302  /logon/LogonPoint/index.html  CVE-2019-19781
+  2026-06-09T05:36:55  64.62.197.48        GET     302  /vpn/index.html  CVE-2019-19781
+
+SAMPLE: DNS-OVER-HTTPS / DNS TUNNEL PROBE
+----------------------------------------
+  2026-06-09T16:25:54  8.209.96.179        GET     404  /dns-query
+  2026-06-09T16:25:54  8.209.96.179        POST    404  /dns-query
+  2026-06-09T16:25:54  8.209.96.179        GET     404  /dns-query
+  2026-06-09T16:25:54  8.209.96.179        GET     404  /dns-query
+  2026-06-09T16:25:54  8.209.96.179        POST    404  /dns-query
+
+SAMPLE: WORDPRESS PLUGIN VULNERABILITY PROBING
+----------------------------------------
+  2026-06-09T17:16:41  45.156.129.154      GET     404  /wp-content/plugins/wp-fastest-cache/readme.t
+  2026-06-09T17:16:44  45.156.129.153      GET     404  /wp-content/plugins/wp-video-lightbox/readme.
+  2026-06-09T17:16:47  45.156.129.153      GET     404  /wp-content/plugins/wpschoolpress/readme.txt
+  2026-06-09T17:16:50  45.156.129.155      GET     404  /wp-content/plugins/wp-central/readme.txt
+  2026-06-09T17:16:52  45.156.129.152      GET     404  /wp-content/plugins/iwp-client/readme.txt
+
+SAMPLE: CRYPTOCURRENCY MINING RPC PROBE
+----------------------------------------
+  2026-06-13T12:35:55  185.213.175.171     POST    200  /
+  2026-06-13T12:35:59  185.213.175.171     POST    200  /
+  2026-06-14T03:08:58  195.170.172.128     POST    200  /
+  2026-06-14T03:08:59  195.170.172.128     POST    200  /
+  2026-06-14T07:56:40  195.170.172.225     POST    200  /
+
+RESPONSE TIMING
+----------------------------------------
+  Average: 32.3 ms
+  Max:     16974 ms
+
+========================================================================

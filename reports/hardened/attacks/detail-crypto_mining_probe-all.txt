@@ -1,0 +1,1252 @@
+========================================================================
+DETAIL REPORT: CRYPTOCURRENCY MINING RPC PROBE
+========================================================================
+
+Classification:  crypto_mining_probe
+Severity:        MEDIUM
+Description:     Probes for exposed cryptocurrency mining JSON-RPC endpoints (getwork, eth_getWork, mining.subscribe).
+
+SUMMARY
+----------------------------------------
+  Total events:        22
+  With response:       22
+  Without response:    0
+  Unique attacker IPs: 3
+  Unique paths:        1
+  Unique hosts:        7
+  First seen:          2026-06-13T12:35:55.350224+00:00
+  Last seen:           2026-06-18T12:26:17.836321+00:00
+
+HTTP METHODS
+----------------------------------------
+  POST             22
+
+RESPONSE STATUS CODES
+----------------------------------------
+  200     22
+
+TOP PATHS
+----------------------------------------
+     22  /
+
+TOP ATTACKER IPs
+----------------------------------------
+  195.170.172.128           8
+  195.170.172.225           8
+  185.213.175.171           6
+
+USER-AGENTS
+----------------------------------------
+     22  Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHT
+
+========================================================================
+EVENT #1 of 22
+========================================================================
+  Request ID:     1781354155350223357-2
+  Timestamp:      2026-06-13T12:35:55.350224902Z
+  Client IP:      185.213.175.171
+  Method:         POST
+  Host:           145.220.231.110
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MUoyY1JFTEdGM3NqYnUxaE1EYjFlOGRYcTJ5cWVTSk13Ong=
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 44
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (44 chars):
+    {"id": 1, "method": "getwork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     49 ms
+    Headers:
+      Content-Type: text/html; charset=UTF-8
+      Date: Sat, 13 Jun 2026 12:35:55 GMT
+      Link: <https://145.220.231.110/index.php?rest_route=/>; rel="https://api.w.org/"
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      Vary: Accept-Encoding
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    <html lang="en-US">
+    <head>
+    	<meta charset="UTF-8" />
+    	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name='robots' content='max-image-preview:large' />
+    	<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>
+    	<title>Museum</title>
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Feed" href="https://145.220.231.110/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Comments Feed" href="https://145.220.231.110/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"conca
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #2 of 22
+========================================================================
+  Request ID:     1781354159239192346-3
+  Timestamp:      2026-06-13T12:35:59.239193721Z
+  Client IP:      185.213.175.171
+  Method:         POST
+  Host:           145.220.231.110
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MHg1YzQ4NzcxNzEzMDU4MTgxOWZiODU1ZDhhYjhhNTJlNTU5Y2EyM2I5Ong=
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 48
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (48 chars):
+    {"id": 1, "method": "eth_getWork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     52 ms
+    Headers:
+      Content-Type: text/html; charset=UTF-8
+      Date: Sat, 13 Jun 2026 12:35:59 GMT
+      Link: <https://145.220.231.110/index.php?rest_route=/>; rel="https://api.w.org/"
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      Vary: Accept-Encoding
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    <html lang="en-US">
+    <head>
+    	<meta charset="UTF-8" />
+    	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name='robots' content='max-image-preview:large' />
+    	<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>
+    	<title>Museum</title>
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Feed" href="https://145.220.231.110/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Comments Feed" href="https://145.220.231.110/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"conca
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #3 of 22
+========================================================================
+  Request ID:     1781406538377297558-2004
+  Timestamp:      2026-06-14T03:08:58.377299075Z
+  Client IP:      195.170.172.128
+  Method:         POST
+  Host:           145.220.231.104
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MTdMc3RCVkhSeldkb2JHcFRQMWdaMWsyM3UxZ2ZON3pUcjp4
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 44
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (44 chars):
+    {"id": 1, "method": "getwork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     50 ms
+    Headers:
+      Content-Type: text/html; charset=UTF-8
+      Date: Sun, 14 Jun 2026 03:08:58 GMT
+      Link: <https://145.220.231.104/index.php?rest_route=/>; rel="https://api.w.org/"
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      Vary: Accept-Encoding
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    <html lang="en-US">
+    <head>
+    	<meta charset="UTF-8" />
+    	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name='robots' content='max-image-preview:large' />
+    	<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>
+    	<title>Museum</title>
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Feed" href="https://145.220.231.104/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Comments Feed" href="https://145.220.231.104/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"conca
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #4 of 22
+========================================================================
+  Request ID:     1781406539622143240-2005
+  Timestamp:      2026-06-14T03:08:59.622144889Z
+  Client IP:      195.170.172.128
+  Method:         POST
+  Host:           145.220.231.104
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MHgwNDJjYjMwNzk5YTE0YzdkMzYyZGNjMzRjMjNhODg5ZTc0MmI2MGNhOng=
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 48
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (48 chars):
+    {"id": 1, "method": "eth_getWork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     64 ms
+    Headers:
+      Content-Type: text/html; charset=UTF-8
+      Date: Sun, 14 Jun 2026 03:08:59 GMT
+      Link: <https://145.220.231.104/index.php?rest_route=/>; rel="https://api.w.org/"
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      Vary: Accept-Encoding
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    <html lang="en-US">
+    <head>
+    	<meta charset="UTF-8" />
+    	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name='robots' content='max-image-preview:large' />
+    	<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>
+    	<title>Museum</title>
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Feed" href="https://145.220.231.104/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Comments Feed" href="https://145.220.231.104/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"conca
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #5 of 22
+========================================================================
+  Request ID:     1781423800534279140-2565
+  Timestamp:      2026-06-14T07:56:40.534280834Z
+  Client IP:      195.170.172.225
+  Method:         POST
+  Host:           145.220.231.107
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MUdQOHo0cGh3OHp1RTZuMlMzczFYRGR5UHBqUGp1a1JVZzp4
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 44
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (44 chars):
+    {"id": 1, "method": "getwork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     51 ms
+    Headers:
+      Content-Type: text/html; charset=UTF-8
+      Date: Sun, 14 Jun 2026 07:56:40 GMT
+      Link: <https://145.220.231.107/index.php?rest_route=/>; rel="https://api.w.org/"
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      Vary: Accept-Encoding
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    <html lang="en-US">
+    <head>
+    	<meta charset="UTF-8" />
+    	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name='robots' content='max-image-preview:large' />
+    	<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>
+    	<title>Museum</title>
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Feed" href="https://145.220.231.107/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Comments Feed" href="https://145.220.231.107/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"conca
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #6 of 22
+========================================================================
+  Request ID:     1781423803828428479-2566
+  Timestamp:      2026-06-14T07:56:43.828429748Z
+  Client IP:      195.170.172.225
+  Method:         POST
+  Host:           145.220.231.107
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MHgxNmMwOTE5N2NmODg3OGQ5YTMyYjBlZWM3NTBiZGJlYmU2MGUzOTRjOng=
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 48
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (48 chars):
+    {"id": 1, "method": "eth_getWork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     51 ms
+    Headers:
+      Content-Type: text/html; charset=UTF-8
+      Date: Sun, 14 Jun 2026 07:56:43 GMT
+      Link: <https://145.220.231.107/index.php?rest_route=/>; rel="https://api.w.org/"
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      Vary: Accept-Encoding
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    <html lang="en-US">
+    <head>
+    	<meta charset="UTF-8" />
+    	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name='robots' content='max-image-preview:large' />
+    	<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>
+    	<title>Museum</title>
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Feed" href="https://145.220.231.107/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Comments Feed" href="https://145.220.231.107/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"conca
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #7 of 22
+========================================================================
+  Request ID:     1781483311127176116-7164
+  Timestamp:      2026-06-15T00:28:31.127177305Z
+  Client IP:      195.170.172.128
+  Method:         POST
+  Host:           145.220.231.111
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MTREVk1uOG1jQzZZM1RQVGZNZmhTeEs5b3RMNm1GS0c0UTp4
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 44
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (44 chars):
+    {"id": 1, "method": "getwork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     51 ms
+    Headers:
+      Content-Type: text/html; charset=UTF-8
+      Date: Mon, 15 Jun 2026 00:28:31 GMT
+      Link: <https://145.220.231.111/index.php?rest_route=/>; rel="https://api.w.org/"
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      Vary: Accept-Encoding
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    <html lang="en-US">
+    <head>
+    	<meta charset="UTF-8" />
+    	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name='robots' content='max-image-preview:large' />
+    	<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>
+    	<title>Museum</title>
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Feed" href="https://145.220.231.111/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Comments Feed" href="https://145.220.231.111/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"conca
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #8 of 22
+========================================================================
+  Request ID:     1781483312076316968-7165
+  Timestamp:      2026-06-15T00:28:32.076318508Z
+  Client IP:      195.170.172.128
+  Method:         POST
+  Host:           145.220.231.111
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MHhmOGQ1YWMyMzA2YWQxZWY4Y2FlZDNkZWZkYjJhYzdiNzk1MmVlMTY1Ong=
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 48
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (48 chars):
+    {"id": 1, "method": "eth_getWork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     59 ms
+    Headers:
+      Content-Type: text/html; charset=UTF-8
+      Date: Mon, 15 Jun 2026 00:28:32 GMT
+      Link: <https://145.220.231.111/index.php?rest_route=/>; rel="https://api.w.org/"
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      Vary: Accept-Encoding
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    <html lang="en-US">
+    <head>
+    	<meta charset="UTF-8" />
+    	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name='robots' content='max-image-preview:large' />
+    	<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>
+    	<title>Museum</title>
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Feed" href="https://145.220.231.111/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Comments Feed" href="https://145.220.231.111/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"conca
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #9 of 22
+========================================================================
+  Request ID:     1781510285114267174-8118
+  Timestamp:      2026-06-15T07:58:05.114268494Z
+  Client IP:      195.170.172.225
+  Method:         POST
+  Host:           145.220.231.108
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MUoyY1JFTEdGM3NqYnUxaE1EYjFlOGRYcTJ5cWVTSk13Ong=
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 44
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (44 chars):
+    {"id": 1, "method": "getwork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     48 ms
+    Headers:
+      Content-Type: text/html; charset=UTF-8
+      Date: Mon, 15 Jun 2026 07:58:05 GMT
+      Link: <https://145.220.231.108/index.php?rest_route=/>; rel="https://api.w.org/"
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      Vary: Accept-Encoding
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    <html lang="en-US">
+    <head>
+    	<meta charset="UTF-8" />
+    	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name='robots' content='max-image-preview:large' />
+    	<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>
+    	<title>Museum</title>
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Feed" href="https://145.220.231.108/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Comments Feed" href="https://145.220.231.108/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"conca
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #10 of 22
+========================================================================
+  Request ID:     1781510288204320958-8119
+  Timestamp:      2026-06-15T07:58:08.204322576Z
+  Client IP:      195.170.172.225
+  Method:         POST
+  Host:           145.220.231.108
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MHgyMjllYzlhNDE0NGJjZjQ5NGY3YzcwZmEyYmEzYzYyNjE3YzQzZmZiOng=
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 48
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (48 chars):
+    {"id": 1, "method": "eth_getWork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     51 ms
+    Headers:
+      Content-Type: text/html; charset=UTF-8
+      Date: Mon, 15 Jun 2026 07:58:08 GMT
+      Link: <https://145.220.231.108/index.php?rest_route=/>; rel="https://api.w.org/"
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      Vary: Accept-Encoding
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    <html lang="en-US">
+    <head>
+    	<meta charset="UTF-8" />
+    	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name='robots' content='max-image-preview:large' />
+    	<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>
+    	<title>Museum</title>
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Feed" href="https://145.220.231.108/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Comments Feed" href="https://145.220.231.108/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"conca
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #11 of 22
+========================================================================
+  Request ID:     1781520348156220452-8372
+  Timestamp:      2026-06-15T10:45:48.15622189Z
+  Client IP:      195.170.172.128
+  Method:         POST
+  Host:           145.220.231.111
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MTVyWHc0dEVUQVdkelpzVnJpYks1aTNWMWpXc3AxVmNpVTp4
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 44
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (44 chars):
+    {"id": 1, "method": "getwork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     52 ms
+    Headers:
+      Content-Type: text/html; charset=UTF-8
+      Date: Mon, 15 Jun 2026 10:45:48 GMT
+      Link: <https://145.220.231.111/index.php?rest_route=/>; rel="https://api.w.org/"
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      Vary: Accept-Encoding
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    <html lang="en-US">
+    <head>
+    	<meta charset="UTF-8" />
+    	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name='robots' content='max-image-preview:large' />
+    	<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>
+    	<title>Museum</title>
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Feed" href="https://145.220.231.111/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Comments Feed" href="https://145.220.231.111/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"conca
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #12 of 22
+========================================================================
+  Request ID:     1781520349207213700-8373
+  Timestamp:      2026-06-15T10:45:49.207214987Z
+  Client IP:      195.170.172.128
+  Method:         POST
+  Host:           145.220.231.111
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MHg5ZjFiNTM4ZWY2MGYyN2NmOGI3MTU4M2E2NjZkYzcwZDZiY2EzNzA5Ong=
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 48
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (48 chars):
+    {"id": 1, "method": "eth_getWork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     45 ms
+    Headers:
+      Content-Type: text/html; charset=UTF-8
+      Date: Mon, 15 Jun 2026 10:45:49 GMT
+      Link: <https://145.220.231.111/index.php?rest_route=/>; rel="https://api.w.org/"
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      Vary: Accept-Encoding
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    <html lang="en-US">
+    <head>
+    	<meta charset="UTF-8" />
+    	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name='robots' content='max-image-preview:large' />
+    	<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>
+    	<title>Museum</title>
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Feed" href="https://145.220.231.111/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Comments Feed" href="https://145.220.231.111/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"conca
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #13 of 22
+========================================================================
+  Request ID:     1781532041336309818-8613
+  Timestamp:      2026-06-15T14:00:41.336311656Z
+  Client IP:      195.170.172.225
+  Method:         POST
+  Host:           145.220.231.104
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MUdQOHo0cGh3OHp1RTZuMlMzczFYRGR5UHBqUGp1a1JVZzp4
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 44
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (44 chars):
+    {"id": 1, "method": "getwork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     46 ms
+    Headers:
+      Content-Type: text/html; charset=UTF-8
+      Date: Mon, 15 Jun 2026 14:00:41 GMT
+      Link: <https://145.220.231.104/index.php?rest_route=/>; rel="https://api.w.org/"
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      Vary: Accept-Encoding
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    <html lang="en-US">
+    <head>
+    	<meta charset="UTF-8" />
+    	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name='robots' content='max-image-preview:large' />
+    	<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>
+    	<title>Museum</title>
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Feed" href="https://145.220.231.104/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Comments Feed" href="https://145.220.231.104/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"conca
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #14 of 22
+========================================================================
+  Request ID:     1781532043911274888-8614
+  Timestamp:      2026-06-15T14:00:43.911276283Z
+  Client IP:      195.170.172.225
+  Method:         POST
+  Host:           145.220.231.104
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MHg2NGY3ZmE4OGE2Y2IxZGVkMDYyYWViNjRhNTYyY2MyY2E4OGRlM2QxOng=
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 48
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (48 chars):
+    {"id": 1, "method": "eth_getWork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     45 ms
+    Headers:
+      Content-Type: text/html; charset=UTF-8
+      Date: Mon, 15 Jun 2026 14:00:43 GMT
+      Link: <https://145.220.231.104/index.php?rest_route=/>; rel="https://api.w.org/"
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      Vary: Accept-Encoding
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    <html lang="en-US">
+    <head>
+    	<meta charset="UTF-8" />
+    	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name='robots' content='max-image-preview:large' />
+    	<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>
+    	<title>Museum</title>
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Feed" href="https://145.220.231.104/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Comments Feed" href="https://145.220.231.104/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"conca
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #15 of 22
+========================================================================
+  Request ID:     1781625711364049742-13224
+  Timestamp:      2026-06-16T16:01:51.364051163Z
+  Client IP:      195.170.172.128
+  Method:         POST
+  Host:           145.220.231.109
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MTVyWHc0dEVUQVdkelpzVnJpYks1aTNWMWpXc3AxVmNpVTp4
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 44
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (44 chars):
+    {"id": 1, "method": "getwork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     44 ms
+    Headers:
+      Content-Type: text/html; charset=UTF-8
+      Date: Tue, 16 Jun 2026 16:01:51 GMT
+      Link: <https://145.220.231.109/index.php?rest_route=/>; rel="https://api.w.org/"
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      Vary: Accept-Encoding
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    <html lang="en-US">
+    <head>
+    	<meta charset="UTF-8" />
+    	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name='robots' content='max-image-preview:large' />
+    	<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>
+    	<title>Museum</title>
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Feed" href="https://145.220.231.109/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Comments Feed" href="https://145.220.231.109/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"conca
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #16 of 22
+========================================================================
+  Request ID:     1781625712415172028-13225
+  Timestamp:      2026-06-16T16:01:52.415173474Z
+  Client IP:      195.170.172.128
+  Method:         POST
+  Host:           145.220.231.109
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MHg4Y2QxZWEyNjM5M2UzYjMyZjZiY2RlNzAxMDQ1YzdkM2ZjMDc2NDlhOng=
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 48
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (48 chars):
+    {"id": 1, "method": "eth_getWork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     45 ms
+    Headers:
+      Content-Type: text/html; charset=UTF-8
+      Date: Tue, 16 Jun 2026 16:01:52 GMT
+      Link: <https://145.220.231.109/index.php?rest_route=/>; rel="https://api.w.org/"
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      Vary: Accept-Encoding
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    <html lang="en-US">
+    <head>
+    	<meta charset="UTF-8" />
+    	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name='robots' content='max-image-preview:large' />
+    	<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>
+    	<title>Museum</title>
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Feed" href="https://145.220.231.109/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Comments Feed" href="https://145.220.231.109/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"conca
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #17 of 22
+========================================================================
+  Request ID:     1781625823400129575-13236
+  Timestamp:      2026-06-16T16:03:43.400131143Z
+  Client IP:      195.170.172.225
+  Method:         POST
+  Host:           145.220.231.109
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MUZpNFBGTTNjY2N0OWhmQjhHNG1qTkFiODZHQTNjYW56Nzp4
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 44
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (44 chars):
+    {"id": 1, "method": "getwork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     45 ms
+    Headers:
+      Content-Type: text/html; charset=UTF-8
+      Date: Tue, 16 Jun 2026 16:03:43 GMT
+      Link: <https://145.220.231.109/index.php?rest_route=/>; rel="https://api.w.org/"
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      Vary: Accept-Encoding
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    <html lang="en-US">
+    <head>
+    	<meta charset="UTF-8" />
+    	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name='robots' content='max-image-preview:large' />
+    	<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>
+    	<title>Museum</title>
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Feed" href="https://145.220.231.109/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Comments Feed" href="https://145.220.231.109/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"conca
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #18 of 22
+========================================================================
+  Request ID:     1781625824876218360-13237
+  Timestamp:      2026-06-16T16:03:44.876219506Z
+  Client IP:      195.170.172.225
+  Method:         POST
+  Host:           145.220.231.109
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MHhmYTdhMzc0MDAwZGIxN2E5Nzk1NjdjNmUyMWYzYjNiYmU4YzJhNjg4Ong=
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 48
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (48 chars):
+    {"id": 1, "method": "eth_getWork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     50 ms
+    Headers:
+      Content-Type: text/html; charset=UTF-8
+      Date: Tue, 16 Jun 2026 16:03:44 GMT
+      Link: <https://145.220.231.109/index.php?rest_route=/>; rel="https://api.w.org/"
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      Vary: Accept-Encoding
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    <html lang="en-US">
+    <head>
+    	<meta charset="UTF-8" />
+    	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name='robots' content='max-image-preview:large' />
+    	<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>
+    	<title>Museum</title>
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Feed" href="https://145.220.231.109/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Comments Feed" href="https://145.220.231.109/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"conca
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #19 of 22
+========================================================================
+  Request ID:     1781783689245456718-19584
+  Timestamp:      2026-06-18T11:54:49.245458867Z
+  Client IP:      185.213.175.171
+  Method:         POST
+  Host:           145.220.231.106
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MUZpNFBGTTNjY2N0OWhmQjhHNG1qTkFiODZHQTNjYW56Nzp4
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 44
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (44 chars):
+    {"id": 1, "method": "getwork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     86 ms
+    Headers:
+      Content-Type: text/html; charset=UTF-8
+      Date: Thu, 18 Jun 2026 11:54:49 GMT
+      Link: <https://145.220.231.106/index.php?rest_route=/>; rel="https://api.w.org/"
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      Vary: Accept-Encoding
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    <html lang="en-US">
+    <head>
+    	<meta charset="UTF-8" />
+    	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name='robots' content='max-image-preview:large' />
+    	<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>
+    	<title>Museum</title>
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Feed" href="https://145.220.231.106/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Comments Feed" href="https://145.220.231.106/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"conca
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #20 of 22
+========================================================================
+  Request ID:     1781783694189563028-19586
+  Timestamp:      2026-06-18T11:54:54.189564485Z
+  Client IP:      185.213.175.171
+  Method:         POST
+  Host:           145.220.231.106
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MHhkOTg3MTc2NzQxNmM2MjcwYWM2MzhmYWU2ODkzNTNkNDA1NzAwN2FlOng=
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 48
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (48 chars):
+    {"id": 1, "method": "eth_getWork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     67 ms
+    Headers:
+      Content-Type: text/html; charset=UTF-8
+      Date: Thu, 18 Jun 2026 11:54:54 GMT
+      Link: <https://145.220.231.106/index.php?rest_route=/>; rel="https://api.w.org/"
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      Vary: Accept-Encoding
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    <html lang="en-US">
+    <head>
+    	<meta charset="UTF-8" />
+    	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name='robots' content='max-image-preview:large' />
+    	<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>
+    	<title>Museum</title>
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Feed" href="https://145.220.231.106/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Comments Feed" href="https://145.220.231.106/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"conca
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #21 of 22
+========================================================================
+  Request ID:     1781785574074339107-19614
+  Timestamp:      2026-06-18T12:26:14.074340607Z
+  Client IP:      185.213.175.171
+  Method:         POST
+  Host:           145.220.231.110
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MUdQOHo0cGh3OHp1RTZuMlMzczFYRGR5UHBqUGp1a1JVZzp4
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 44
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (44 chars):
+    {"id": 1, "method": "getwork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     63 ms
+    Headers:
+      Content-Type: text/html; charset=UTF-8
+      Date: Thu, 18 Jun 2026 12:26:14 GMT
+      Link: <https://145.220.231.110/index.php?rest_route=/>; rel="https://api.w.org/"
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      Vary: Accept-Encoding
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    <html lang="en-US">
+    <head>
+    	<meta charset="UTF-8" />
+    	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name='robots' content='max-image-preview:large' />
+    	<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>
+    	<title>Museum</title>
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Feed" href="https://145.220.231.110/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Comments Feed" href="https://145.220.231.110/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"conca
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #22 of 22
+========================================================================
+  Request ID:     1781785577836320232-19615
+  Timestamp:      2026-06-18T12:26:17.836321937Z
+  Client IP:      185.213.175.171
+  Method:         POST
+  Host:           145.220.231.110
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MHgyZDcwNzdjNjY5NGIxMDY5YTI1NDc0NjcwNmE0ZTQ0NDE4YzU0MjQ5Ong=
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 48
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (48 chars):
+    {"id": 1, "method": "eth_getWork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     92 ms
+    Headers:
+      Content-Type: text/html; charset=UTF-8
+      Date: Thu, 18 Jun 2026 12:26:17 GMT
+      Link: <https://145.220.231.110/index.php?rest_route=/>; rel="https://api.w.org/"
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      Vary: Accept-Encoding
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    <html lang="en-US">
+    <head>
+    	<meta charset="UTF-8" />
+    	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name='robots' content='max-image-preview:large' />
+    	<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>
+    	<title>Museum</title>
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Feed" href="https://145.220.231.110/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Museum &raquo; Comments Feed" href="https://145.220.231.110/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"conca
+    ... (9439 more chars truncated)
+
+========================================================================

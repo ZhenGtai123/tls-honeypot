@@ -1,0 +1,2848 @@
+========================================================================
+POTENTIAL CONCERN EVENTS
+========================================================================
+
+Requests flagged by outcome scoring: empty HTTP 200 on a sensitive path, or response body matching leak patterns (.env, .git, actuator, etc.).
+
+SUMMARY
+----------------------------------------
+  Total events:        80
+  Unique attacker IPs: 64
+  Unique paths:        2
+  Unique hosts:        8
+  First seen:          2026-06-09T11:53:30.270342649Z
+  Last seen:           2026-06-18T17:27:53.417880106Z
+
+CONCERN REASONS
+----------------------------------------
+     68  empty_on_sensitive_path
+     12  empty_or_unrecognized_body
+
+ATTACK CLASSIFICATIONS
+----------------------------------------
+     68  sensitive_file_probe  (Sensitive file probing (.env, .git, config))
+     12  wordpress_probe  (WordPress vulnerability probing)
+
+TOP PATHS
+----------------------------------------
+     68  /wp-config.php
+     12  /wp-admin/admin-ajax.php
+
+TOP ATTACKER IPs
+----------------------------------------
+  151.243.150.23            5
+  176.65.144.128            5
+  84.31.56.138              3
+  145.108.82.182            3
+  91.214.67.235             2
+  145.108.65.34             2
+  145.94.176.179            2
+  44.223.12.109             2
+  172.184.211.163           1
+  20.168.157.87             1
+  172.215.216.224           1
+  172.184.214.216           1
+  20.106.231.45             1
+  9.234.151.113             1
+  20.106.182.98             1
+
+========================================================================
+EVENT #1 of 80
+========================================================================
+  Request ID:      1781006010270341602-1360
+  Timestamp:       2026-06-09T11:53:30.270342649Z
+  Client IP:       172.184.211.163
+  Method:          GET
+  Host:            145.220.231.102
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 14.4; rv:125.0) Gecko/20100101 Firefox/125.0
+  Response:
+    Status:        200 200 OK
+    Duration:      22 ms
+    Headers:
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Tue, 09 Jun 2026 11:53:30 GMT
+      Server: nginx/1.31.1
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #2 of 80
+========================================================================
+  Request ID:      1781008311673429018-6738
+  Timestamp:       2026-06-09T12:31:51.673430155Z
+  Client IP:       91.214.67.235
+  Method:          POST
+  Host:            145.220.231.96
+  Path:            /wp-admin/admin-ajax.php
+  Classification:  wordpress_probe
+  Concern reason:  empty_or_unrecognized_body
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept: application/json, text/plain, */*
+    Accept-Encoding: gzip, deflate, br, zstd
+    Accept-Language: ja-JP,ja;q=0.9,en-NL;q=0.8,en-US;q=0.7,en;q=0.6
+    Connection: keep-alive
+    Content-Length: 61
+    Content-Type: application/x-www-form-urlencoded
+    Cookie: PHPSESSID=4c5cbb19f0d302516a564b71a2b592a2; cmplz_banner-status=dismissed
+    Origin: https://145.220.231.96
+    Referer: https://145.220.231.96/?page_id=5
+    Sec-Ch-Ua: "Google Chrome";v="149", "Chromium";v="149", "Not)A;Brand";v="24"
+    Sec-Ch-Ua-Mobile: ?1
+    Sec-Ch-Ua-Platform: "Android"
+    Sec-Fetch-Dest: empty
+    Sec-Fetch-Mode: cors
+    Sec-Fetch-Site: same-origin
+    User-Agent: Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36
+  Request body (61 chars):
+    action=bookingpress_generate_spam_captcha&_wpnonce=3b912467ce
+  Response:
+    Status:        200 200 OK
+    Duration:      25 ms
+    Headers:
+      Access-Control-Allow-Credentials: true
+      Access-Control-Allow-Origin: https://145.220.231.96
+      Cache-Control: no-cache, must-revalidate, max-age=0
+      Connection: keep-alive
+      Content-Length: 127
+      Content-Type: application/json; charset=UTF-8
+      Date: Tue, 09 Jun 2026 12:31:51 GMT
+      Expires: Wed, 11 Jan 1984 05:00:00 GMT
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Powered-By: PHP/7.4.29
+      X-Robots-Tag: noindex
+    Body (127 chars):
+    {"updated_nonce":"","variant":"success","title":"Success","msg":"Captcha generated successfully.","captcha_val":"cu7n0QIPUIpc"}
+
+========================================================================
+EVENT #3 of 80
+========================================================================
+  Request ID:      1781008316155834947-6739
+  Timestamp:       2026-06-09T12:31:56.155835994Z
+  Client IP:       91.214.67.235
+  Method:          POST
+  Host:            145.220.231.96
+  Path:            /wp-admin/admin-ajax.php
+  Classification:  wordpress_probe
+  Concern reason:  empty_or_unrecognized_body
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept: application/json, text/plain, */*
+    Accept-Encoding: gzip, deflate, br, zstd
+    Accept-Language: ja-JP,ja;q=0.9,en-NL;q=0.8,en-US;q=0.7,en;q=0.6
+    Connection: keep-alive
+    Content-Length: 1717
+    Content-Type: application/x-www-form-urlencoded
+    Cookie: PHPSESSID=4c5cbb19f0d302516a564b71a2b592a2; cmplz_banner-status=dismissed
+    Origin: https://145.220.231.96
+    Referer: https://145.220.231.96/?page_id=5
+    Sec-Ch-Ua: "Google Chrome";v="149", "Chromium";v="149", "Not)A;Brand";v="24"
+    Sec-Ch-Ua-Mobile: ?1
+    Sec-Ch-Ua-Platform: "Android"
+    Sec-Fetch-Dest: empty
+    Sec-Fetch-Mode: cors
+    Sec-Fetch-Site: same-origin
+    User-Agent: Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36
+  Request body (1717 chars):
+    action=bookingpress_get_disable_date&service_id=1&selected_service=1&selected_date=2026-06-09&_wpnonce=3b912467ce&disabled_dates=%5B%5D&appointment_data_obj=%7B%22selected_category%22%3A0%2C%22selected_service%22%3A%221%22%2C%22selected_service_name%22%3A%22Deep%20Tissue%20Massage%22%2C%22selected_service_price%22%3A%22%E2%82%AC75.00%22%2C%22service_price_without_currency%22%3A75%2C%22selected_dat
+  Response:
+    Status:        200 200 OK
+    Duration:      59 ms
+    Headers:
+      Access-Control-Allow-Credentials: true
+      Access-Control-Allow-Origin: https://145.220.231.96
+      Cache-Control: no-cache, must-revalidate, max-age=0
+      Connection: keep-alive
+      Content-Length: 7037
+      Content-Type: application/json; charset=UTF-8
+      Date: Tue, 09 Jun 2026 12:31:56 GMT
+      Expires: Wed, 11 Jan 1984 05:00:00 GMT
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Powered-By: PHP/7.4.29
+      X-Robots-Tag: noindex
+    Body (7037 chars):
+    {"variant":"success","title":"Success","msg":"Data reterive successfully","prevent_next_month_check":false,"max_available_date":"2027-06-09","max_available_month":"06","max_available_year":"2027","days_off_disabled_dates":"2026-06-13T00:00:00+00:00,2026-06-14T00:00:00+00:00,2026-06-20T00:00:00+00:00,2026-06-21T00:00:00+00:00,2026-06-27T00:00:00+00:00,2026-06-28T00:00:00+00:00,2026-07-04T00:00:00+00:00,2026-07-05T00:00:00+00:00,2026-07-11T00:00:00+00:00,2026-07-12T00:00:00+00:00,2026-07-18T00:00:00+00:00,2026-07-19T00:00:00+00:00,2026-07-25T00:00:00+00:00,2026-07-26T00:00:00+00:00,2026-08-01T00:00:00+00:00,2026-08-02T00:00:00+00:00,2026-08-08T00:00:00+00:00,2026-08-09T00:00:00+00:00,2026-08-15T00:00:00+00:00,2026-08-16T00:00:00+00:00,2026-08-22T00:00:00+00:00,2026-08-23T00:00:00+00:00,2026-
+
+========================================================================
+EVENT #4 of 80
+========================================================================
+  Request ID:      1781008846803102360-7420
+  Timestamp:       2026-06-09T12:40:46.803103255Z
+  Client IP:       145.108.65.34
+  Method:          POST
+  Host:            145.220.231.96
+  Path:            /wp-admin/admin-ajax.php
+  Classification:  wordpress_probe
+  Concern reason:  empty_or_unrecognized_body
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept: application/json, text/plain, */*
+    Accept-Encoding: gzip, deflate, br, zstd
+    Accept-Language: en-US,en;q=0.9
+    Connection: keep-alive
+    Content-Length: 61
+    Content-Type: application/x-www-form-urlencoded
+    Cookie: PHPSESSID=2501d55f6c4448b6c0d77d2f6b102888; cmplz_banner-status=dismissed; cmplz_policy_id=16; cmplz_marketing=deny; cmplz_statistics=deny; cmplz_preferences=deny; cmplz_functional=allow; cmplz_consented_services=
+    Dnt: 1
+    Origin: https://145.220.231.96
+    Referer: https://145.220.231.96/?page_id=5
+    Sec-Fetch-Dest: empty
+    Sec-Fetch-Mode: cors
+    Sec-Fetch-Site: same-origin
+    Sec-Gpc: 1
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:151.0) Gecko/20100101 Firefox/151.0
+  Request body (61 chars):
+    action=bookingpress_generate_spam_captcha&_wpnonce=3b912467ce
+  Response:
+    Status:        200 200 OK
+    Duration:      26 ms
+    Headers:
+      Access-Control-Allow-Credentials: true
+      Access-Control-Allow-Origin: https://145.220.231.96
+      Cache-Control: no-cache, must-revalidate, max-age=0
+      Connection: keep-alive
+      Content-Length: 127
+      Content-Type: application/json; charset=UTF-8
+      Date: Tue, 09 Jun 2026 12:40:46 GMT
+      Expires: Wed, 11 Jan 1984 05:00:00 GMT
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Powered-By: PHP/7.4.29
+      X-Robots-Tag: noindex
+    Body (127 chars):
+    {"updated_nonce":"","variant":"success","title":"Success","msg":"Captcha generated successfully.","captcha_val":"Ao6EylHn2YSi"}
+
+========================================================================
+EVENT #5 of 80
+========================================================================
+  Request ID:      1781008851328012317-7451
+  Timestamp:       2026-06-09T12:40:51.328013564Z
+  Client IP:       145.108.65.34
+  Method:          POST
+  Host:            145.220.231.96
+  Path:            /wp-admin/admin-ajax.php
+  Classification:  wordpress_probe
+  Concern reason:  empty_or_unrecognized_body
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept: application/json, text/plain, */*
+    Accept-Encoding: gzip, deflate, br, zstd
+    Accept-Language: en-US,en;q=0.9
+    Connection: keep-alive
+    Content-Length: 1716
+    Content-Type: application/x-www-form-urlencoded
+    Cookie: PHPSESSID=2501d55f6c4448b6c0d77d2f6b102888; cmplz_banner-status=dismissed; cmplz_policy_id=16; cmplz_marketing=deny; cmplz_statistics=deny; cmplz_preferences=deny; cmplz_functional=allow; cmplz_consented_services=
+    Dnt: 1
+    Origin: https://145.220.231.96
+    Priority: u=0
+    Referer: https://145.220.231.96/?page_id=5
+    Sec-Fetch-Dest: empty
+    Sec-Fetch-Mode: cors
+    Sec-Fetch-Site: same-origin
+    Sec-Gpc: 1
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:151.0) Gecko/20100101 Firefox/151.0
+  Request body (1716 chars):
+    action=bookingpress_get_disable_date&service_id=1&selected_service=1&selected_date=2026-06-09&_wpnonce=3b912467ce&disabled_dates=%5B%5D&appointment_data_obj=%7B%22selected_category%22%3A0%2C%22selected_service%22%3A%221%22%2C%22selected_service_name%22%3A%22Deep%20Tissue%20Massage%22%2C%22selected_service_price%22%3A%22%E2%82%AC75.00%22%2C%22service_price_without_currency%22%3A75%2C%22selected_dat
+  Response:
+    Status:        200 200 OK
+    Duration:      59 ms
+    Headers:
+      Access-Control-Allow-Credentials: true
+      Access-Control-Allow-Origin: https://145.220.231.96
+      Cache-Control: no-cache, must-revalidate, max-age=0
+      Connection: keep-alive
+      Content-Length: 7037
+      Content-Type: application/json; charset=UTF-8
+      Date: Tue, 09 Jun 2026 12:40:51 GMT
+      Expires: Wed, 11 Jan 1984 05:00:00 GMT
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Powered-By: PHP/7.4.29
+      X-Robots-Tag: noindex
+    Body (7037 chars):
+    {"variant":"success","title":"Success","msg":"Data reterive successfully","prevent_next_month_check":false,"max_available_date":"2027-06-09","max_available_month":"06","max_available_year":"2027","days_off_disabled_dates":"2026-06-13T00:00:00+00:00,2026-06-14T00:00:00+00:00,2026-06-20T00:00:00+00:00,2026-06-21T00:00:00+00:00,2026-06-27T00:00:00+00:00,2026-06-28T00:00:00+00:00,2026-07-04T00:00:00+00:00,2026-07-05T00:00:00+00:00,2026-07-11T00:00:00+00:00,2026-07-12T00:00:00+00:00,2026-07-18T00:00:00+00:00,2026-07-19T00:00:00+00:00,2026-07-25T00:00:00+00:00,2026-07-26T00:00:00+00:00,2026-08-01T00:00:00+00:00,2026-08-02T00:00:00+00:00,2026-08-08T00:00:00+00:00,2026-08-09T00:00:00+00:00,2026-08-15T00:00:00+00:00,2026-08-16T00:00:00+00:00,2026-08-22T00:00:00+00:00,2026-08-23T00:00:00+00:00,2026-
+
+========================================================================
+EVENT #6 of 80
+========================================================================
+  Request ID:      1781010285385831051-7999
+  Timestamp:       2026-06-09T13:04:45.38583207Z
+  Client IP:       84.31.56.138
+  Method:          POST
+  Host:            145.220.231.96
+  Path:            /wp-admin/admin-ajax.php
+  Classification:  wordpress_probe
+  Concern reason:  empty_or_unrecognized_body
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept: application/json, text/plain, */*
+    Accept-Encoding: gzip, deflate, br, zstd
+    Accept-Language: en-GB,en;q=0.9
+    Connection: keep-alive
+    Content-Length: 61
+    Content-Type: application/x-www-form-urlencoded
+    Cookie: cmplz_banner-status=dismissed; PHPSESSID=0b58147aa7808b55535768cedac921b5
+    Origin: https://145.220.231.96
+    Priority: u=3, i
+    Referer: https://145.220.231.96/?page_id=5
+    Sec-Fetch-Dest: empty
+    Sec-Fetch-Mode: cors
+    Sec-Fetch-Site: same-origin
+    User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5 Mobile/15E148 Safari/604.1
+  Request body (61 chars):
+    action=bookingpress_generate_spam_captcha&_wpnonce=3b912467ce
+  Response:
+    Status:        200 200 OK
+    Duration:      31 ms
+    Headers:
+      Access-Control-Allow-Credentials: true
+      Access-Control-Allow-Origin: https://145.220.231.96
+      Cache-Control: no-cache, must-revalidate, max-age=0
+      Connection: keep-alive
+      Content-Length: 127
+      Content-Type: application/json; charset=UTF-8
+      Date: Tue, 09 Jun 2026 13:04:45 GMT
+      Expires: Wed, 11 Jan 1984 05:00:00 GMT
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Powered-By: PHP/7.4.29
+      X-Robots-Tag: noindex
+    Body (127 chars):
+    {"updated_nonce":"","variant":"success","title":"Success","msg":"Captcha generated successfully.","captcha_val":"kR6hfkMESCH5"}
+
+========================================================================
+EVENT #7 of 80
+========================================================================
+  Request ID:      1781011152605027233-8008
+  Timestamp:       2026-06-09T13:19:12.605028477Z
+  Client IP:       20.168.157.87
+  Method:          GET
+  Host:            145.220.231.98
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+  Response:
+    Status:        200 200 OK
+    Duration:      203 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Tue, 09 Jun 2026 13:19:12 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=b30e9e11866a1467ae80fe8a65f6dd3a; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #8 of 80
+========================================================================
+  Request ID:      1781019748797560742-8097
+  Timestamp:       2026-06-09T15:42:28.797562014Z
+  Client IP:       172.215.216.224
+  Method:          GET
+  Host:            145.220.231.96
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Response:
+    Status:        200 200 OK
+    Duration:      105 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Tue, 09 Jun 2026 15:42:28 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=45ae335a528bc06b0e93e12786ec8eb2; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #9 of 80
+========================================================================
+  Request ID:      1781024369153335207-8313
+  Timestamp:       2026-06-09T16:59:29.153336867Z
+  Client IP:       172.184.214.216
+  Method:          GET
+  Host:            145.220.231.100
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Response:
+    Status:        200 200 OK
+    Duration:      57 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Tue, 09 Jun 2026 16:59:29 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=0ca400fbe9d6546a391292e5356a005f; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #10 of 80
+========================================================================
+  Request ID:      1781025265619574283-8347
+  Timestamp:       2026-06-09T17:14:25.619575922Z
+  Client IP:       20.106.231.45
+  Method:          GET
+  Host:            145.220.231.96
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:125.0) Gecko/20100101 Firefox/125.0
+  Response:
+    Status:        200 200 OK
+    Duration:      28 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Tue, 09 Jun 2026 17:14:25 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=eb1d9cb478c8991e7de4ff1044544035; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #11 of 80
+========================================================================
+  Request ID:      1781045600989510385-8580
+  Timestamp:       2026-06-09T22:53:20.989511544Z
+  Client IP:       9.234.151.113
+  Method:          GET
+  Host:            145.220.231.103
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+  Response:
+    Status:        200 200 OK
+    Duration:      28 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Tue, 09 Jun 2026 22:53:21 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=fd7beeaeb20691376eb1a42f16fb3701; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #12 of 80
+========================================================================
+  Request ID:      1781046755674592479-8600
+  Timestamp:       2026-06-09T23:12:35.674594559Z
+  Client IP:       20.106.182.98
+  Method:          GET
+  Host:            145.220.231.97
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Response:
+    Status:        200 200 OK
+    Duration:      91 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Tue, 09 Jun 2026 23:12:35 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=443206a394a9bfe4ece262f10c841d77; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #13 of 80
+========================================================================
+  Request ID:      1781048813677640947-8628
+  Timestamp:       2026-06-09T23:46:53.677642404Z
+  Client IP:       172.178.119.26
+  Method:          GET
+  Host:            145.220.231.97
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+  Response:
+    Status:        200 200 OK
+    Duration:      43 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Tue, 09 Jun 2026 23:46:53 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=0b89317659c2c5e23085bf49b11ac4fc; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #14 of 80
+========================================================================
+  Request ID:      1781054227140863261-8687
+  Timestamp:       2026-06-10T01:17:07.140864646Z
+  Client IP:       172.212.165.65
+  Method:          GET
+  Host:            145.220.231.98
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36
+  Response:
+    Status:        200 200 OK
+    Duration:      119 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Wed, 10 Jun 2026 01:17:07 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=210c8c00656ffa67b1715fff06006e3a; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #15 of 80
+========================================================================
+  Request ID:      1781060569249278280-8909
+  Timestamp:       2026-06-10T03:02:49.249279735Z
+  Client IP:       64.236.141.216
+  Method:          GET
+  Host:            145.220.231.102
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+  Response:
+    Status:        200 200 OK
+    Duration:      39 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Wed, 10 Jun 2026 03:02:49 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=32e7258149660b6ccf38fd360fd68872; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #16 of 80
+========================================================================
+  Request ID:      1781084757528479878-9292
+  Timestamp:       2026-06-10T09:45:57.52848102Z
+  Client IP:       52.165.213.177
+  Method:          GET
+  Host:            145.220.231.102
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0
+  Response:
+    Status:        200 200 OK
+    Duration:      91 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Wed, 10 Jun 2026 09:45:57 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=5bc16eb9595e7d7385ad4bee5577126b; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #17 of 80
+========================================================================
+  Request ID:      1781085575979219002-9312
+  Timestamp:       2026-06-10T09:59:35.979220561Z
+  Client IP:       52.173.108.24
+  Method:          GET
+  Host:            145.220.231.96
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 14_4_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15
+  Response:
+    Status:        200 200 OK
+    Duration:      63 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Wed, 10 Jun 2026 09:59:36 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=7159863a5b947e7d20e6adae15af0a20; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #18 of 80
+========================================================================
+  Request ID:      1781086342516456414-9337
+  Timestamp:       2026-06-10T10:12:22.516457772Z
+  Client IP:       64.236.141.180
+  Method:          GET
+  Host:            145.220.231.96
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0
+  Response:
+    Status:        200 200 OK
+    Duration:      56 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Wed, 10 Jun 2026 10:12:22 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=55ae33bb1a0410885fed7f30cde5b34e; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #19 of 80
+========================================================================
+  Request ID:      1781102195109506640-9585
+  Timestamp:       2026-06-10T14:36:35.109507821Z
+  Client IP:       151.243.150.23
+  Method:          GET
+  Host:            145.220.231.96
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Response:
+    Status:        200 200 OK
+    Duration:      255 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Connection: keep-alive
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Wed, 10 Jun 2026 14:36:35 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=2760b2be0777880f77071ee9622a26dd; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #20 of 80
+========================================================================
+  Request ID:      1781103667551442817-11256
+  Timestamp:       2026-06-10T15:01:07.551443768Z
+  Client IP:       52.161.178.103
+  Method:          GET
+  Host:            145.220.231.100
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+  Response:
+    Status:        200 200 OK
+    Duration:      100 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Wed, 10 Jun 2026 15:01:07 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=931788aac7843c4aafc78a4db703e25e; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #21 of 80
+========================================================================
+  Request ID:      1781105804973743347-11282
+  Timestamp:       2026-06-10T15:36:44.973744488Z
+  Client IP:       172.183.134.182
+  Method:          GET
+  Host:            145.220.231.99
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36
+  Response:
+    Status:        200 200 OK
+    Duration:      34 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Wed, 10 Jun 2026 15:36:45 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=28f3c1261c532f5ff2961dd11cc5214f; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #22 of 80
+========================================================================
+  Request ID:      1781110293887295065-11356
+  Timestamp:       2026-06-10T16:51:33.887296163Z
+  Client IP:       20.55.15.103
+  Method:          GET
+  Host:            145.220.231.98
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:125.0) Gecko/20100101 Firefox/125.0
+  Response:
+    Status:        200 200 OK
+    Duration:      29 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Wed, 10 Jun 2026 16:51:33 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=4081f89fcfcce2093e867e1304823c0d; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #23 of 80
+========================================================================
+  Request ID:      1781126846327524749-11679
+  Timestamp:       2026-06-10T21:27:26.327525839Z
+  Client IP:       172.215.216.198
+  Method:          GET
+  Host:            145.220.231.96
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0
+  Response:
+    Status:        200 200 OK
+    Duration:      95 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Wed, 10 Jun 2026 21:27:26 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=7af37df9a1f56e8fe63877afe0b00b52; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #24 of 80
+========================================================================
+  Request ID:      1781126906595171135-11697
+  Timestamp:       2026-06-10T21:28:26.595172546Z
+  Client IP:       142.4.13.81
+  Method:          GET
+  Host:            145.220.231.103
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+  Response:
+    Status:        200 200 OK
+    Duration:      30 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Wed, 10 Jun 2026 21:28:26 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=1efd7bc4c66075ebf8c5d798e21f7b25; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #25 of 80
+========================================================================
+  Request ID:      1781127085692139603-11713
+  Timestamp:       2026-06-10T21:31:25.692140726Z
+  Client IP:       52.161.177.72
+  Method:          GET
+  Host:            145.220.231.99
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 14_4_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+  Response:
+    Status:        200 200 OK
+    Duration:      52 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Wed, 10 Jun 2026 21:31:25 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=219b6a341dd238f4bac29ea0212988f6; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #26 of 80
+========================================================================
+  Request ID:      1781133311946410466-11799
+  Timestamp:       2026-06-10T23:15:11.946411487Z
+  Client IP:       20.55.163.179
+  Method:          GET
+  Host:            145.220.231.103
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36
+  Response:
+    Status:        200 200 OK
+    Duration:      51 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Wed, 10 Jun 2026 23:15:11 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=f8675f644a2403b4a8fb5e3d107a1e1a; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #27 of 80
+========================================================================
+  Request ID:      1781169069118378201-12341
+  Timestamp:       2026-06-11T09:11:09.118378953Z
+  Client IP:       176.65.144.128
+  Method:          GET
+  Host:            145.220.231.98
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Response:
+    Status:        200 200 OK
+    Duration:      38 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Connection: keep-alive
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Thu, 11 Jun 2026 09:11:09 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=a930d54f6bacd07f851c37f239f3e433; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #28 of 80
+========================================================================
+  Request ID:      1781179665643412134-14231
+  Timestamp:       2026-06-11T12:07:45.643413405Z
+  Client IP:       145.108.82.182
+  Method:          POST
+  Host:            145.220.231.96
+  Path:            /wp-admin/admin-ajax.php
+  Classification:  wordpress_probe
+  Concern reason:  empty_or_unrecognized_body
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept: application/json, text/plain, */*
+    Accept-Encoding: gzip, deflate, br, zstd
+    Accept-Language: de,en-US;q=0.9,en;q=0.8,de-DE;q=0.7
+    Connection: keep-alive
+    Content-Length: 61
+    Content-Type: application/x-www-form-urlencoded
+    Cookie: PHPSESSID=7b98494b481b8a4606e4b608b2cf669c; cmplz_banner-status=dismissed; cmplz_policy_id=16; cmplz_marketing=deny; cmplz_statistics=deny; cmplz_preferences=deny; cmplz_functional=allow; cmplz_consented_services=
+    Origin: https://145.220.231.96
+    Referer: https://145.220.231.96/?page_id=5
+    Sec-Ch-Ua: "Google Chrome";v="149", "Chromium";v="149", "Not)A;Brand";v="24"
+    Sec-Ch-Ua-Mobile: ?0
+    Sec-Ch-Ua-Platform: "Windows"
+    Sec-Fetch-Dest: empty
+    Sec-Fetch-Mode: cors
+    Sec-Fetch-Site: same-origin
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36
+  Request body (61 chars):
+    action=bookingpress_generate_spam_captcha&_wpnonce=1fe339303c
+  Response:
+    Status:        200 200 OK
+    Duration:      58 ms
+    Headers:
+      Access-Control-Allow-Credentials: true
+      Access-Control-Allow-Origin: https://145.220.231.96
+      Cache-Control: no-cache, must-revalidate, max-age=0
+      Connection: keep-alive
+      Content-Length: 127
+      Content-Type: application/json; charset=UTF-8
+      Date: Thu, 11 Jun 2026 12:07:45 GMT
+      Expires: Wed, 11 Jan 1984 05:00:00 GMT
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Powered-By: PHP/7.4.29
+      X-Robots-Tag: noindex
+    Body (127 chars):
+    {"updated_nonce":"","variant":"success","title":"Success","msg":"Captcha generated successfully.","captcha_val":"lFfEFibN5NU7"}
+
+========================================================================
+EVENT #29 of 80
+========================================================================
+  Request ID:      1781179671312536018-14232
+  Timestamp:       2026-06-11T12:07:51.312537372Z
+  Client IP:       145.108.82.182
+  Method:          POST
+  Host:            145.220.231.96
+  Path:            /wp-admin/admin-ajax.php
+  Classification:  wordpress_probe
+  Concern reason:  empty_or_unrecognized_body
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept: application/json, text/plain, */*
+    Accept-Encoding: gzip, deflate, br, zstd
+    Accept-Language: de,en-US;q=0.9,en;q=0.8,de-DE;q=0.7
+    Connection: keep-alive
+    Content-Length: 1717
+    Content-Type: application/x-www-form-urlencoded
+    Cookie: PHPSESSID=7b98494b481b8a4606e4b608b2cf669c; cmplz_banner-status=dismissed; cmplz_policy_id=16; cmplz_marketing=deny; cmplz_statistics=deny; cmplz_preferences=deny; cmplz_functional=allow; cmplz_consented_services=
+    Origin: https://145.220.231.96
+    Referer: https://145.220.231.96/?page_id=5
+    Sec-Ch-Ua: "Google Chrome";v="149", "Chromium";v="149", "Not)A;Brand";v="24"
+    Sec-Ch-Ua-Mobile: ?0
+    Sec-Ch-Ua-Platform: "Windows"
+    Sec-Fetch-Dest: empty
+    Sec-Fetch-Mode: cors
+    Sec-Fetch-Site: same-origin
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36
+  Request body (1717 chars):
+    action=bookingpress_get_disable_date&service_id=1&selected_service=1&selected_date=2026-06-11&_wpnonce=1fe339303c&disabled_dates=%5B%5D&appointment_data_obj=%7B%22selected_category%22%3A0%2C%22selected_service%22%3A%221%22%2C%22selected_service_name%22%3A%22Deep%20Tissue%20Massage%22%2C%22selected_service_price%22%3A%22%E2%82%AC75.00%22%2C%22service_price_without_currency%22%3A75%2C%22selected_dat
+  Response:
+    Status:        200 200 OK
+    Duration:      178 ms
+    Headers:
+      Access-Control-Allow-Credentials: true
+      Access-Control-Allow-Origin: https://145.220.231.96
+      Cache-Control: no-cache, must-revalidate, max-age=0
+      Connection: keep-alive
+      Content-Length: 7035
+      Content-Type: application/json; charset=UTF-8
+      Date: Thu, 11 Jun 2026 12:07:51 GMT
+      Expires: Wed, 11 Jan 1984 05:00:00 GMT
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Powered-By: PHP/7.4.29
+      X-Robots-Tag: noindex
+    Body (7035 chars):
+    {"variant":"success","title":"Success","msg":"Data reterive successfully","prevent_next_month_check":false,"max_available_date":"2027-06-11","max_available_month":"06","max_available_year":"2027","days_off_disabled_dates":"2026-06-13T00:00:00+00:00,2026-06-14T00:00:00+00:00,2026-06-20T00:00:00+00:00,2026-06-21T00:00:00+00:00,2026-06-27T00:00:00+00:00,2026-06-28T00:00:00+00:00,2026-07-04T00:00:00+00:00,2026-07-05T00:00:00+00:00,2026-07-11T00:00:00+00:00,2026-07-12T00:00:00+00:00,2026-07-18T00:00:00+00:00,2026-07-19T00:00:00+00:00,2026-07-25T00:00:00+00:00,2026-07-26T00:00:00+00:00,2026-08-01T00:00:00+00:00,2026-08-02T00:00:00+00:00,2026-08-08T00:00:00+00:00,2026-08-09T00:00:00+00:00,2026-08-15T00:00:00+00:00,2026-08-16T00:00:00+00:00,2026-08-22T00:00:00+00:00,2026-08-23T00:00:00+00:00,2026-
+
+========================================================================
+EVENT #30 of 80
+========================================================================
+  Request ID:      1781179904496130682-14273
+  Timestamp:       2026-06-11T12:11:44.496131896Z
+  Client IP:       145.108.82.182
+  Method:          POST
+  Host:            145.220.231.96
+  Path:            /wp-admin/admin-ajax.php
+  Classification:  wordpress_probe
+  Concern reason:  empty_or_unrecognized_body
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept: application/json, text/plain, */*
+    Accept-Encoding: gzip, deflate, br, zstd
+    Accept-Language: de,en-US;q=0.9,en;q=0.8,de-DE;q=0.7
+    Connection: keep-alive
+    Content-Length: 61
+    Content-Type: application/x-www-form-urlencoded
+    Cookie: PHPSESSID=7b98494b481b8a4606e4b608b2cf669c; cmplz_banner-status=dismissed; cmplz_policy_id=16; cmplz_marketing=deny; cmplz_statistics=deny; cmplz_preferences=deny; cmplz_functional=allow; cmplz_consented_services=
+    Origin: https://145.220.231.96
+    Referer: https://145.220.231.96/?page_id=5
+    Sec-Ch-Ua: "Google Chrome";v="149", "Chromium";v="149", "Not)A;Brand";v="24"
+    Sec-Ch-Ua-Mobile: ?0
+    Sec-Ch-Ua-Platform: "Windows"
+    Sec-Fetch-Dest: empty
+    Sec-Fetch-Mode: cors
+    Sec-Fetch-Site: same-origin
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36
+  Request body (61 chars):
+    action=bookingpress_generate_spam_captcha&_wpnonce=1fe339303c
+  Response:
+    Status:        200 200 OK
+    Duration:      51 ms
+    Headers:
+      Access-Control-Allow-Credentials: true
+      Access-Control-Allow-Origin: https://145.220.231.96
+      Cache-Control: no-cache, must-revalidate, max-age=0
+      Connection: keep-alive
+      Content-Length: 127
+      Content-Type: application/json; charset=UTF-8
+      Date: Thu, 11 Jun 2026 12:11:44 GMT
+      Expires: Wed, 11 Jan 1984 05:00:00 GMT
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Powered-By: PHP/7.4.29
+      X-Robots-Tag: noindex
+    Body (127 chars):
+    {"updated_nonce":"","variant":"success","title":"Success","msg":"Captcha generated successfully.","captcha_val":"PZEoYjF09jWT"}
+
+========================================================================
+EVENT #31 of 80
+========================================================================
+  Request ID:      1781190853596526318-14403
+  Timestamp:       2026-06-11T15:14:13.596527719Z
+  Client IP:       20.55.162.199
+  Method:          GET
+  Host:            145.220.231.102
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 14_4_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+  Response:
+    Status:        200 200 OK
+    Duration:      109 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Thu, 11 Jun 2026 15:14:13 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=a9427012f99ed53a15cd9c834d6dffa5; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #32 of 80
+========================================================================
+  Request ID:      1781197287034064962-14632
+  Timestamp:       2026-06-11T17:01:27.034066019Z
+  Client IP:       176.65.144.128
+  Method:          GET
+  Host:            145.220.231.102
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Response:
+    Status:        200 200 OK
+    Duration:      143 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Connection: keep-alive
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Thu, 11 Jun 2026 17:01:27 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=65a5e6ff2c4f2455ed5cb906485a52da; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #33 of 80
+========================================================================
+  Request ID:      1781209108786610311-16177
+  Timestamp:       2026-06-11T20:18:28.786611202Z
+  Client IP:       50.116.72.209
+  Method:          GET
+  Host:            145.220.231.96
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 14_4_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15
+  Response:
+    Status:        200 200 OK
+    Duration:      59 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Thu, 11 Jun 2026 20:18:28 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=c251a8093444b8047bbcd24e1c264bc5; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #34 of 80
+========================================================================
+  Request ID:      1781239721272707378-16868
+  Timestamp:       2026-06-12T04:48:41.27270874Z
+  Client IP:       68.169.41.107
+  Method:          GET
+  Host:            145.220.231.102
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+  Response:
+    Status:        200 200 OK
+    Duration:      29 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Fri, 12 Jun 2026 04:48:41 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=68dede98f4e771b2a38b50493b28eb9e; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #35 of 80
+========================================================================
+  Request ID:      1781267759887905800-17233
+  Timestamp:       2026-06-12T12:35:59.887907039Z
+  Client IP:       145.94.176.179
+  Method:          POST
+  Host:            145.220.231.96
+  Path:            /wp-admin/admin-ajax.php
+  Classification:  wordpress_probe
+  Concern reason:  empty_or_unrecognized_body
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept: application/json, text/plain, */*
+    Accept-Encoding: gzip, deflate, br, zstd
+    Accept-Language: nl-NL,nl;q=0.9,en-US;q=0.8,en;q=0.7
+    Connection: keep-alive
+    Content-Length: 61
+    Content-Type: application/x-www-form-urlencoded
+    Cookie: PHPSESSID=e5328d061236342068a1388888786f34
+    Dnt: 1
+    Origin: https://145.220.231.96
+    Referer: https://145.220.231.96/?page_id=5
+    Sec-Ch-Ua: "Google Chrome";v="149", "Chromium";v="149", "Not)A;Brand";v="24"
+    Sec-Ch-Ua-Mobile: ?0
+    Sec-Ch-Ua-Platform: "macOS"
+    Sec-Fetch-Dest: empty
+    Sec-Fetch-Mode: cors
+    Sec-Fetch-Site: same-origin
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36
+  Request body (61 chars):
+    action=bookingpress_generate_spam_captcha&_wpnonce=6c0df42fef
+  Response:
+    Status:        200 200 OK
+    Duration:      44 ms
+    Headers:
+      Access-Control-Allow-Credentials: true
+      Access-Control-Allow-Origin: https://145.220.231.96
+      Cache-Control: no-cache, must-revalidate, max-age=0
+      Connection: keep-alive
+      Content-Length: 127
+      Content-Type: application/json; charset=UTF-8
+      Date: Fri, 12 Jun 2026 12:35:59 GMT
+      Expires: Wed, 11 Jan 1984 05:00:00 GMT
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Powered-By: PHP/7.4.29
+      X-Robots-Tag: noindex
+    Body (127 chars):
+    {"updated_nonce":"","variant":"success","title":"Success","msg":"Captcha generated successfully.","captcha_val":"aJeti0SpF0RY"}
+
+========================================================================
+EVENT #36 of 80
+========================================================================
+  Request ID:      1781267764844105841-17234
+  Timestamp:       2026-06-12T12:36:04.844107399Z
+  Client IP:       145.94.176.179
+  Method:          POST
+  Host:            145.220.231.96
+  Path:            /wp-admin/admin-ajax.php
+  Classification:  wordpress_probe
+  Concern reason:  empty_or_unrecognized_body
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept: application/json, text/plain, */*
+    Accept-Encoding: gzip, deflate, br, zstd
+    Accept-Language: nl-NL,nl;q=0.9,en-US;q=0.8,en;q=0.7
+    Connection: keep-alive
+    Content-Length: 1719
+    Content-Type: application/x-www-form-urlencoded
+    Cookie: PHPSESSID=e5328d061236342068a1388888786f34; cmplz_consented_services=; cmplz_policy_id=16; cmplz_marketing=allow; cmplz_statistics=allow; cmplz_preferences=allow; cmplz_functional=allow; cmplz_banner-status=dismissed
+    Dnt: 1
+    Origin: https://145.220.231.96
+    Referer: https://145.220.231.96/?page_id=5
+    Sec-Ch-Ua: "Google Chrome";v="149", "Chromium";v="149", "Not)A;Brand";v="24"
+    Sec-Ch-Ua-Mobile: ?0
+    Sec-Ch-Ua-Platform: "macOS"
+    Sec-Fetch-Dest: empty
+    Sec-Fetch-Mode: cors
+    Sec-Fetch-Site: same-origin
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36
+  Request body (1719 chars):
+    action=bookingpress_get_disable_date&service_id=2&selected_service=2&selected_date=2026-06-12&_wpnonce=6c0df42fef&disabled_dates=%5B%5D&appointment_data_obj=%7B%22selected_category%22%3A0%2C%22selected_service%22%3A%222%22%2C%22selected_service_name%22%3A%22Sports%20Recovery%20Session%22%2C%22selected_service_price%22%3A%22%E2%82%AC65.00%22%2C%22service_price_without_currency%22%3A65%2C%22selected
+  Response:
+    Status:        200 200 OK
+    Duration:      85 ms
+    Headers:
+      Access-Control-Allow-Credentials: true
+      Access-Control-Allow-Origin: https://145.220.231.96
+      Cache-Control: no-cache, must-revalidate, max-age=0
+      Connection: keep-alive
+      Content-Length: 7524
+      Content-Type: application/json; charset=UTF-8
+      Date: Fri, 12 Jun 2026 12:36:04 GMT
+      Expires: Wed, 11 Jan 1984 05:00:00 GMT
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Powered-By: PHP/7.4.29
+      X-Robots-Tag: noindex
+    Body (7524 chars):
+    {"variant":"success","title":"Success","msg":"Data reterive successfully","prevent_next_month_check":false,"max_available_date":"2027-06-12","max_available_month":"06","max_available_year":"2027","days_off_disabled_dates":"2026-06-13T00:00:00+00:00,2026-06-14T00:00:00+00:00,2026-06-20T00:00:00+00:00,2026-06-21T00:00:00+00:00,2026-06-27T00:00:00+00:00,2026-06-28T00:00:00+00:00,2026-07-04T00:00:00+00:00,2026-07-05T00:00:00+00:00,2026-07-11T00:00:00+00:00,2026-07-12T00:00:00+00:00,2026-07-18T00:00:00+00:00,2026-07-19T00:00:00+00:00,2026-07-25T00:00:00+00:00,2026-07-26T00:00:00+00:00,2026-08-01T00:00:00+00:00,2026-08-02T00:00:00+00:00,2026-08-08T00:00:00+00:00,2026-08-09T00:00:00+00:00,2026-08-15T00:00:00+00:00,2026-08-16T00:00:00+00:00,2026-08-22T00:00:00+00:00,2026-08-23T00:00:00+00:00,2026-
+
+========================================================================
+EVENT #37 of 80
+========================================================================
+  Request ID:      1781313886799955597-674
+  Timestamp:       2026-06-13T01:24:46.799956159Z
+  Client IP:       176.65.144.128
+  Method:          GET
+  Host:            145.220.231.97
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Response:
+    Status:        200 200 OK
+    Duration:      107 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Connection: keep-alive
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Sat, 13 Jun 2026 01:24:46 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=63c2c4b155d347faa525ca09b4c9fe02; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #38 of 80
+========================================================================
+  Request ID:      1781326766548838599-2563
+  Timestamp:       2026-06-13T04:59:26.548840234Z
+  Client IP:       89.39.208.232
+  Method:          GET
+  Host:            145.220.231.99
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+  Response:
+    Status:        200 200 OK
+    Duration:      78 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Sat, 13 Jun 2026 04:59:26 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=9f137e0d706b1f303f9e23099d34e101; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #39 of 80
+========================================================================
+  Request ID:      1781335648476463696-2657
+  Timestamp:       2026-06-13T07:27:28.476465538Z
+  Client IP:       204.197.252.169
+  Method:          GET
+  Host:            145.220.231.99
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36
+  Response:
+    Status:        200 200 OK
+    Duration:      90 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Sat, 13 Jun 2026 07:27:28 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=6e9b5380930760cc2f79c587529c58b2; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #40 of 80
+========================================================================
+  Request ID:      1781347877859653754-2851
+  Timestamp:       2026-06-13T10:51:17.859655158Z
+  Client IP:       172.183.91.1
+  Method:          GET
+  Host:            145.220.231.97
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0
+  Response:
+    Status:        200 200 OK
+    Duration:      84 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Sat, 13 Jun 2026 10:51:17 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=1e9d0f372ec89c6075a856a61d695bf9; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #41 of 80
+========================================================================
+  Request ID:      1781360326359397000-74
+  Timestamp:       2026-06-13T14:18:46.359398226Z
+  Client IP:       4.236.159.144
+  Method:          GET
+  Host:            145.220.231.101
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36
+  Response:
+    Status:        200 200 OK
+    Duration:      33 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Sat, 13 Jun 2026 14:18:46 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=b66b482970d484c9243fbfc57cb55bff; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #42 of 80
+========================================================================
+  Request ID:      1781404101698767574-1808
+  Timestamp:       2026-06-14T02:28:21.698768717Z
+  Client IP:       151.243.150.23
+  Method:          GET
+  Host:            145.220.231.100
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Response:
+    Status:        200 200 OK
+    Duration:      362 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Connection: keep-alive
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Sun, 14 Jun 2026 02:28:22 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=1eadb82c1d7f72b730a5541f48919a49; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #43 of 80
+========================================================================
+  Request ID:      1781417103782578016-3723
+  Timestamp:       2026-06-14T06:05:03.782579576Z
+  Client IP:       172.214.45.240
+  Method:          GET
+  Host:            145.220.231.103
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0
+  Response:
+    Status:        200 200 OK
+    Duration:      54 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Sun, 14 Jun 2026 06:05:03 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=7394b3fb6157db6d6545d2e438e1c9e9; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #44 of 80
+========================================================================
+  Request ID:      1781430842994772646-3996
+  Timestamp:       2026-06-14T09:54:02.994773845Z
+  Client IP:       97.74.82.96
+  Method:          GET
+  Host:            145.220.231.100
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+  Response:
+    Status:        200 200 OK
+    Duration:      98 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Sun, 14 Jun 2026 09:54:03 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=3e944423197cc04ab94c35097a0051ba; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #45 of 80
+========================================================================
+  Request ID:      1781435425300536827-4032
+  Timestamp:       2026-06-14T11:10:25.300538049Z
+  Client IP:       52.234.41.69
+  Method:          GET
+  Host:            145.220.231.96
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+  Response:
+    Status:        200 200 OK
+    Duration:      86 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Sun, 14 Jun 2026 11:10:25 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=0dd8bb145143597174407d42479ce44d; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #46 of 80
+========================================================================
+  Request ID:      1781451282479825824-4252
+  Timestamp:       2026-06-14T15:34:42.479827094Z
+  Client IP:       176.65.144.128
+  Method:          GET
+  Host:            145.220.231.103
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Response:
+    Status:        200 200 OK
+    Duration:      87 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Connection: keep-alive
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Sun, 14 Jun 2026 15:34:42 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=288bc35145b9a7d02b763bbcf898b662; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #47 of 80
+========================================================================
+  Request ID:      1781457096294265217-5625
+  Timestamp:       2026-06-14T17:11:36.294266587Z
+  Client IP:       20.161.30.243
+  Method:          GET
+  Host:            145.220.231.103
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36
+  Response:
+    Status:        200 200 OK
+    Duration:      26 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Sun, 14 Jun 2026 17:11:36 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=8134c01db0e61f2d148eeff2720f9c1b; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #48 of 80
+========================================================================
+  Request ID:      1781460286146367762-5652
+  Timestamp:       2026-06-14T18:04:46.146369202Z
+  Client IP:       135.232.177.203
+  Method:          GET
+  Host:            145.220.231.103
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0
+  Response:
+    Status:        200 200 OK
+    Duration:      34 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Sun, 14 Jun 2026 18:04:46 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=3f3a6911c5a13da7e8b4d1a6f44f023b; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #49 of 80
+========================================================================
+  Request ID:      1781465201930980959-5685
+  Timestamp:       2026-06-14T19:26:41.930982646Z
+  Client IP:       135.119.238.194
+  Method:          GET
+  Host:            145.220.231.96
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36
+  Response:
+    Status:        200 200 OK
+    Duration:      30 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Sun, 14 Jun 2026 19:26:41 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=82b7e6bcdfaf2aa8896b11f6d8eb1461; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #50 of 80
+========================================================================
+  Request ID:      1781467351580871302-5716
+  Timestamp:       2026-06-14T20:02:31.580872612Z
+  Client IP:       130.131.71.27
+  Method:          GET
+  Host:            145.220.231.99
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+  Response:
+    Status:        200 200 OK
+    Duration:      30 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Sun, 14 Jun 2026 20:02:31 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=f22986bf08358f47c555ac4178ceb7ae; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #51 of 80
+========================================================================
+  Request ID:      1781468671526331964-5759
+  Timestamp:       2026-06-14T20:24:31.526333165Z
+  Client IP:       20.102.235.82
+  Method:          GET
+  Host:            145.220.231.98
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36
+  Response:
+    Status:        200 200 OK
+    Duration:      28 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Sun, 14 Jun 2026 20:24:31 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=11b3278d067ebedbeb478fb6f0e00db8; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #52 of 80
+========================================================================
+  Request ID:      1781470370126583896-5833
+  Timestamp:       2026-06-14T20:52:50.126584431Z
+  Client IP:       176.65.144.128
+  Method:          GET
+  Host:            145.220.231.99
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Response:
+    Status:        200 200 OK
+    Duration:      24 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Connection: keep-alive
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Sun, 14 Jun 2026 20:52:50 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=f7730665d33213e35900f5d0dc27d19f; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #53 of 80
+========================================================================
+  Request ID:      1781486438733551340-8126
+  Timestamp:       2026-06-15T01:20:38.733553374Z
+  Client IP:       172.183.157.181
+  Method:          GET
+  Host:            145.220.231.96
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0
+  Response:
+    Status:        200 200 OK
+    Duration:      56 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Mon, 15 Jun 2026 01:20:38 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=7771588c8e12461d0c405f63d05fbc7f; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #54 of 80
+========================================================================
+  Request ID:      1781487793869645892-8323
+  Timestamp:       2026-06-15T01:43:13.869647579Z
+  Client IP:       104.209.11.209
+  Method:          GET
+  Host:            145.220.231.101
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36
+  Response:
+    Status:        200 200 OK
+    Duration:      51 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Mon, 15 Jun 2026 01:43:13 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=c50f32404679a32bcd42b28e0a521876; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #55 of 80
+========================================================================
+  Request ID:      1781488923740565121-8351
+  Timestamp:       2026-06-15T02:02:03.740566223Z
+  Client IP:       108.170.28.178
+  Method:          GET
+  Host:            145.220.231.98
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+  Response:
+    Status:        200 200 OK
+    Duration:      37 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Mon, 15 Jun 2026 02:02:03 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=c0652e133d56040a14f3aa91f33893ac; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #56 of 80
+========================================================================
+  Request ID:      1781498800836135199-8536
+  Timestamp:       2026-06-15T04:46:40.836136775Z
+  Client IP:       52.173.108.19
+  Method:          GET
+  Host:            145.220.231.100
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36
+  Response:
+    Status:        200 200 OK
+    Duration:      175 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Mon, 15 Jun 2026 04:46:41 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=68e0d7d7aa4e36989a9ad4efc485de5b; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #57 of 80
+========================================================================
+  Request ID:      1781504631153647724-8635
+  Timestamp:       2026-06-15T06:23:51.153649076Z
+  Client IP:       172.183.94.241
+  Method:          GET
+  Host:            145.220.231.98
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 14.4; rv:125.0) Gecko/20100101 Firefox/125.0
+  Response:
+    Status:        200 200 OK
+    Duration:      40 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Mon, 15 Jun 2026 06:23:51 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=0a9b9f7b5bca11e068ec8be61bbe91c6; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #58 of 80
+========================================================================
+  Request ID:      1781557874291349504-9514
+  Timestamp:       2026-06-15T21:11:14.291350581Z
+  Client IP:       145.132.102.187
+  Method:          GET
+  Host:            145.220.231.102
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 14_4_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+  Response:
+    Status:        200 200 OK
+    Duration:      30 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Mon, 15 Jun 2026 21:11:14 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=3c66763b027110688f14562a1ba716dd; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #59 of 80
+========================================================================
+  Request ID:      1781615299588893855-11270
+  Timestamp:       2026-06-16T13:08:19.588894935Z
+  Client IP:       20.55.163.231
+  Method:          GET
+  Host:            145.220.231.98
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+  Response:
+    Status:        200 200 OK
+    Duration:      70 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Tue, 16 Jun 2026 13:08:19 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=62e3df63c0b60af6aeb3acb6b987c52e; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #60 of 80
+========================================================================
+  Request ID:      1781615477159568148-11338
+  Timestamp:       2026-06-16T13:11:17.159568813Z
+  Client IP:       151.243.150.23
+  Method:          GET
+  Host:            145.220.231.99
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Response:
+    Status:        200 200 OK
+    Duration:      101 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Connection: keep-alive
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Tue, 16 Jun 2026 13:11:17 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=5efdec58a4d0bbc174a21f4ec29fb8c2; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #61 of 80
+========================================================================
+  Request ID:      1781666373779768155-14359
+  Timestamp:       2026-06-17T03:19:33.779769301Z
+  Client IP:       137.184.96.163
+  Method:          GET
+  Host:            145.220.231.101
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36
+  Response:
+    Status:        200 200 OK
+    Duration:      35 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Wed, 17 Jun 2026 03:19:33 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=d4290bf2c8b98d6c0db181a2514e3602; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #62 of 80
+========================================================================
+  Request ID:      1781667132829760902-14404
+  Timestamp:       2026-06-17T03:32:12.829762118Z
+  Client IP:       143.198.235.204
+  Method:          GET
+  Host:            145.220.231.98
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36
+  Response:
+    Status:        200 200 OK
+    Duration:      33 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Wed, 17 Jun 2026 03:32:12 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=861c09242cbed9dbd010b92fcc045edd; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #63 of 80
+========================================================================
+  Request ID:      1781718273757899252-15745
+  Timestamp:       2026-06-17T17:44:33.757900632Z
+  Client IP:       98.88.19.20
+  Method:          GET
+  Host:            145.220.231.96
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 14.4; rv:125.0) Gecko/20100101 Firefox/125.0
+  Response:
+    Status:        200 200 OK
+    Duration:      55 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Wed, 17 Jun 2026 17:44:33 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=64dc4b6f3207d654cd2c6b7880d7b91d; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #64 of 80
+========================================================================
+  Request ID:      1781728017228341460-15950
+  Timestamp:       2026-06-17T20:26:57.22834256Z
+  Client IP:       44.223.12.109
+  Method:          GET
+  Host:            145.220.231.100
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:125.0) Gecko/20100101 Firefox/125.0
+  Response:
+    Status:        200 200 OK
+    Duration:      93 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Wed, 17 Jun 2026 20:26:57 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=59599a921a29187492b93e57fdbb2cff; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #65 of 80
+========================================================================
+  Request ID:      1781733341387548314-16093
+  Timestamp:       2026-06-17T21:55:41.387548905Z
+  Client IP:       151.243.150.23
+  Method:          GET
+  Host:            145.220.231.103
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Response:
+    Status:        200 200 OK
+    Duration:      276 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Connection: keep-alive
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Wed, 17 Jun 2026 21:55:41 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=1063000b2cb569b0be773fc4710568a1; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #66 of 80
+========================================================================
+  Request ID:      1781734756684324840-17749
+  Timestamp:       2026-06-17T22:19:16.684325975Z
+  Client IP:       52.66.164.71
+  Method:          GET
+  Host:            145.220.231.101
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+  Response:
+    Status:        200 200 OK
+    Duration:      37 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Wed, 17 Jun 2026 22:19:16 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=d15b28665c820bb007f239d87abfc1a8; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #67 of 80
+========================================================================
+  Request ID:      1781735160203003212-17801
+  Timestamp:       2026-06-17T22:26:00.203004575Z
+  Client IP:       16.52.135.133
+  Method:          GET
+  Host:            145.220.231.101
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Response:
+    Status:        200 200 OK
+    Duration:      60 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Wed, 17 Jun 2026 22:26:00 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=8f76223e4571789e70cfdf0cfa5ab619; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #68 of 80
+========================================================================
+  Request ID:      1781741464178716276-17969
+  Timestamp:       2026-06-18T00:11:04.178716739Z
+  Client IP:       151.243.150.23
+  Method:          GET
+  Host:            145.220.231.101
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Response:
+    Status:        200 200 OK
+    Duration:      184 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Connection: keep-alive
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Thu, 18 Jun 2026 00:11:04 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=1c5393baac7b0163ad1f25cbd97bd45f; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #69 of 80
+========================================================================
+  Request ID:      1781748952012751585-19859
+  Timestamp:       2026-06-18T02:15:52.012752856Z
+  Client IP:       44.202.84.48
+  Method:          GET
+  Host:            145.220.231.101
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 14_4_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+  Response:
+    Status:        200 200 OK
+    Duration:      28 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Thu, 18 Jun 2026 02:15:52 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=4935c0f841ebff990700d6bbdc0a01dc; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #70 of 80
+========================================================================
+  Request ID:      1781758584935391145-20259
+  Timestamp:       2026-06-18T04:56:24.935392355Z
+  Client IP:       18.216.204.181
+  Method:          GET
+  Host:            145.220.231.96
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+  Response:
+    Status:        200 200 OK
+    Duration:      74 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Thu, 18 Jun 2026 04:56:25 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=0b6887a241a4e6efa1517aeebb5389fc; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #71 of 80
+========================================================================
+  Request ID:      1781759320075612749-20292
+  Timestamp:       2026-06-18T05:08:40.075614062Z
+  Client IP:       54.145.201.186
+  Method:          GET
+  Host:            145.220.231.99
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0
+  Response:
+    Status:        200 200 OK
+    Duration:      109 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Thu, 18 Jun 2026 05:08:40 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=aed25c5e35c907a20eabb887a26d33b5; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #72 of 80
+========================================================================
+  Request ID:      1781761185287490410-20396
+  Timestamp:       2026-06-18T05:39:45.287492022Z
+  Client IP:       172.214.99.1
+  Method:          GET
+  Host:            145.220.231.97
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0
+  Response:
+    Status:        200 200 OK
+    Duration:      84 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Thu, 18 Jun 2026 05:39:45 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=4351f6c1baa54f1c4c82e81ee6e12aa2; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #73 of 80
+========================================================================
+  Request ID:      1781766088083727204-20482
+  Timestamp:       2026-06-18T07:01:28.083728651Z
+  Client IP:       54.78.214.132
+  Method:          GET
+  Host:            145.220.231.98
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36
+  Response:
+    Status:        200 200 OK
+    Duration:      189 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Thu, 18 Jun 2026 07:01:28 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=6789a091f5b70c2328377f59909431cb; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #74 of 80
+========================================================================
+  Request ID:      1781767869199010976-20534
+  Timestamp:       2026-06-18T07:31:09.199012516Z
+  Client IP:       64.236.140.209
+  Method:          GET
+  Host:            145.220.231.100
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+  Response:
+    Status:        200 200 OK
+    Duration:      105 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Thu, 18 Jun 2026 07:31:09 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=cf8906f8899138811fca1a9bd6e356f5; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #75 of 80
+========================================================================
+  Request ID:      1781778675210108738-20796
+  Timestamp:       2026-06-18T10:31:15.210109801Z
+  Client IP:       18.189.27.32
+  Method:          GET
+  Host:            145.220.231.103
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Response:
+    Status:        200 200 OK
+    Duration:      79 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Thu, 18 Jun 2026 10:31:15 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=668523403f8d104c6e8b4bf5c23f89e0; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #76 of 80
+========================================================================
+  Request ID:      1781785358707861578-21024
+  Timestamp:       2026-06-18T12:22:38.707862795Z
+  Client IP:       18.225.167.25
+  Method:          GET
+  Host:            145.220.231.103
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+  Response:
+    Status:        200 200 OK
+    Duration:      44 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Thu, 18 Jun 2026 12:22:38 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=41ffadcd86411a172920f49a04eed1b5; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #77 of 80
+========================================================================
+  Request ID:      1781800063195788978-21309
+  Timestamp:       2026-06-18T16:27:43.195790262Z
+  Client IP:       44.223.12.109
+  Method:          GET
+  Host:            145.220.231.97
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 14_4_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+  Response:
+    Status:        200 200 OK
+    Duration:      32 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Thu, 18 Jun 2026 16:27:43 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=0493f099a65498a67c3ccc0deff5b956; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #78 of 80
+========================================================================
+  Request ID:      1781802230298544592-21447
+  Timestamp:       2026-06-18T17:03:50.298549271Z
+  Client IP:       84.31.56.138
+  Method:          POST
+  Host:            145.220.231.96
+  Path:            /wp-admin/admin-ajax.php
+  Classification:  wordpress_probe
+  Concern reason:  empty_or_unrecognized_body
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept: application/json, text/plain, */*
+    Accept-Encoding: gzip, deflate, br, zstd
+    Accept-Language: en-US,en;q=0.9
+    Connection: keep-alive
+    Content-Length: 61
+    Content-Type: application/x-www-form-urlencoded
+    Cookie: PHPSESSID=d76f95dd3ee331d519d1b76358e7287f
+    Origin: https://145.220.231.96
+    Referer: https://145.220.231.96/?page_id=5
+    Sec-Fetch-Dest: empty
+    Sec-Fetch-Mode: cors
+    Sec-Fetch-Site: same-origin
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:151.0) Gecko/20100101 Firefox/151.0
+  Request body (61 chars):
+    action=bookingpress_generate_spam_captcha&_wpnonce=3b08a798e1
+  Response:
+    Status:        200 200 OK
+    Duration:      31 ms
+    Headers:
+      Access-Control-Allow-Credentials: true
+      Access-Control-Allow-Origin: https://145.220.231.96
+      Cache-Control: no-cache, must-revalidate, max-age=0
+      Connection: keep-alive
+      Content-Length: 127
+      Content-Type: application/json; charset=UTF-8
+      Date: Thu, 18 Jun 2026 17:03:50 GMT
+      Expires: Wed, 11 Jan 1984 05:00:00 GMT
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Powered-By: PHP/7.4.29
+      X-Robots-Tag: noindex
+    Body (127 chars):
+    {"updated_nonce":"","variant":"success","title":"Success","msg":"Captcha generated successfully.","captcha_val":"Ww38gTROyKdf"}
+
+========================================================================
+EVENT #79 of 80
+========================================================================
+  Request ID:      1781802234142425633-21451
+  Timestamp:       2026-06-18T17:03:54.142428496Z
+  Client IP:       84.31.56.138
+  Method:          POST
+  Host:            145.220.231.96
+  Path:            /wp-admin/admin-ajax.php
+  Classification:  wordpress_probe
+  Concern reason:  empty_or_unrecognized_body
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept: application/json, text/plain, */*
+    Accept-Encoding: gzip, deflate, br, zstd
+    Accept-Language: en-US,en;q=0.9
+    Connection: keep-alive
+    Content-Length: 61
+    Content-Type: application/x-www-form-urlencoded
+    Cookie: PHPSESSID=d76f95dd3ee331d519d1b76358e7287f
+    Origin: https://145.220.231.96
+    Referer: https://145.220.231.96/?page_id=5
+    Sec-Fetch-Dest: empty
+    Sec-Fetch-Mode: cors
+    Sec-Fetch-Site: same-origin
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:151.0) Gecko/20100101 Firefox/151.0
+  Request body (61 chars):
+    action=bookingpress_generate_spam_captcha&_wpnonce=3b08a798e1
+  Response:
+    Status:        200 200 OK
+    Duration:      30 ms
+    Headers:
+      Access-Control-Allow-Credentials: true
+      Access-Control-Allow-Origin: https://145.220.231.96
+      Cache-Control: no-cache, must-revalidate, max-age=0
+      Connection: keep-alive
+      Content-Length: 127
+      Content-Type: application/json; charset=UTF-8
+      Date: Thu, 18 Jun 2026 17:03:54 GMT
+      Expires: Wed, 11 Jan 1984 05:00:00 GMT
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Powered-By: PHP/7.4.29
+      X-Robots-Tag: noindex
+    Body (127 chars):
+    {"updated_nonce":"","variant":"success","title":"Success","msg":"Captcha generated successfully.","captcha_val":"ZTmc7o3iRwAT"}
+
+========================================================================
+EVENT #80 of 80
+========================================================================
+  Request ID:      1781803673417878633-21482
+  Timestamp:       2026-06-18T17:27:53.417880106Z
+  Client IP:       40.76.239.97
+  Method:          GET
+  Host:            145.220.231.98
+  Path:            /wp-config.php
+  Classification:  sensitive_file_probe
+  Concern reason:  empty_on_sensitive_path
+  Outcome:         content_served (HTTP 200 with unrecognized body)
+  Request headers:
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0
+  Response:
+    Status:        200 200 OK
+    Duration:      38 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Thu, 18 Jun 2026 17:27:53 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=776fe83550ecf4c7addb221f17fea86a; path=/
+      X-Powered-By: PHP/7.4.29
+    Body (0 chars):
+    (empty)
+
+========================================================================

@@ -1,0 +1,590 @@
+========================================================================
+DETAIL REPORT: UNCLASSIFIED / OTHER
+========================================================================
+
+Classification:  unknown
+Severity:        LOW
+Description:     Requests that did not match a specific attack signature.
+
+SUMMARY
+----------------------------------------
+  Total events:        15
+  With response:       15
+  Without response:    0
+  Unique attacker IPs: 2
+  Unique paths:        2
+  Unique hosts:        10
+  First seen:          2026-06-18T00:37:48.923775+00:00
+  Last seen:           2026-06-18T16:44:52.868658+00:00
+
+HTTP METHODS
+----------------------------------------
+  GET              15
+
+RESPONSE STATUS CODES
+----------------------------------------
+  404     15
+
+TOP PATHS
+----------------------------------------
+     13  /api/auth/validate-sso
+      2  /_fragment
+
+TOP ATTACKER IPs
+----------------------------------------
+  151.242.30.224           13
+  54.38.65.111              2
+
+USER-AGENTS
+----------------------------------------
+     13  
+      1  Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:30.0) Gecko/20100
+      1  Mozilla/5.0 (SS; Linux i686) AppleWebKit/537.36 (KHTML, like Geck
+
+========================================================================
+EVENT #1 of 15
+========================================================================
+  Request ID:     1781743068923773489-19675
+  Timestamp:      2026-06-18T00:37:48.923775088Z
+  Client IP:      54.38.65.111
+  Method:         GET
+  Host:           145.220.231.97
+  URL:            /_fragment
+  Path:           /_fragment
+  User-Agent:     Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:30.0) Gecko/20100101 Firefox/30.0
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Accept-Charset: utf-8
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:30.0) Gecko/20100101 Firefox/30.0
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       404 404 Not Found
+    Duration:     2 ms
+    Headers:
+      Content-Length: 276
+      Content-Type: text/html; charset=iso-8859-1
+      Date: Thu, 18 Jun 2026 00:37:48 GMT
+      Server: nginx/1.31.1
+    Body (276 chars):
+    <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+    <html><head>
+    <title>404 Not Found</title>
+    </head><body>
+    <h1>Not Found</h1>
+    <p>The requested URL was not found on this server.</p>
+    <hr>
+    <address>Apache/2.4.53 (Debian) Server at 145.220.231.97 Port 80</address>
+    </body></html>
+
+========================================================================
+EVENT #2 of 15
+========================================================================
+  Request ID:     1781743068924618797-19676
+  Timestamp:      2026-06-18T00:37:48.924619645Z
+  Client IP:      54.38.65.111
+  Method:         GET
+  Host:           145.220.231.96
+  URL:            /_fragment
+  Path:           /_fragment
+  User-Agent:     Mozilla/5.0 (SS; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Accept-Charset: utf-8
+    Accept-Encoding: gzip
+    Connection: close
+    User-Agent: Mozilla/5.0 (SS; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       404 404 Not Found
+    Duration:     2 ms
+    Headers:
+      Content-Length: 276
+      Content-Type: text/html; charset=iso-8859-1
+      Date: Thu, 18 Jun 2026 00:37:48 GMT
+      Server: nginx/1.31.1
+    Body (276 chars):
+    <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+    <html><head>
+    <title>404 Not Found</title>
+    </head><body>
+    <h1>Not Found</h1>
+    <p>The requested URL was not found on this server.</p>
+    <hr>
+    <address>Apache/2.4.53 (Debian) Server at 145.220.231.96 Port 80</address>
+    </body></html>
+
+========================================================================
+EVENT #3 of 15
+========================================================================
+  Request ID:     1781746684212588016-19793
+  Timestamp:      2026-06-18T01:38:04.212589209Z
+  Client IP:      151.242.30.224
+  Method:         GET
+  Host:           145.220.231.100:443
+  URL:            /api/auth/validate-sso
+  Path:           /api/auth/validate-sso
+  User-Agent:     None
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Connection: close
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       404 404 Not Found
+    Duration:     3 ms
+    Headers:
+      Content-Length: 278
+      Content-Type: text/html; charset=iso-8859-1
+      Date: Thu, 18 Jun 2026 01:38:04 GMT
+      Server: nginx/1.31.1
+    Body (278 chars):
+    <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+    <html><head>
+    <title>404 Not Found</title>
+    </head><body>
+    <h1>Not Found</h1>
+    <p>The requested URL was not found on this server.</p>
+    <hr>
+    <address>Apache/2.4.53 (Debian) Server at 145.220.231.100 Port 443</address>
+    </body></html>
+
+========================================================================
+EVENT #4 of 15
+========================================================================
+  Request ID:     1781746950630679192-19794
+  Timestamp:      2026-06-18T01:42:30.630680569Z
+  Client IP:      151.242.30.224
+  Method:         GET
+  Host:           145.220.231.97:443
+  URL:            /api/auth/validate-sso
+  Path:           /api/auth/validate-sso
+  User-Agent:     None
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Connection: close
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       404 404 Not Found
+    Duration:     3 ms
+    Headers:
+      Content-Length: 277
+      Content-Type: text/html; charset=iso-8859-1
+      Date: Thu, 18 Jun 2026 01:42:30 GMT
+      Server: nginx/1.31.1
+    Body (277 chars):
+    <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+    <html><head>
+    <title>404 Not Found</title>
+    </head><body>
+    <h1>Not Found</h1>
+    <p>The requested URL was not found on this server.</p>
+    <hr>
+    <address>Apache/2.4.53 (Debian) Server at 145.220.231.97 Port 443</address>
+    </body></html>
+
+========================================================================
+EVENT #5 of 15
+========================================================================
+  Request ID:     1781749649720981994-19896
+  Timestamp:      2026-06-18T02:27:29.720983213Z
+  Client IP:      151.242.30.224
+  Method:         GET
+  Host:           145.220.231.100:443
+  URL:            /api/auth/validate-sso
+  Path:           /api/auth/validate-sso
+  User-Agent:     None
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Connection: close
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       404 404 Not Found
+    Duration:     2 ms
+    Headers:
+      Content-Length: 278
+      Content-Type: text/html; charset=iso-8859-1
+      Date: Thu, 18 Jun 2026 02:27:29 GMT
+      Server: nginx/1.31.1
+    Body (278 chars):
+    <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+    <html><head>
+    <title>404 Not Found</title>
+    </head><body>
+    <h1>Not Found</h1>
+    <p>The requested URL was not found on this server.</p>
+    <hr>
+    <address>Apache/2.4.53 (Debian) Server at 145.220.231.100 Port 443</address>
+    </body></html>
+
+========================================================================
+EVENT #6 of 15
+========================================================================
+  Request ID:     1781756002070681287-20237
+  Timestamp:      2026-06-18T04:13:22.070683119Z
+  Client IP:      151.242.30.224
+  Method:         GET
+  Host:           145.220.231.99:443
+  URL:            /api/auth/validate-sso
+  Path:           /api/auth/validate-sso
+  User-Agent:     None
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Connection: close
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       404 404 Not Found
+    Duration:     2 ms
+    Headers:
+      Content-Length: 277
+      Content-Type: text/html; charset=iso-8859-1
+      Date: Thu, 18 Jun 2026 04:13:22 GMT
+      Server: nginx/1.31.1
+    Body (277 chars):
+    <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+    <html><head>
+    <title>404 Not Found</title>
+    </head><body>
+    <h1>Not Found</h1>
+    <p>The requested URL was not found on this server.</p>
+    <hr>
+    <address>Apache/2.4.53 (Debian) Server at 145.220.231.99 Port 443</address>
+    </body></html>
+
+========================================================================
+EVENT #7 of 15
+========================================================================
+  Request ID:     1781760406394044306-20327
+  Timestamp:      2026-06-18T05:26:46.394046503Z
+  Client IP:      151.242.30.224
+  Method:         GET
+  Host:           145.220.231.103:443
+  URL:            /api/auth/validate-sso
+  Path:           /api/auth/validate-sso
+  User-Agent:     None
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Connection: close
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       404 404 Not Found
+    Duration:     3 ms
+    Headers:
+      Content-Length: 278
+      Content-Type: text/html; charset=iso-8859-1
+      Date: Thu, 18 Jun 2026 05:26:46 GMT
+      Server: nginx/1.31.1
+    Body (278 chars):
+    <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+    <html><head>
+    <title>404 Not Found</title>
+    </head><body>
+    <h1>Not Found</h1>
+    <p>The requested URL was not found on this server.</p>
+    <hr>
+    <address>Apache/2.4.53 (Debian) Server at 145.220.231.103 Port 443</address>
+    </body></html>
+
+========================================================================
+EVENT #8 of 15
+========================================================================
+  Request ID:     1781762003605267880-20427
+  Timestamp:      2026-06-18T05:53:23.605269189Z
+  Client IP:      151.242.30.224
+  Method:         GET
+  Host:           145.220.231.97:443
+  URL:            /api/auth/validate-sso
+  Path:           /api/auth/validate-sso
+  User-Agent:     None
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Connection: close
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       404 404 Not Found
+    Duration:     3 ms
+    Headers:
+      Content-Length: 277
+      Content-Type: text/html; charset=iso-8859-1
+      Date: Thu, 18 Jun 2026 05:53:23 GMT
+      Server: nginx/1.31.1
+    Body (277 chars):
+    <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+    <html><head>
+    <title>404 Not Found</title>
+    </head><body>
+    <h1>Not Found</h1>
+    <p>The requested URL was not found on this server.</p>
+    <hr>
+    <address>Apache/2.4.53 (Debian) Server at 145.220.231.97 Port 443</address>
+    </body></html>
+
+========================================================================
+EVENT #9 of 15
+========================================================================
+  Request ID:     1781763301664877636-20435
+  Timestamp:      2026-06-18T06:15:01.664879703Z
+  Client IP:      151.242.30.224
+  Method:         GET
+  Host:           145.220.231.101:443
+  URL:            /api/auth/validate-sso
+  Path:           /api/auth/validate-sso
+  User-Agent:     None
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Connection: close
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       404 404 Not Found
+    Duration:     3 ms
+    Headers:
+      Content-Length: 278
+      Content-Type: text/html; charset=iso-8859-1
+      Date: Thu, 18 Jun 2026 06:15:01 GMT
+      Server: nginx/1.31.1
+    Body (278 chars):
+    <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+    <html><head>
+    <title>404 Not Found</title>
+    </head><body>
+    <h1>Not Found</h1>
+    <p>The requested URL was not found on this server.</p>
+    <hr>
+    <address>Apache/2.4.53 (Debian) Server at 145.220.231.101 Port 443</address>
+    </body></html>
+
+========================================================================
+EVENT #10 of 15
+========================================================================
+  Request ID:     1781769451456168053-20576
+  Timestamp:      2026-06-18T07:57:31.456169362Z
+  Client IP:      151.242.30.224
+  Method:         GET
+  Host:           145.220.231.98:443
+  URL:            /api/auth/validate-sso
+  Path:           /api/auth/validate-sso
+  User-Agent:     None
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Connection: close
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       404 404 Not Found
+    Duration:     2 ms
+    Headers:
+      Content-Length: 277
+      Content-Type: text/html; charset=iso-8859-1
+      Date: Thu, 18 Jun 2026 07:57:31 GMT
+      Server: nginx/1.31.1
+    Body (277 chars):
+    <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+    <html><head>
+    <title>404 Not Found</title>
+    </head><body>
+    <h1>Not Found</h1>
+    <p>The requested URL was not found on this server.</p>
+    <hr>
+    <address>Apache/2.4.53 (Debian) Server at 145.220.231.98 Port 443</address>
+    </body></html>
+
+========================================================================
+EVENT #11 of 15
+========================================================================
+  Request ID:     1781771885247993764-20668
+  Timestamp:      2026-06-18T08:38:05.247996201Z
+  Client IP:      151.242.30.224
+  Method:         GET
+  Host:           145.220.231.96:443
+  URL:            /api/auth/validate-sso
+  Path:           /api/auth/validate-sso
+  User-Agent:     None
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Connection: close
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       404 404 Not Found
+    Duration:     2 ms
+    Headers:
+      Content-Length: 277
+      Content-Type: text/html; charset=iso-8859-1
+      Date: Thu, 18 Jun 2026 08:38:05 GMT
+      Server: nginx/1.31.1
+    Body (277 chars):
+    <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+    <html><head>
+    <title>404 Not Found</title>
+    </head><body>
+    <h1>Not Found</h1>
+    <p>The requested URL was not found on this server.</p>
+    <hr>
+    <address>Apache/2.4.53 (Debian) Server at 145.220.231.96 Port 443</address>
+    </body></html>
+
+========================================================================
+EVENT #12 of 15
+========================================================================
+  Request ID:     1781786410388761460-21059
+  Timestamp:      2026-06-18T12:40:10.388763193Z
+  Client IP:      151.242.30.224
+  Method:         GET
+  Host:           145.220.231.102:443
+  URL:            /api/auth/validate-sso
+  Path:           /api/auth/validate-sso
+  User-Agent:     None
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Connection: close
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       404 404 Not Found
+    Duration:     3 ms
+    Headers:
+      Content-Length: 278
+      Content-Type: text/html; charset=iso-8859-1
+      Date: Thu, 18 Jun 2026 12:40:10 GMT
+      Server: nginx/1.31.1
+    Body (278 chars):
+    <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+    <html><head>
+    <title>404 Not Found</title>
+    </head><body>
+    <h1>Not Found</h1>
+    <p>The requested URL was not found on this server.</p>
+    <hr>
+    <address>Apache/2.4.53 (Debian) Server at 145.220.231.102 Port 443</address>
+    </body></html>
+
+========================================================================
+EVENT #13 of 15
+========================================================================
+  Request ID:     1781797647961437517-21268
+  Timestamp:      2026-06-18T15:47:27.961438966Z
+  Client IP:      151.242.30.224
+  Method:         GET
+  Host:           145.220.231.103:443
+  URL:            /api/auth/validate-sso
+  Path:           /api/auth/validate-sso
+  User-Agent:     None
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Connection: close
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       404 404 Not Found
+    Duration:     2 ms
+    Headers:
+      Content-Length: 278
+      Content-Type: text/html; charset=iso-8859-1
+      Date: Thu, 18 Jun 2026 15:47:27 GMT
+      Server: nginx/1.31.1
+    Body (278 chars):
+    <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+    <html><head>
+    <title>404 Not Found</title>
+    </head><body>
+    <h1>Not Found</h1>
+    <p>The requested URL was not found on this server.</p>
+    <hr>
+    <address>Apache/2.4.53 (Debian) Server at 145.220.231.103 Port 443</address>
+    </body></html>
+
+========================================================================
+EVENT #14 of 15
+========================================================================
+  Request ID:     1781798966524692263-21286
+  Timestamp:      2026-06-18T16:09:26.524693733Z
+  Client IP:      151.242.30.224
+  Method:         GET
+  Host:           145.220.231.97:443
+  URL:            /api/auth/validate-sso
+  Path:           /api/auth/validate-sso
+  User-Agent:     None
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Connection: close
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       404 404 Not Found
+    Duration:     1 ms
+    Headers:
+      Content-Length: 277
+      Content-Type: text/html; charset=iso-8859-1
+      Date: Thu, 18 Jun 2026 16:09:26 GMT
+      Server: nginx/1.31.1
+    Body (277 chars):
+    <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+    <html><head>
+    <title>404 Not Found</title>
+    </head><body>
+    <h1>Not Found</h1>
+    <p>The requested URL was not found on this server.</p>
+    <hr>
+    <address>Apache/2.4.53 (Debian) Server at 145.220.231.97 Port 443</address>
+    </body></html>
+
+========================================================================
+EVENT #15 of 15
+========================================================================
+  Request ID:     1781801092868657051-21404
+  Timestamp:      2026-06-18T16:44:52.868658311Z
+  Client IP:      151.242.30.224
+  Method:         GET
+  Host:           145.220.231.96:443
+  URL:            /api/auth/validate-sso
+  Path:           /api/auth/validate-sso
+  User-Agent:     None
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Connection: close
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       404 404 Not Found
+    Duration:     3 ms
+    Headers:
+      Content-Length: 277
+      Content-Type: text/html; charset=iso-8859-1
+      Date: Thu, 18 Jun 2026 16:44:52 GMT
+      Server: nginx/1.31.1
+    Body (277 chars):
+    <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+    <html><head>
+    <title>404 Not Found</title>
+    </head><body>
+    <h1>Not Found</h1>
+    <p>The requested URL was not found on this server.</p>
+    <hr>
+    <address>Apache/2.4.53 (Debian) Server at 145.220.231.96 Port 443</address>
+    </body></html>
+
+========================================================================

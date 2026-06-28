@@ -1,0 +1,88 @@
+========================================================================
+CAMPAIGN ANALYSIS
+========================================================================
+
+SUMMARY
+----------------------------------------
+  Total requests:       34,002
+  Unique client IPs:    2,516
+  Unique probes:        11,933  (method + path + IP)
+  Repetitive traffic:   64.9% of requests are repeats
+
+IP PROFILES
+----------------------------------------
+  drive_by            2,176  Single-digit requests
+  moderate              187  Typical background probing
+  targeted              129  Few paths, multiple attack attempts (focused)
+  bulk_scanner           14  High volume or wide path sweep (automated scanner)
+  active_attacker        10  Sustained attack activity
+
+TOP CAMPAIGNS BY VOLUME
+----------------------------------------
+  151.243.150.23        8,351 reqs  1,702 paths  5 sessions  [bulk_scanner]
+    repeat 79.6%  attacks 8346  classes: sensitive_file_probe(8104), rce_attempt(85), appliance_probe(75)
+  176.65.144.128        3,000 reqs  1,649 paths  2 sessions  [bulk_scanner]
+    repeat 45.0%  attacks 2998  classes: sensitive_file_probe(2924), appliance_probe(29), rce_attempt(21)
+  45.148.10.200         2,967 reqs   176 paths  43 sessions  [bulk_scanner]
+    repeat 94.1%  attacks 2871  classes: sensitive_file_probe(2871), reconnaissance(96)
+  213.209.159.175       2,009 reqs   380 paths  6 sessions  [bulk_scanner]
+    repeat 81.1%  attacks 1913  classes: sensitive_file_probe(1853), unknown(96), appliance_probe(44)
+  192.253.248.169       1,553 reqs   268 paths  9 sessions  [bulk_scanner]
+    repeat 82.7%  attacks 1553  classes: sensitive_file_probe(1523), appliance_probe(30)
+  80.94.95.211          1,029 reqs    89 paths  21 sessions  [bulk_scanner]
+    repeat 91.4%  attacks 1029  classes: sensitive_file_probe(994), appliance_probe(35)
+  179.43.150.26           825 reqs   117 paths  1 sessions  [bulk_scanner]
+    repeat 85.8%  attacks 817  classes: sensitive_file_probe(817), reconnaissance(8)
+  52.200.76.145           609 reqs    77 paths  6 sessions  [bulk_scanner]
+    repeat 87.4%  attacks 601  classes: sensitive_file_probe(601), reconnaissance(8)
+  172.235.235.248         517 reqs   257 paths  4 sessions  [bulk_scanner]
+    repeat 50.3%  attacks 461  classes: appliance_probe(243), login_attempt(158), reconnaissance(56)
+  165.22.224.68           438 reqs    33 paths  1 sessions  [moderate]
+    repeat 92.5%  attacks 438  classes: sensitive_file_probe(248), wordpress_probe(182), appliance_probe(8)
+  46.151.178.13           341 reqs     1 paths  63 sessions  [targeted]
+    repeat 99.7%  attacks 341  classes: webdav_probe(341)
+  45.205.1.80             334 reqs     1 paths  23 sessions  [targeted]
+    repeat 99.4%  attacks 166  classes: reconnaissance(168), webdav_probe(166)
+  20.70.145.7             316 reqs   148 paths  2 sessions  [bulk_scanner]
+    repeat 52.8%  attacks 292  classes: sensitive_file_probe(272), reconnaissance(24), appliance_probe(14)
+  45.148.10.67            307 reqs     2 paths  142 sessions  [targeted]
+    repeat 99.3%  attacks 13  classes: reconnaissance(294), wordpress_probe(13)
+  179.43.146.227          252 reqs   126 paths  2 sessions  [bulk_scanner]
+    repeat 50.0%  attacks 252  classes: sensitive_file_probe(252)
+
+MULTI-STEP ATTACK SEQUENCES
+----------------------------------------
+  IPs with 2+ attack types in a single session (first-seen order):
+
+  151.243.150.23        session 5  1,751 reqs  2026-06-16T07:57:27
+    sensitive_file_probe → appliance_probe → path_traversal_attempt → rce_attempt → wordpress_probe → login_attempt
+  176.65.144.128        session 1  1,650 reqs  2026-06-09T08:09:10
+    sensitive_file_probe → appliance_probe → path_traversal_attempt → rce_attempt → wordpress_probe → login_attempt
+  151.243.150.23        session 1  1,650 reqs  2026-06-10T16:54:41
+    sensitive_file_probe → appliance_probe → rce_attempt → path_traversal_attempt → wordpress_probe → login_attempt
+  151.243.150.23        session 2  1,650 reqs  2026-06-11T09:50:24
+    sensitive_file_probe → appliance_probe → path_traversal_attempt → rce_attempt → wordpress_probe → login_attempt
+  151.243.150.23        session 3  1,650 reqs  2026-06-14T21:18:05
+    sensitive_file_probe → appliance_probe → rce_attempt → path_traversal_attempt → wordpress_probe → login_attempt
+  151.243.150.23        session 4  1,650 reqs  2026-06-15T00:19:17
+    sensitive_file_probe → appliance_probe → rce_attempt → path_traversal_attempt → wordpress_probe → login_attempt
+  176.65.144.128        session 2  1,350 reqs  2026-06-12T03:05:40
+    sensitive_file_probe → appliance_probe → path_traversal_attempt → wordpress_probe → rce_attempt
+  213.209.159.175       session 6   526 reqs  2026-06-18T03:07:15
+    sensitive_file_probe → login_attempt → rce_attempt → wordpress_probe → appliance_probe
+  172.235.235.248       session 2   249 reqs  2026-06-14T06:22:01
+    login_attempt → appliance_probe → sensitive_file_probe → rce_attempt → wordpress_plugin_probe
+  172.235.168.35        session 1   205 reqs  2026-06-15T05:21:53
+    appliance_probe → login_attempt → sensitive_file_probe → rce_attempt → wordpress_plugin_probe
+  45.156.129.152        session 1    28 reqs  2026-06-09T17:10:32
+    login_attempt → appliance_probe → rce_attempt → sensitive_file_probe → wordpress_plugin_probe
+  45.156.129.155        session 1    26 reqs  2026-06-09T17:10:22
+    rce_attempt → login_attempt → appliance_probe → wordpress_plugin_probe → sensitive_file_probe
+  74.82.47.5            session 1    21 reqs  2026-06-09T05:03:51
+    appliance_probe → wordpress_probe → login_attempt → citrix_vpn_probe → sensitive_file_probe
+  45.156.129.128        session 1    21 reqs  2026-06-11T16:25:27
+    login_attempt → wordpress_plugin_probe → appliance_probe → sensitive_file_probe → rce_attempt
+  64.62.156.94          session 1    14 reqs  2026-06-09T05:09:49
+    appliance_probe → wordpress_probe → login_attempt → citrix_vpn_probe → sensitive_file_probe
+
+========================================================================
