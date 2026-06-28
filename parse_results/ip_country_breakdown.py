@@ -16,7 +16,7 @@ Setup (one-time):
 Usage:
     python3 python3 parse_results/ip_country_breakdown.py \
         --reports reports \
-        --db reports/GeoLite2-Country_20260626/GeoLite2-Country.mmdb
+        --db path/to/GeoLite2-Country.mmdb
 
 Expected folder layout:
     <reports>/
