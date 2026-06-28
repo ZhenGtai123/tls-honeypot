@@ -46,3 +46,7 @@ db_hardened_data
 wp_hardened_data
 db_vuln_data
 wp_vuln_data
+
+# MaxMind GeoLite2 database
+*.mmdb
+GeoLite2-*/

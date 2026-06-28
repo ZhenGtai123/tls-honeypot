@@ -1,0 +1,1629 @@
+========================================================================
+DETAIL REPORT: CRYPTOCURRENCY MINING RPC PROBE
+========================================================================
+
+Classification:  crypto_mining_probe
+Severity:        MEDIUM
+Description:     Probes for exposed cryptocurrency mining JSON-RPC endpoints (getwork, eth_getWork, mining.subscribe).
+
+SUMMARY
+----------------------------------------
+  Total events:        26
+  With response:       26
+  Without response:    0
+  Unique attacker IPs: 4
+  Unique paths:        1
+  Unique hosts:        8
+  First seen:          2026-06-11T17:17:53.207588+00:00
+  Last seen:           2026-06-18T07:57:27.786192+00:00
+
+HTTP METHODS
+----------------------------------------
+  POST             26
+
+RESPONSE STATUS CODES
+----------------------------------------
+  200     26
+
+TOP PATHS
+----------------------------------------
+     26  /
+
+TOP ATTACKER IPs
+----------------------------------------
+  185.213.175.171          12
+  195.170.172.225           8
+  195.170.172.128           4
+  185.213.175.176           2
+
+USER-AGENTS
+----------------------------------------
+     26  Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHT
+
+========================================================================
+EVENT #1 of 26
+========================================================================
+  Request ID:     1781198273207586691-15956
+  Timestamp:      2026-06-11T17:17:53.2075881Z
+  Client IP:      185.213.175.171
+  Method:         POST
+  Host:           145.220.231.98
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MVE3Z2NoNTR2RUJzOXVUOGZ3OEJIODNNTEhEcDZaRHN2Rjp4
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 44
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (44 chars):
+    {"id": 1, "method": "getwork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     89 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Type: text/html; charset=UTF-8
+      Date: Thu, 11 Jun 2026 17:17:53 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Link: <https://145.220.231.98/index.php?rest_route=/>; rel="https://api.w.org/", <https://145.220.231.98/index.php?rest_route=/wp/v2/pages/25>; rel="alternate"; type="application/json", <https://145.220.231.98/>; rel=shortlink
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=052c5090ef9362ccf0569c90d265147f; path=/
+      Vary: Accept-Encoding
+      X-Powered-By: PHP/7.4.29
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    
+    <html class="no-js" lang="en-US">
+    
+    	<head>
+    
+    		<meta charset="UTF-8">
+    		<meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    
+    		<link rel="profile" href="https://gmpg.org/xfn/11">
+    
+    		<title>Amsterdam Wellness Studio &#8211; Professional wellness treatments in Amsterdam.</title>
+    <meta name='robots' content='max-image-preview:large' />
+    <link rel='dns-prefetch' href='//s.w.org' />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Feed" href="https://145.220.231.98/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Comments Feed" href="https://145.220.231.98/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #2 of 26
+========================================================================
+  Request ID:     1781198278597501914-15957
+  Timestamp:      2026-06-11T17:17:58.597503252Z
+  Client IP:      185.213.175.171
+  Method:         POST
+  Host:           145.220.231.98
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MHg3NTQyODJhNmUxZjkwNGNmYjJkMWQ1MDZhZjk0NjdkNzUwNzgwNjA5Ong=
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 48
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (48 chars):
+    {"id": 1, "method": "eth_getWork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     119 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Type: text/html; charset=UTF-8
+      Date: Thu, 11 Jun 2026 17:17:58 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Link: <https://145.220.231.98/index.php?rest_route=/>; rel="https://api.w.org/", <https://145.220.231.98/index.php?rest_route=/wp/v2/pages/25>; rel="alternate"; type="application/json", <https://145.220.231.98/>; rel=shortlink
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=ea2d5e02ee696487f792c8fa8b44365a; path=/
+      Vary: Accept-Encoding
+      X-Powered-By: PHP/7.4.29
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    
+    <html class="no-js" lang="en-US">
+    
+    	<head>
+    
+    		<meta charset="UTF-8">
+    		<meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    
+    		<link rel="profile" href="https://gmpg.org/xfn/11">
+    
+    		<title>Amsterdam Wellness Studio &#8211; Professional wellness treatments in Amsterdam.</title>
+    <meta name='robots' content='max-image-preview:large' />
+    <link rel='dns-prefetch' href='//s.w.org' />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Feed" href="https://145.220.231.98/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Comments Feed" href="https://145.220.231.98/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #3 of 26
+========================================================================
+  Request ID:     1781210943670208402-16189
+  Timestamp:      2026-06-11T20:49:03.670209595Z
+  Client IP:      195.170.172.128
+  Method:         POST
+  Host:           145.220.231.97
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MUdQOHo0cGh3OHp1RTZuMlMzczFYRGR5UHBqUGp1a1JVZzp4
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 44
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (44 chars):
+    {"id": 1, "method": "getwork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     72 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Type: text/html; charset=UTF-8
+      Date: Thu, 11 Jun 2026 20:49:03 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Link: <https://145.220.231.97/index.php?rest_route=/>; rel="https://api.w.org/", <https://145.220.231.97/index.php?rest_route=/wp/v2/pages/25>; rel="alternate"; type="application/json", <https://145.220.231.97/>; rel=shortlink
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=265d6c1e68131411d9b7e9f643f8b4b0; path=/
+      Vary: Accept-Encoding
+      X-Powered-By: PHP/7.4.29
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    
+    <html class="no-js" lang="en-US">
+    
+    	<head>
+    
+    		<meta charset="UTF-8">
+    		<meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    
+    		<link rel="profile" href="https://gmpg.org/xfn/11">
+    
+    		<title>Amsterdam Wellness Studio &#8211; Professional wellness treatments in Amsterdam.</title>
+    <meta name='robots' content='max-image-preview:large' />
+    <link rel='dns-prefetch' href='//s.w.org' />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Feed" href="https://145.220.231.97/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Comments Feed" href="https://145.220.231.97/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #4 of 26
+========================================================================
+  Request ID:     1781210946515213954-16190
+  Timestamp:      2026-06-11T20:49:06.515215395Z
+  Client IP:      195.170.172.128
+  Method:         POST
+  Host:           145.220.231.97
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MHg4ZWVmZTRjNzgzNmI0NjQ0YjVhNzljYjkxNGIwM2JkZDM5OGVmYjU2Ong=
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 48
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (48 chars):
+    {"id": 1, "method": "eth_getWork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     88 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Type: text/html; charset=UTF-8
+      Date: Thu, 11 Jun 2026 20:49:06 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Link: <https://145.220.231.97/index.php?rest_route=/>; rel="https://api.w.org/", <https://145.220.231.97/index.php?rest_route=/wp/v2/pages/25>; rel="alternate"; type="application/json", <https://145.220.231.97/>; rel=shortlink
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=e68db77af427237a9958614740e19e8d; path=/
+      Vary: Accept-Encoding
+      X-Powered-By: PHP/7.4.29
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    
+    <html class="no-js" lang="en-US">
+    
+    	<head>
+    
+    		<meta charset="UTF-8">
+    		<meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    
+    		<link rel="profile" href="https://gmpg.org/xfn/11">
+    
+    		<title>Amsterdam Wellness Studio &#8211; Professional wellness treatments in Amsterdam.</title>
+    <meta name='robots' content='max-image-preview:large' />
+    <link rel='dns-prefetch' href='//s.w.org' />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Feed" href="https://145.220.231.97/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Comments Feed" href="https://145.220.231.97/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #5 of 26
+========================================================================
+  Request ID:     1781263063133163450-17130
+  Timestamp:      2026-06-12T11:17:43.133164698Z
+  Client IP:      185.213.175.171
+  Method:         POST
+  Host:           145.220.231.96
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MVE3Z2NoNTR2RUJzOXVUOGZ3OEJIODNNTEhEcDZaRHN2Rjp4
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 44
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (44 chars):
+    {"id": 1, "method": "getwork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     70 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Type: text/html; charset=UTF-8
+      Date: Fri, 12 Jun 2026 11:17:43 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Link: <https://145.220.231.96/index.php?rest_route=/>; rel="https://api.w.org/", <https://145.220.231.96/index.php?rest_route=/wp/v2/pages/25>; rel="alternate"; type="application/json", <https://145.220.231.96/>; rel=shortlink
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=b469ea4082838aa3e2c82c737f52012a; path=/
+      Vary: Accept-Encoding
+      X-Powered-By: PHP/7.4.29
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    
+    <html class="no-js" lang="en-US">
+    
+    	<head>
+    
+    		<meta charset="UTF-8">
+    		<meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    
+    		<link rel="profile" href="https://gmpg.org/xfn/11">
+    
+    		<title>Amsterdam Wellness Studio &#8211; Professional wellness treatments in Amsterdam.</title>
+    <meta name='robots' content='max-image-preview:large' />
+    <link rel='dns-prefetch' href='//s.w.org' />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Feed" href="https://145.220.231.96/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Comments Feed" href="https://145.220.231.96/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #6 of 26
+========================================================================
+  Request ID:     1781263067689352499-17131
+  Timestamp:      2026-06-12T11:17:47.689353997Z
+  Client IP:      185.213.175.171
+  Method:         POST
+  Host:           145.220.231.96
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MHhlMjhmZjAzZGMwYWZhMmQ1ODlmODc3YzM1NzJkOTA3NGU0ZjFmMDY1Ong=
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 48
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (48 chars):
+    {"id": 1, "method": "eth_getWork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     99 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Type: text/html; charset=UTF-8
+      Date: Fri, 12 Jun 2026 11:17:47 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Link: <https://145.220.231.96/index.php?rest_route=/>; rel="https://api.w.org/", <https://145.220.231.96/index.php?rest_route=/wp/v2/pages/25>; rel="alternate"; type="application/json", <https://145.220.231.96/>; rel=shortlink
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=f534dd36eff3af751af1f07845dd8e65; path=/
+      Vary: Accept-Encoding
+      X-Powered-By: PHP/7.4.29
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    
+    <html class="no-js" lang="en-US">
+    
+    	<head>
+    
+    		<meta charset="UTF-8">
+    		<meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    
+    		<link rel="profile" href="https://gmpg.org/xfn/11">
+    
+    		<title>Amsterdam Wellness Studio &#8211; Professional wellness treatments in Amsterdam.</title>
+    <meta name='robots' content='max-image-preview:large' />
+    <link rel='dns-prefetch' href='//s.w.org' />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Feed" href="https://145.220.231.96/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Comments Feed" href="https://145.220.231.96/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #7 of 26
+========================================================================
+  Request ID:     1781365303132615396-1011
+  Timestamp:      2026-06-13T15:41:43.132616973Z
+  Client IP:      185.213.175.171
+  Method:         POST
+  Host:           145.220.231.99
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MUpUc015bjR5aXpiRVdDRHFldWVkU2h2QzlDUmpqNEJ5Uzp4
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 44
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (44 chars):
+    {"id": 1, "method": "getwork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     56 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Type: text/html; charset=UTF-8
+      Date: Sat, 13 Jun 2026 15:41:43 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Link: <https://145.220.231.99/index.php?rest_route=/>; rel="https://api.w.org/", <https://145.220.231.99/index.php?rest_route=/wp/v2/pages/25>; rel="alternate"; type="application/json", <https://145.220.231.99/>; rel=shortlink
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=85b5ba9458f92752b1f3024b4652a90a; path=/
+      Vary: Accept-Encoding
+      X-Powered-By: PHP/7.4.29
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    
+    <html class="no-js" lang="en-US">
+    
+    	<head>
+    
+    		<meta charset="UTF-8">
+    		<meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    
+    		<link rel="profile" href="https://gmpg.org/xfn/11">
+    
+    		<title>Amsterdam Wellness Studio &#8211; Professional wellness treatments in Amsterdam.</title>
+    <meta name='robots' content='max-image-preview:large' />
+    <link rel='dns-prefetch' href='//s.w.org' />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Feed" href="https://145.220.231.99/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Comments Feed" href="https://145.220.231.99/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #8 of 26
+========================================================================
+  Request ID:     1781365308123898120-1012
+  Timestamp:      2026-06-13T15:41:48.123899751Z
+  Client IP:      185.213.175.171
+  Method:         POST
+  Host:           145.220.231.99
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MHhhZWI5NTU3MGU3YmU5ZWNiY2JjZDEzNzBhMjgyZGRkMmIxODhlMWQ5Ong=
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 48
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (48 chars):
+    {"id": 1, "method": "eth_getWork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     55 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Type: text/html; charset=UTF-8
+      Date: Sat, 13 Jun 2026 15:41:48 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Link: <https://145.220.231.99/index.php?rest_route=/>; rel="https://api.w.org/", <https://145.220.231.99/index.php?rest_route=/wp/v2/pages/25>; rel="alternate"; type="application/json", <https://145.220.231.99/>; rel=shortlink
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=afabe4e202273f86aa224351ee5ab1ea; path=/
+      Vary: Accept-Encoding
+      X-Powered-By: PHP/7.4.29
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    
+    <html class="no-js" lang="en-US">
+    
+    	<head>
+    
+    		<meta charset="UTF-8">
+    		<meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    
+    		<link rel="profile" href="https://gmpg.org/xfn/11">
+    
+    		<title>Amsterdam Wellness Studio &#8211; Professional wellness treatments in Amsterdam.</title>
+    <meta name='robots' content='max-image-preview:large' />
+    <link rel='dns-prefetch' href='//s.w.org' />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Feed" href="https://145.220.231.99/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Comments Feed" href="https://145.220.231.99/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #9 of 26
+========================================================================
+  Request ID:     1781404582990329819-3463
+  Timestamp:      2026-06-14T02:36:22.990331208Z
+  Client IP:      195.170.172.128
+  Method:         POST
+  Host:           145.220.231.103
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MUpUc015bjR5aXpiRVdDRHFldWVkU2h2QzlDUmpqNEJ5Uzp4
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 44
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (44 chars):
+    {"id": 1, "method": "getwork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     194 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Type: text/html; charset=UTF-8
+      Date: Sun, 14 Jun 2026 02:36:23 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Link: <https://145.220.231.103/index.php?rest_route=/>; rel="https://api.w.org/", <https://145.220.231.103/index.php?rest_route=/wp/v2/pages/25>; rel="alternate"; type="application/json", <https://145.220.231.103/>; rel=shortlink
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=e5f6cb8bbeb6adad299bf997a7abb819; path=/
+      Vary: Accept-Encoding
+      X-Powered-By: PHP/7.4.29
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    
+    <html class="no-js" lang="en-US">
+    
+    	<head>
+    
+    		<meta charset="UTF-8">
+    		<meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    
+    		<link rel="profile" href="https://gmpg.org/xfn/11">
+    
+    		<title>Amsterdam Wellness Studio &#8211; Professional wellness treatments in Amsterdam.</title>
+    <meta name='robots' content='max-image-preview:large' />
+    <link rel='dns-prefetch' href='//s.w.org' />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Feed" href="https://145.220.231.103/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Comments Feed" href="https://145.220.231.103/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoj
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #10 of 26
+========================================================================
+  Request ID:     1781404584466409192-3464
+  Timestamp:      2026-06-14T02:36:24.46641154Z
+  Client IP:      195.170.172.128
+  Method:         POST
+  Host:           145.220.231.103
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MHhiZDJjMGJkNTkwYTFkZTE3NmU0MGM0YWE3MjlhNTM3OTcwOWE0YWY3Ong=
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 48
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (48 chars):
+    {"id": 1, "method": "eth_getWork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     191 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Type: text/html; charset=UTF-8
+      Date: Sun, 14 Jun 2026 02:36:24 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Link: <https://145.220.231.103/index.php?rest_route=/>; rel="https://api.w.org/", <https://145.220.231.103/index.php?rest_route=/wp/v2/pages/25>; rel="alternate"; type="application/json", <https://145.220.231.103/>; rel=shortlink
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=d82a25c6ceaaf0ad1b5d6b7f0241c50a; path=/
+      Vary: Accept-Encoding
+      X-Powered-By: PHP/7.4.29
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    
+    <html class="no-js" lang="en-US">
+    
+    	<head>
+    
+    		<meta charset="UTF-8">
+    		<meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    
+    		<link rel="profile" href="https://gmpg.org/xfn/11">
+    
+    		<title>Amsterdam Wellness Studio &#8211; Professional wellness treatments in Amsterdam.</title>
+    <meta name='robots' content='max-image-preview:large' />
+    <link rel='dns-prefetch' href='//s.w.org' />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Feed" href="https://145.220.231.103/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Comments Feed" href="https://145.220.231.103/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoj
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #11 of 26
+========================================================================
+  Request ID:     1781425078235203251-3917
+  Timestamp:      2026-06-14T08:17:58.235204532Z
+  Client IP:      185.213.175.176
+  Method:         POST
+  Host:           145.220.231.101
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MVE3Z2NoNTR2RUJzOXVUOGZ3OEJIODNNTEhEcDZaRHN2Rjp4
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 44
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (44 chars):
+    {"id": 1, "method": "getwork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     89 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Type: text/html; charset=UTF-8
+      Date: Sun, 14 Jun 2026 08:17:58 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Link: <https://145.220.231.101/index.php?rest_route=/>; rel="https://api.w.org/", <https://145.220.231.101/index.php?rest_route=/wp/v2/pages/25>; rel="alternate"; type="application/json", <https://145.220.231.101/>; rel=shortlink
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=240b736625dfe658bbf61da9d9e6d84a; path=/
+      Vary: Accept-Encoding
+      X-Powered-By: PHP/7.4.29
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    
+    <html class="no-js" lang="en-US">
+    
+    	<head>
+    
+    		<meta charset="UTF-8">
+    		<meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    
+    		<link rel="profile" href="https://gmpg.org/xfn/11">
+    
+    		<title>Amsterdam Wellness Studio &#8211; Professional wellness treatments in Amsterdam.</title>
+    <meta name='robots' content='max-image-preview:large' />
+    <link rel='dns-prefetch' href='//s.w.org' />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Feed" href="https://145.220.231.101/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Comments Feed" href="https://145.220.231.101/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoj
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #12 of 26
+========================================================================
+  Request ID:     1781425080094373921-3918
+  Timestamp:      2026-06-14T08:18:00.094375365Z
+  Client IP:      185.213.175.176
+  Method:         POST
+  Host:           145.220.231.101
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MHgwNTdmNTRjMGY0N2Y5YTkzZTA2ZWFhMGQ3MzM2NzQzMjQ0MmMxNDVlOng=
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 48
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (48 chars):
+    {"id": 1, "method": "eth_getWork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     79 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Type: text/html; charset=UTF-8
+      Date: Sun, 14 Jun 2026 08:18:00 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Link: <https://145.220.231.101/index.php?rest_route=/>; rel="https://api.w.org/", <https://145.220.231.101/index.php?rest_route=/wp/v2/pages/25>; rel="alternate"; type="application/json", <https://145.220.231.101/>; rel=shortlink
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=7328a6b1e7ef0c3ac71ba0dcb1976b7f; path=/
+      Vary: Accept-Encoding
+      X-Powered-By: PHP/7.4.29
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    
+    <html class="no-js" lang="en-US">
+    
+    	<head>
+    
+    		<meta charset="UTF-8">
+    		<meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    
+    		<link rel="profile" href="https://gmpg.org/xfn/11">
+    
+    		<title>Amsterdam Wellness Studio &#8211; Professional wellness treatments in Amsterdam.</title>
+    <meta name='robots' content='max-image-preview:large' />
+    <link rel='dns-prefetch' href='//s.w.org' />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Feed" href="https://145.220.231.101/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Comments Feed" href="https://145.220.231.101/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoj
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #13 of 26
+========================================================================
+  Request ID:     1781455452152529234-5597
+  Timestamp:      2026-06-14T16:44:12.152531201Z
+  Client IP:      195.170.172.225
+  Method:         POST
+  Host:           145.220.231.100
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MTREVk1uOG1jQzZZM1RQVGZNZmhTeEs5b3RMNm1GS0c0UTp4
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 44
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (44 chars):
+    {"id": 1, "method": "getwork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     51 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Type: text/html; charset=UTF-8
+      Date: Sun, 14 Jun 2026 16:44:12 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Link: <https://145.220.231.100/index.php?rest_route=/>; rel="https://api.w.org/", <https://145.220.231.100/index.php?rest_route=/wp/v2/pages/25>; rel="alternate"; type="application/json", <https://145.220.231.100/>; rel=shortlink
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=0769119c57628e6fd549bee1254935e0; path=/
+      Vary: Accept-Encoding
+      X-Powered-By: PHP/7.4.29
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    
+    <html class="no-js" lang="en-US">
+    
+    	<head>
+    
+    		<meta charset="UTF-8">
+    		<meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    
+    		<link rel="profile" href="https://gmpg.org/xfn/11">
+    
+    		<title>Amsterdam Wellness Studio &#8211; Professional wellness treatments in Amsterdam.</title>
+    <meta name='robots' content='max-image-preview:large' />
+    <link rel='dns-prefetch' href='//s.w.org' />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Feed" href="https://145.220.231.100/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Comments Feed" href="https://145.220.231.100/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoj
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #14 of 26
+========================================================================
+  Request ID:     1781455456516678755-5598
+  Timestamp:      2026-06-14T16:44:16.51668074Z
+  Client IP:      195.170.172.225
+  Method:         POST
+  Host:           145.220.231.100
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MHhlNzg0M2M2ZTI5MzMyZjM5MGE5MDM1NzdiMTM5NjM5OTY3OWNhM2MzOng=
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 48
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (48 chars):
+    {"id": 1, "method": "eth_getWork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     52 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Type: text/html; charset=UTF-8
+      Date: Sun, 14 Jun 2026 16:44:16 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Link: <https://145.220.231.100/index.php?rest_route=/>; rel="https://api.w.org/", <https://145.220.231.100/index.php?rest_route=/wp/v2/pages/25>; rel="alternate"; type="application/json", <https://145.220.231.100/>; rel=shortlink
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=e1972398893f0e3b93826d7fabce628e; path=/
+      Vary: Accept-Encoding
+      X-Powered-By: PHP/7.4.29
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    
+    <html class="no-js" lang="en-US">
+    
+    	<head>
+    
+    		<meta charset="UTF-8">
+    		<meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    
+    		<link rel="profile" href="https://gmpg.org/xfn/11">
+    
+    		<title>Amsterdam Wellness Studio &#8211; Professional wellness treatments in Amsterdam.</title>
+    <meta name='robots' content='max-image-preview:large' />
+    <link rel='dns-prefetch' href='//s.w.org' />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Feed" href="https://145.220.231.100/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Comments Feed" href="https://145.220.231.100/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoj
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #15 of 26
+========================================================================
+  Request ID:     1781477209012386076-7495
+  Timestamp:      2026-06-14T22:46:49.012387477Z
+  Client IP:      185.213.175.171
+  Method:         POST
+  Host:           145.220.231.102
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MUtSSmZTUWoxTVRuYkdhUGlUbnVMRTVKNEZrRGNRVVJlNTp4
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 44
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (44 chars):
+    {"id": 1, "method": "getwork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     102 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Type: text/html; charset=UTF-8
+      Date: Sun, 14 Jun 2026 22:46:49 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Link: <https://145.220.231.102/index.php?rest_route=/>; rel="https://api.w.org/", <https://145.220.231.102/index.php?rest_route=/wp/v2/pages/25>; rel="alternate"; type="application/json", <https://145.220.231.102/>; rel=shortlink
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=19c73e3a9b006436fc129335f1e75c24; path=/
+      Vary: Accept-Encoding
+      X-Powered-By: PHP/7.4.29
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    
+    <html class="no-js" lang="en-US">
+    
+    	<head>
+    
+    		<meta charset="UTF-8">
+    		<meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    
+    		<link rel="profile" href="https://gmpg.org/xfn/11">
+    
+    		<title>Amsterdam Wellness Studio &#8211; Professional wellness treatments in Amsterdam.</title>
+    <meta name='robots' content='max-image-preview:large' />
+    <link rel='dns-prefetch' href='//s.w.org' />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Feed" href="https://145.220.231.102/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Comments Feed" href="https://145.220.231.102/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoj
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #16 of 26
+========================================================================
+  Request ID:     1781477212588290755-7496
+  Timestamp:      2026-06-14T22:46:52.588292083Z
+  Client IP:      185.213.175.171
+  Method:         POST
+  Host:           145.220.231.102
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MHgwMjhkNDhkYWY2MjQ2YTBhODA1YTllNTY0MGE2MjhhOTZhNzg3NTZiOng=
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 48
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (48 chars):
+    {"id": 1, "method": "eth_getWork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     77 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Type: text/html; charset=UTF-8
+      Date: Sun, 14 Jun 2026 22:46:52 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Link: <https://145.220.231.102/index.php?rest_route=/>; rel="https://api.w.org/", <https://145.220.231.102/index.php?rest_route=/wp/v2/pages/25>; rel="alternate"; type="application/json", <https://145.220.231.102/>; rel=shortlink
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=61f03f2e4cb22f4157e81ced2eecc244; path=/
+      Vary: Accept-Encoding
+      X-Powered-By: PHP/7.4.29
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    
+    <html class="no-js" lang="en-US">
+    
+    	<head>
+    
+    		<meta charset="UTF-8">
+    		<meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    
+    		<link rel="profile" href="https://gmpg.org/xfn/11">
+    
+    		<title>Amsterdam Wellness Studio &#8211; Professional wellness treatments in Amsterdam.</title>
+    <meta name='robots' content='max-image-preview:large' />
+    <link rel='dns-prefetch' href='//s.w.org' />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Feed" href="https://145.220.231.102/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Comments Feed" href="https://145.220.231.102/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoj
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #17 of 26
+========================================================================
+  Request ID:     1781533563317336440-8936
+  Timestamp:      2026-06-15T14:26:03.317337876Z
+  Client IP:      195.170.172.225
+  Method:         POST
+  Host:           145.220.231.96
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MTdMc3RCVkhSeldkb2JHcFRQMWdaMWsyM3UxZ2ZON3pUcjp4
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 44
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (44 chars):
+    {"id": 1, "method": "getwork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     50 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Type: text/html; charset=UTF-8
+      Date: Mon, 15 Jun 2026 14:26:03 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Link: <https://145.220.231.96/index.php?rest_route=/>; rel="https://api.w.org/", <https://145.220.231.96/index.php?rest_route=/wp/v2/pages/25>; rel="alternate"; type="application/json", <https://145.220.231.96/>; rel=shortlink
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=603eb478cb8b5ce98dc33e12a98334ad; path=/
+      Vary: Accept-Encoding
+      X-Powered-By: PHP/7.4.29
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    
+    <html class="no-js" lang="en-US">
+    
+    	<head>
+    
+    		<meta charset="UTF-8">
+    		<meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    
+    		<link rel="profile" href="https://gmpg.org/xfn/11">
+    
+    		<title>Amsterdam Wellness Studio &#8211; Professional wellness treatments in Amsterdam.</title>
+    <meta name='robots' content='max-image-preview:large' />
+    <link rel='dns-prefetch' href='//s.w.org' />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Feed" href="https://145.220.231.96/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Comments Feed" href="https://145.220.231.96/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #18 of 26
+========================================================================
+  Request ID:     1781533565336277416-8937
+  Timestamp:      2026-06-15T14:26:05.336278918Z
+  Client IP:      195.170.172.225
+  Method:         POST
+  Host:           145.220.231.96
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MHhmMmY2MDg1NDE5MWFhN2Y0MzA1MTYxOWM2NDFiNjg4MWUwYmQ0MzkwOng=
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 48
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (48 chars):
+    {"id": 1, "method": "eth_getWork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     49 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Type: text/html; charset=UTF-8
+      Date: Mon, 15 Jun 2026 14:26:05 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Link: <https://145.220.231.96/index.php?rest_route=/>; rel="https://api.w.org/", <https://145.220.231.96/index.php?rest_route=/wp/v2/pages/25>; rel="alternate"; type="application/json", <https://145.220.231.96/>; rel=shortlink
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=a621cf8a8268e7b032e7ef30be5b88d7; path=/
+      Vary: Accept-Encoding
+      X-Powered-By: PHP/7.4.29
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    
+    <html class="no-js" lang="en-US">
+    
+    	<head>
+    
+    		<meta charset="UTF-8">
+    		<meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    
+    		<link rel="profile" href="https://gmpg.org/xfn/11">
+    
+    		<title>Amsterdam Wellness Studio &#8211; Professional wellness treatments in Amsterdam.</title>
+    <meta name='robots' content='max-image-preview:large' />
+    <link rel='dns-prefetch' href='//s.w.org' />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Feed" href="https://145.220.231.96/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Comments Feed" href="https://145.220.231.96/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #19 of 26
+========================================================================
+  Request ID:     1781572522714204569-9899
+  Timestamp:      2026-06-16T01:15:22.714205916Z
+  Client IP:      185.213.175.171
+  Method:         POST
+  Host:           145.220.231.98
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MUhOTEs2R0ZHQmVDcW5DclVZOTdyZ21WYm1pUXhSWDZrWjp4
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 44
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (44 chars):
+    {"id": 1, "method": "getwork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     47 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Type: text/html; charset=UTF-8
+      Date: Tue, 16 Jun 2026 01:15:22 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Link: <https://145.220.231.98/index.php?rest_route=/>; rel="https://api.w.org/", <https://145.220.231.98/index.php?rest_route=/wp/v2/pages/25>; rel="alternate"; type="application/json", <https://145.220.231.98/>; rel=shortlink
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=2d62cb7adbcd378c1f318ba300059c21; path=/
+      Vary: Accept-Encoding
+      X-Powered-By: PHP/7.4.29
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    
+    <html class="no-js" lang="en-US">
+    
+    	<head>
+    
+    		<meta charset="UTF-8">
+    		<meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    
+    		<link rel="profile" href="https://gmpg.org/xfn/11">
+    
+    		<title>Amsterdam Wellness Studio &#8211; Professional wellness treatments in Amsterdam.</title>
+    <meta name='robots' content='max-image-preview:large' />
+    <link rel='dns-prefetch' href='//s.w.org' />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Feed" href="https://145.220.231.98/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Comments Feed" href="https://145.220.231.98/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #20 of 26
+========================================================================
+  Request ID:     1781572525915294288-9900
+  Timestamp:      2026-06-16T01:15:25.915296725Z
+  Client IP:      185.213.175.171
+  Method:         POST
+  Host:           145.220.231.98
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MHhhNDkwZTNhY2ViNDQwZjM2ZTRhOWM4ZDZiNzYyODU1MTkwZmUxNzAwOng=
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 48
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (48 chars):
+    {"id": 1, "method": "eth_getWork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     54 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Type: text/html; charset=UTF-8
+      Date: Tue, 16 Jun 2026 01:15:25 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Link: <https://145.220.231.98/index.php?rest_route=/>; rel="https://api.w.org/", <https://145.220.231.98/index.php?rest_route=/wp/v2/pages/25>; rel="alternate"; type="application/json", <https://145.220.231.98/>; rel=shortlink
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=254e52d8295ad46dbd9d37d921b91285; path=/
+      Vary: Accept-Encoding
+      X-Powered-By: PHP/7.4.29
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    
+    <html class="no-js" lang="en-US">
+    
+    	<head>
+    
+    		<meta charset="UTF-8">
+    		<meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    
+    		<link rel="profile" href="https://gmpg.org/xfn/11">
+    
+    		<title>Amsterdam Wellness Studio &#8211; Professional wellness treatments in Amsterdam.</title>
+    <meta name='robots' content='max-image-preview:large' />
+    <link rel='dns-prefetch' href='//s.w.org' />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Feed" href="https://145.220.231.98/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Comments Feed" href="https://145.220.231.98/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #21 of 26
+========================================================================
+  Request ID:     1781591400679154310-10950
+  Timestamp:      2026-06-16T06:30:00.679156058Z
+  Client IP:      195.170.172.225
+  Method:         POST
+  Host:           145.220.231.102
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MUhOTEs2R0ZHQmVDcW5DclVZOTdyZ21WYm1pUXhSWDZrWjp4
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 44
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (44 chars):
+    {"id": 1, "method": "getwork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     75 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Type: text/html; charset=UTF-8
+      Date: Tue, 16 Jun 2026 06:30:00 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Link: <https://145.220.231.102/index.php?rest_route=/>; rel="https://api.w.org/", <https://145.220.231.102/index.php?rest_route=/wp/v2/pages/25>; rel="alternate"; type="application/json", <https://145.220.231.102/>; rel=shortlink
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=93a5ec6d79e74ac0f809df63223940bd; path=/
+      Vary: Accept-Encoding
+      X-Powered-By: PHP/7.4.29
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    
+    <html class="no-js" lang="en-US">
+    
+    	<head>
+    
+    		<meta charset="UTF-8">
+    		<meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    
+    		<link rel="profile" href="https://gmpg.org/xfn/11">
+    
+    		<title>Amsterdam Wellness Studio &#8211; Professional wellness treatments in Amsterdam.</title>
+    <meta name='robots' content='max-image-preview:large' />
+    <link rel='dns-prefetch' href='//s.w.org' />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Feed" href="https://145.220.231.102/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Comments Feed" href="https://145.220.231.102/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoj
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #22 of 26
+========================================================================
+  Request ID:     1781591402382194268-10951
+  Timestamp:      2026-06-16T06:30:02.382197373Z
+  Client IP:      195.170.172.225
+  Method:         POST
+  Host:           145.220.231.102
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MHhmNDQ5NzU4ZGE1Yjg0MjgxOTllMDkyMmYyZmEwYzZjYjJmYTQzOGZjOng=
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 48
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (48 chars):
+    {"id": 1, "method": "eth_getWork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     68 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Type: text/html; charset=UTF-8
+      Date: Tue, 16 Jun 2026 06:30:02 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Link: <https://145.220.231.102/index.php?rest_route=/>; rel="https://api.w.org/", <https://145.220.231.102/index.php?rest_route=/wp/v2/pages/25>; rel="alternate"; type="application/json", <https://145.220.231.102/>; rel=shortlink
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=8dc51ea01f3db89a1d7271e5b9b5783e; path=/
+      Vary: Accept-Encoding
+      X-Powered-By: PHP/7.4.29
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    
+    <html class="no-js" lang="en-US">
+    
+    	<head>
+    
+    		<meta charset="UTF-8">
+    		<meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    
+    		<link rel="profile" href="https://gmpg.org/xfn/11">
+    
+    		<title>Amsterdam Wellness Studio &#8211; Professional wellness treatments in Amsterdam.</title>
+    <meta name='robots' content='max-image-preview:large' />
+    <link rel='dns-prefetch' href='//s.w.org' />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Feed" href="https://145.220.231.102/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Comments Feed" href="https://145.220.231.102/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoj
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #23 of 26
+========================================================================
+  Request ID:     1781594678056462304-10998
+  Timestamp:      2026-06-16T07:24:38.056468662Z
+  Client IP:      195.170.172.225
+  Method:         POST
+  Host:           145.220.231.103
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MUoyY1JFTEdGM3NqYnUxaE1EYjFlOGRYcTJ5cWVTSk13Ong=
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 44
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (44 chars):
+    {"id": 1, "method": "getwork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     68 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Type: text/html; charset=UTF-8
+      Date: Tue, 16 Jun 2026 07:24:38 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Link: <https://145.220.231.103/index.php?rest_route=/>; rel="https://api.w.org/", <https://145.220.231.103/index.php?rest_route=/wp/v2/pages/25>; rel="alternate"; type="application/json", <https://145.220.231.103/>; rel=shortlink
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=b62c0145e0a4a179e58dd4e4daac0177; path=/
+      Vary: Accept-Encoding
+      X-Powered-By: PHP/7.4.29
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    
+    <html class="no-js" lang="en-US">
+    
+    	<head>
+    
+    		<meta charset="UTF-8">
+    		<meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    
+    		<link rel="profile" href="https://gmpg.org/xfn/11">
+    
+    		<title>Amsterdam Wellness Studio &#8211; Professional wellness treatments in Amsterdam.</title>
+    <meta name='robots' content='max-image-preview:large' />
+    <link rel='dns-prefetch' href='//s.w.org' />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Feed" href="https://145.220.231.103/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Comments Feed" href="https://145.220.231.103/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoj
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #24 of 26
+========================================================================
+  Request ID:     1781594679515169144-10999
+  Timestamp:      2026-06-16T07:24:39.515170671Z
+  Client IP:      195.170.172.225
+  Method:         POST
+  Host:           145.220.231.103
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MHg3N2Y5YTVjNWUyZWEzZjdlNmFhNzFkZDBiZWE3ZDMwNTI0MWY4Nzk5Ong=
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 48
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (48 chars):
+    {"id": 1, "method": "eth_getWork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     84 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Type: text/html; charset=UTF-8
+      Date: Tue, 16 Jun 2026 07:24:39 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Link: <https://145.220.231.103/index.php?rest_route=/>; rel="https://api.w.org/", <https://145.220.231.103/index.php?rest_route=/wp/v2/pages/25>; rel="alternate"; type="application/json", <https://145.220.231.103/>; rel=shortlink
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=f162afdfeea567b60c6bac6b49b885b8; path=/
+      Vary: Accept-Encoding
+      X-Powered-By: PHP/7.4.29
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    
+    <html class="no-js" lang="en-US">
+    
+    	<head>
+    
+    		<meta charset="UTF-8">
+    		<meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    
+    		<link rel="profile" href="https://gmpg.org/xfn/11">
+    
+    		<title>Amsterdam Wellness Studio &#8211; Professional wellness treatments in Amsterdam.</title>
+    <meta name='robots' content='max-image-preview:large' />
+    <link rel='dns-prefetch' href='//s.w.org' />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Feed" href="https://145.220.231.103/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Comments Feed" href="https://145.220.231.103/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoj
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #25 of 26
+========================================================================
+  Request ID:     1781769443773244716-20574
+  Timestamp:      2026-06-18T07:57:23.773246336Z
+  Client IP:      185.213.175.171
+  Method:         POST
+  Host:           145.220.231.99
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MUpUc015bjR5aXpiRVdDRHFldWVkU2h2QzlDUmpqNEJ5Uzp4
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 44
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (44 chars):
+    {"id": 1, "method": "getwork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     125 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Type: text/html; charset=UTF-8
+      Date: Thu, 18 Jun 2026 07:57:23 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Link: <https://145.220.231.99/index.php?rest_route=/>; rel="https://api.w.org/", <https://145.220.231.99/index.php?rest_route=/wp/v2/pages/25>; rel="alternate"; type="application/json", <https://145.220.231.99/>; rel=shortlink
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=b67334bef6821fbf59b11e2d9aed8f8d; path=/
+      Vary: Accept-Encoding
+      X-Powered-By: PHP/7.4.29
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    
+    <html class="no-js" lang="en-US">
+    
+    	<head>
+    
+    		<meta charset="UTF-8">
+    		<meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    
+    		<link rel="profile" href="https://gmpg.org/xfn/11">
+    
+    		<title>Amsterdam Wellness Studio &#8211; Professional wellness treatments in Amsterdam.</title>
+    <meta name='robots' content='max-image-preview:large' />
+    <link rel='dns-prefetch' href='//s.w.org' />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Feed" href="https://145.220.231.99/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Comments Feed" href="https://145.220.231.99/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\
+    ... (9439 more chars truncated)
+
+========================================================================
+EVENT #26 of 26
+========================================================================
+  Request ID:     1781769447786191054-20575
+  Timestamp:      2026-06-18T07:57:27.786192397Z
+  Client IP:      185.213.175.171
+  Method:         POST
+  Host:           145.220.231.99
+  URL:            /
+  Path:           /
+  User-Agent:     Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Forwarded to:   https://localhost:8081
+  Experiment:     vuln
+  Request headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Language: en;q=0.9
+    Authorization: Basic MHgxNmYwMjYyMjMxNjdlNzQ3ODMwODllZmJmNWQ2YWJhOWEzMjUzMDE4Ong=
+    Cache-Control: max-age=0
+    Connection: close
+    Content-Length: 48
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+  Request body (48 chars):
+    {"id": 1, "method": "eth_getWork", "params": []}
+  TLS version:    TLS 1.3
+  Cipher suite:   TLS_AES_128_GCM_SHA256
+  Response:
+    Status:       200 200 OK
+    Duration:     130 ms
+    Headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Content-Type: text/html; charset=UTF-8
+      Date: Thu, 18 Jun 2026 07:57:27 GMT
+      Expires: Thu, 19 Nov 1981 08:52:00 GMT
+      Link: <https://145.220.231.99/index.php?rest_route=/>; rel="https://api.w.org/", <https://145.220.231.99/index.php?rest_route=/wp/v2/pages/25>; rel="alternate"; type="application/json", <https://145.220.231.99/>; rel=shortlink
+      Pragma: no-cache
+      Server: nginx/1.31.1
+      Set-Cookie: PHPSESSID=df89f2b81d7f6c5a99a0a8cd40c1a33e; path=/
+      Vary: Accept-Encoding
+      X-Powered-By: PHP/7.4.29
+    Body (10240 chars (truncated in log)):
+    <!DOCTYPE html>
+    
+    <html class="no-js" lang="en-US">
+    
+    	<head>
+    
+    		<meta charset="UTF-8">
+    		<meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    
+    		<link rel="profile" href="https://gmpg.org/xfn/11">
+    
+    		<title>Amsterdam Wellness Studio &#8211; Professional wellness treatments in Amsterdam.</title>
+    <meta name='robots' content='max-image-preview:large' />
+    <link rel='dns-prefetch' href='//s.w.org' />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Feed" href="https://145.220.231.99/?feed=rss2" />
+    <link rel="alternate" type="application/rss+xml" title="Amsterdam Wellness Studio &raquo; Comments Feed" href="https://145.220.231.99/?feed=comments-rss2" />
+    <script>
+    window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\
+    ... (9439 more chars truncated)
+
+========================================================================

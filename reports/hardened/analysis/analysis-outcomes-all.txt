@@ -1,0 +1,57 @@
+========================================================================
+OUTCOME ANALYSIS
+========================================================================
+
+SUMMARY
+----------------------------------------
+  Total requests:           34,002
+  Attack-class requests:    28,781
+  Defensive outcome:        27,652 (96.1% of attacks blocked/404/429/redirect)
+  Decoy content served:     1,069
+  Potential concern events: 55
+  (Full detail: analysis-concerns-all.txt)
+
+  Outcome key:
+    blocked/rate_limited/not_found/redirected = honeypot contained the probe
+    decoy_served = attacker received expected fake content (200)
+    concern = empty 200 on sensitive path or body matches leak patterns
+
+ATTACK OUTCOMES
+----------------------------------------
+  rate_limited        15,349 ( 53.3%)  Rate limited (429)
+  not_found           11,185 ( 38.9%)  Not found (404)
+  decoy_served         1,069 (  3.7%)  Honeypot decoy content served (200)
+  redirected             703 (  2.4%)  Redirected (3xx)
+  blocked                415 (  1.4%)  Blocked by honeypot (400/403/405)
+  content_served          55 (  0.2%)  HTTP 200 with unrecognized body
+  server_error             5 (  0.0%)  Server or gateway error (5xx)
+
+OUTCOMES BY ATTACK CLASSIFICATION
+----------------------------------------
+  sensitive_file_probe          23,686  [rate_limited=14778, not_found=8181, redirected=560, blocked=97]
+  appliance_probe               1,805  [not_found=1536, rate_limited=207, redirected=62]
+  rce_attempt                     716  [blocked=255, not_found=251, rate_limited=102, decoy_served=99]
+  login_attempt                   689  [not_found=607, rate_limited=62, redirected=20]
+  webdav_probe                    567  [decoy_served=543, redirected=24]
+  dns_probe                       552  [not_found=460, decoy_served=92]
+  wordpress_probe                 512  [decoy_served=303, rate_limited=130, not_found=73, redirected=6]
+  wordpress_plugin_probe          124  [not_found=71, rate_limited=51, blocked=2]
+  path_traversal_attempt           93  [blocked=61, rate_limited=19, redirected=7, not_found=6]
+  crypto_mining_probe              22  [decoy_served=22]
+  citrix_vpn_probe                 15  [redirected=15]
+
+POTENTIAL CONCERN EVENTS (preview)
+----------------------------------------
+  2026-06-10T06:41:39  48.217.54.85        200  /wp-config.php                       [sensitive_file_probe] empty_on_sensitive_path
+  2026-06-10T07:24:58  104.209.5.148       200  /wp-config.php                       [sensitive_file_probe] empty_on_sensitive_path
+  2026-06-10T09:45:54  52.188.87.49        200  /wp-config.php                       [sensitive_file_probe] empty_on_sensitive_path
+  2026-06-10T11:52:13  172.178.119.23      200  /wp-config.php                       [sensitive_file_probe] empty_on_sensitive_path
+  2026-06-10T14:03:28  148.66.142.37       200  /wp-config.php                       [sensitive_file_probe] empty_on_sensitive_path
+  2026-06-10T15:15:53  172.183.131.201     200  /wp-config.php                       [sensitive_file_probe] empty_on_sensitive_path
+  2026-06-10T16:08:14  64.236.160.17       200  /wp-config.php                       [sensitive_file_probe] empty_on_sensitive_path
+  2026-06-10T16:54:41  151.243.150.23      200  /wp-config.php                       [sensitive_file_probe] empty_on_sensitive_path
+  2026-06-10T17:00:30  20.163.6.182        200  /wp-config.php                       [sensitive_file_probe] empty_on_sensitive_path
+  2026-06-10T23:13:25  20.3.221.184        200  /wp-config.php                       [sensitive_file_probe] empty_on_sensitive_path
+  ... 55 total — see analysis-concerns report
+
+========================================================================
